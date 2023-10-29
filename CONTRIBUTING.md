@@ -46,12 +46,10 @@ When you're finished with the changes, create a pull request, also known as a PR
 
 *todo* add more info
 
-Once you submit your PR, a Docs team member will review your proposal. We may ask questions or request additional information.
+Once you submit your PR, a team member will review your proposal. We may ask questions or request additional information.
 
 *todo* add more info
 
 ### Your PR is merged!
 
 Congratulations :tada::tada: Thank you :sparkles:.
-
-Once your PR is merged, your contributions will be publicly visible.
