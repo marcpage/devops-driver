@@ -8,7 +8,9 @@ In this guide you will get an overview of the contribution workflow from opening
 
 To get an overview of the project, read the [README](README.md) file.
 
-*todo* add comment about public domain, including other's code, etc.
+When you contribute to this project you affirm that you are the sole author of all changes and that you are releasing your changes to the public domain.
+No copyrighted, patented, or otherwise encumbered code may be contributed to this project.
+These restrictions do not apply to external dependencies.
 
 ## Getting started
 
