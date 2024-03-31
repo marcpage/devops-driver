@@ -25,6 +25,14 @@
     - Windows: %APPDATA%/
     - Linux: ~/.devopsdriver/
     
+    You can have environment variable substitutions in the values in the files.
+    For instance, you can specify:
+    
+    output: ${home}/reports
+    
+    The `${home}` will be replaced with the value of the HOME environment variable, if it exists.
+    If the environment variable does not exist, no change is made.
+    
     Use case 1: Secrets not in repo
         tokens, passwords, etc can be stored in <pref>/devopsdriver.yml
         This will allow for all scripts to access those secrets
@@ -68,11 +76,13 @@
 """
 
 
+from json import load
 from os.path import dirname, basename, splitext, join
 from os import environ as os_environ, makedirs as os_makedirs
-from sys import argv as sys_argv
+from re import compile as regex
 from platform import system as os_system
-from json import load
+from sys import argv as sys_argv
+
 from yaml import safe_load
 
 
@@ -81,7 +91,7 @@ ENVIRON = os_environ
 ARGV = sys_argv
 SYSTEM = os_system
 MAKEDIRS = os_makedirs
-SHARED = "devopsdrive"
+SHARED = "devopsdriver"
 
 
 def load_json(path: str) -> dict:
@@ -128,6 +138,7 @@ class Settings:
         "Windows": join(ENVIRON.get("APPDATA", "")),
         "Linux": join(ENVIRON.get("HOME", ""), ".devopsdriver"),
     }
+    ENV_VAR_PATTERN = regex(r"\${(\S+)}")
 
     def __init__(self, file: str, *directories, **settings):
         """Create a settings object using a file, directories to search, and settings overrides
@@ -183,6 +194,20 @@ class Settings:
         self.environ[key] = name
         return self
 
+    @staticmethod
+    def __patch_instance(key: str) -> str:
+        for env_key, value in ENVIRON.items():
+            if env_key.lower() == key.lower():
+                return value
+
+        return "${" + key + "}"
+
+    @staticmethod
+    def __patch(value: str) -> str:
+        return Settings.ENV_VAR_PATTERN.sub(
+            lambda m: Settings.__patch_instance(m.group(1)), value
+        )
+
     def __lookup(self, key: str, check: bool, default: any = None) -> any:
         # Settings passed in override everything
         if key in self.overrides:
@@ -210,7 +235,7 @@ class Settings:
         if check:
             return keys[-1] in level
 
-        return level.get(keys[-1], default)
+        return Settings.__patch(level.get(keys[-1], default))
 
     def get(self, key: str, default: any = None) -> any:
         """Dictionary-like get

@@ -251,6 +251,38 @@ def test_cli_env_in_yaml():
         assert opts["zz"] == "environ zz", opts["zz"]
 
 
+def test_environ_values():
+    """test environment variable substitution"""
+    with TemporaryDirectory() as working_dir:
+        base_dir = join(working_dir, "base")
+        __setup_settings(
+            os="Linux",
+            shared="test",
+            Linux=join(base_dir, "Linux"),
+            Darwin=join(base_dir, "macOS"),
+            Windows=join(base_dir, "Windows"),
+        )
+        __write(
+            join(base_dir, "main.yml"),
+            output="${home}/reports",
+            settings="${appDir}/settings.json",
+            value="testing ${noenv} for noenv",
+        )
+        settings.ENVIRON = {
+            "HOME": "sweet home",
+            "APPDIR": "app data dir",
+        }
+        opts = (
+            settings.Settings(join(base_dir, "main.py"), aa="code aa")
+            .cli("cli")
+            .env("env")
+        )
+        assert opts["output"] == "sweet home/reports", opts["output"]
+        assert opts["settings"] == "app data dir/settings.json", opts["settings"]
+        assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
+
+
 if __name__ == "__main__":
+    test_environ_values()
     test_cli_env_in_yaml()
     test_basic()
