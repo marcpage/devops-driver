@@ -147,8 +147,10 @@ class Settings:
         """Sets a command line switch to map to a settings value.
 
         Args:
-            name (str): Name of the command line switch, eg '-p' or '--path'
             key (str): The settings key it maps to, dotted for inside dictionary
+            name (str): Name of the command line switch, eg '-p' or '--path'
+                            If name is not specified, the key is a settings value
+                            to lookup up the mappings for keys to switches
 
         Returns:
             Settings: Returns self so you can chain calls
@@ -165,8 +167,10 @@ class Settings:
         """Sets an environment variable to map to a settings value.
 
         Args:
-            name (str): Name of the environment variable
             key (str): The settings key it maps to, dotted for inside dictionary
+            name (str): Name of the environment variable
+                            If name is not specified, the key is a settings value
+                            to lookup up the mappings for keys to environment names
 
         Returns:
             Settings: Returns self so you can chain calls

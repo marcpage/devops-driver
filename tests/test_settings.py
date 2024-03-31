@@ -220,7 +220,7 @@ def test_cli_env_in_yaml():
         __write(
             join(base_dir, "test.yml"),
             env={"zz": "zeta"},
-            cli={"dd": "delta"},
+            cli={"dd": "--delta"},
             zz="test zz",
             dd="test dd",
         )
