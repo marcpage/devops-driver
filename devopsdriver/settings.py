@@ -143,7 +143,7 @@ class Settings:
         self.opts = {}
         self.environ = {}
 
-    def cli(self, name: str, key: str):
+    def cli(self, key: str, name: str = None):
         """Sets a command line switch to map to a settings value.
 
         Args:
@@ -153,10 +153,15 @@ class Settings:
         Returns:
             Settings: Returns self so you can chain calls
         """
+        if name is None:
+            for setting_key, env_name in self.settings.get(key, {}).items():
+                self.opts[setting_key] = env_name
+            return self
+
         self.opts[key] = name
         return self
 
-    def env(self, name: str, key: str):
+    def env(self, key: str, name: str = None):
         """Sets an environment variable to map to a settings value.
 
         Args:
@@ -166,6 +171,11 @@ class Settings:
         Returns:
             Settings: Returns self so you can chain calls
         """
+        if name is None:
+            for setting_key, cli_name in self.settings.get(key, {}).items():
+                self.environ[setting_key] = cli_name
+            return self
+
         self.environ[key] = name
         return self
 

@@ -128,10 +128,10 @@ def test_basic():
                 settings.Settings(
                     join(base_dir, "main.py"), dir1, dir2, aa=1, bb=2, cc=3
                 )
-                .cli("--beta", "bb")
-                .cli("--zeta", "zz")
-                .env("alpha", "aa")
-                .env("yota", "yy")
+                .cli("bb", "--beta")
+                .cli("zz", "--zeta")
+                .env("aa", "alpha")
+                .env("yy", "yota")
             )
             ltr = {"Linux": "l", "Darwin": "m", "Windows": "w", "Unknown": "l"}
             assert opts["yy"] == "yyenviron", opts["yy"]
@@ -198,5 +198,59 @@ def test_basic():
                 pass
 
 
+def test_cli_env_in_yaml():
+    """test setting cli and env lookups in the yaml itself"""
+    with TemporaryDirectory() as working_dir:
+        base_dir = join(working_dir, "base")
+        __setup_settings(
+            os="Linux",
+            shared="test",
+            Linux=join(base_dir, "Linux"),
+            Darwin=join(base_dir, "macOS"),
+            Windows=join(base_dir, "Windows"),
+        )
+        __write(
+            join(base_dir, "main.yml"),
+            env={"aa": "alpha", "yy": "yota"},
+            cli={"bb": "--beta"},
+            yy="main yy",
+            aa="main aa",
+            bb="main bb",
+        )
+        __write(
+            join(base_dir, "test.yml"),
+            env={"zz": "zeta"},
+            cli={"dd": "delta"},
+            zz="test zz",
+            dd="test dd",
+        )
+        settings.ENVIRON = {
+            "alpha": "environ aa",
+            "yota": "environ yy",
+            "zeta": "environ zz",
+            "delta": "environ dd",
+        }
+        settings.ARGV = [
+            "exe",
+            "--beta",
+            "cli bb",
+            "--zeta",
+            "cli zz",
+            "--delta",
+            "cli dd",
+        ]
+        opts = (
+            settings.Settings(join(base_dir, "main.py"), aa="code aa")
+            .cli("cli")
+            .env("env")
+        )
+        assert opts["aa"] == "code aa", opts["aa"]
+        assert opts["bb"] == "cli bb", opts["bb"]
+        assert opts["dd"] == "cli dd", opts["dd"]
+        assert opts["yy"] == "environ yy", opts["yy"]
+        assert opts["zz"] == "environ zz", opts["zz"]
+
+
 if __name__ == "__main__":
+    test_cli_env_in_yaml()
     test_basic()
