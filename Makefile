@@ -34,6 +34,8 @@ test: $(COVERAGE_FILE)
 
 coverage: $(COVERAGE_FILE)
 	@$(SET_ENV); $(VENV_PYTHON) -m coverage report -m --sort=cover --skip-covered --fail-under=$(MIN_TEST_COVERAGE)
+	@if grep -q "test+coverage&message=$(MIN_TEST_COVERAGE)%" README.md; then true; else echo "Update README.md test coverage" && false; fi
+	
 
 $(FORMAT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(VENV_PIP) install -q -r $(INFRASTRUCTURE)
