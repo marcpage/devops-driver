@@ -4,8 +4,6 @@
 [![activity sheild](https://img.shields.io/github/commit-activity/m/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver/commits)
 [![GitHub top language](https://img.shields.io/github/languages/top/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver)
 [![size sheild](https://img.shields.io/github/languages/code-size/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver)
-[![follow sheild](https://img.shields.io/github/followers/marcpage?label=Follow&style=social)](https://github.com/marcpage?tab=followers)
-[![watch sheild](https://img.shields.io/github/watchers/marcpage/devops-driver?label=Watch&style=social)](https://github.com/marcpage/devops-driver/watchers)
 
 [![example workflow](https://github.com/marcpage/devops-driver/actions/workflows/pr.yml/badge.svg)](https://github.com/marcpage/devops-driver/actions/workflows/pr.yml)
 [![status sheild](https://img.shields.io/static/v1?label=test+coverage&message=100%&color=active&style=plastic)](https://github.com/marcpage/devops-driver/blob/main/Makefile#L4)
@@ -13,6 +11,9 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/marcpage/devops-driver?style=flat)](https://github.com/marcpage/devops-driver/pulls)
 [![GitHub contributors](https://img.shields.io/github/contributors/marcpage/devops-driver?style=flat)](https://github.com/marcpage/devops-driver/graphs/contributors)
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+
+[![follow sheild](https://img.shields.io/github/followers/marcpage?label=Follow&style=social)](https://github.com/marcpage?tab=followers)
+[![watch sheild](https://img.shields.io/github/watchers/marcpage/devops-driver?label=Watch&style=social)](https://github.com/marcpage/devops-driver/watchers)
 
 # devops-driver
 
