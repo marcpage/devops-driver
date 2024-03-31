@@ -143,29 +143,43 @@ class Settings:
         self.opts = {}
         self.environ = {}
 
-    def cli(self, name: str, key: str):
+    def cli(self, key: str, name: str = None):
         """Sets a command line switch to map to a settings value.
 
         Args:
-            name (str): Name of the command line switch, eg '-p' or '--path'
             key (str): The settings key it maps to, dotted for inside dictionary
+            name (str): Name of the command line switch, eg '-p' or '--path'
+                            If name is not specified, the key is a settings value
+                            to lookup up the mappings for keys to switches
 
         Returns:
             Settings: Returns self so you can chain calls
         """
+        if name is None:
+            for setting_key, env_name in self.settings.get(key, {}).items():
+                self.opts[setting_key] = env_name
+            return self
+
         self.opts[key] = name
         return self
 
-    def env(self, name: str, key: str):
+    def env(self, key: str, name: str = None):
         """Sets an environment variable to map to a settings value.
 
         Args:
-            name (str): Name of the environment variable
             key (str): The settings key it maps to, dotted for inside dictionary
+            name (str): Name of the environment variable
+                            If name is not specified, the key is a settings value
+                            to lookup up the mappings for keys to environment names
 
         Returns:
             Settings: Returns self so you can chain calls
         """
+        if name is None:
+            for setting_key, cli_name in self.settings.get(key, {}).items():
+                self.environ[setting_key] = cli_name
+            return self
+
         self.environ[key] = name
         return self
 
