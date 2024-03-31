@@ -266,6 +266,7 @@ def test_environ_values():
             join(base_dir, "main.yml"),
             output="${home}/reports",
             settings="${appDir}/settings.json",
+            value="testing ${noenv} for noenv",
         )
         settings.ENVIRON = {
             "HOME": "sweet home",
@@ -278,6 +279,7 @@ def test_environ_values():
         )
         assert opts["output"] == "sweet home/reports", opts["output"]
         assert opts["settings"] == "app data dir/settings.json", opts["settings"]
+        assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
 
 
 if __name__ == "__main__":
