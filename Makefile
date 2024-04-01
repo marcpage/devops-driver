@@ -55,19 +55,30 @@ $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 lint: $(LINT_FILE)
 	@cat $^
 
+[![status sheild](https://img.shields.io/static/v1?label=released&message=v0.1.32&color=active&style=plastic)](https://pypi.org/project/devopsdriver/0.1.32/)
+
+
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
 	@rm -Rf dist build *.egg-info $(VENV_DIR)/test_published
+	@$(SET_ENV); \
+		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
+		if grep -q "released&message=v$$VERSION&" README.md; then true; else echo "Update README.md badge version" && false; fi
+	@$(SET_ENV); \
+		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
+		if grep -q "devopsdriver/v$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
+
+
 	@mkdir -p $(VENV_DIR)/test_published
 	@$(SET_ENV); pip install build twine --upgrade
 	@$(SET_ENV); $(VENV_PYTHON) -m build
-	$(SET_ENV); \
+	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.username`; \
 		PASSWORD=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.password`; \
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
-	$(SET_ENV); \
+	@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
@@ -76,14 +87,14 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(SET_ENV); \
 		pip install --no-cache-dir --log $@ -i $$TESTURL  $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 		$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo
-	$(SET_ENV); \
+	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.username`; \
 		PASSWORD=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.password`; \
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
-	$(SET_ENV); \
+	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/test_published; \
