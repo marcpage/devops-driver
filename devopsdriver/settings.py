@@ -92,6 +92,7 @@ ARGV = sys_argv
 SYSTEM = os_system
 MAKEDIRS = os_makedirs
 SHARED = "devopsdriver"
+PRINT = print
 
 
 def load_json(path: str) -> dict:
@@ -203,10 +204,13 @@ class Settings:
         return "${" + key + "}"
 
     @staticmethod
-    def __patch(value: str) -> str:
-        return Settings.ENV_VAR_PATTERN.sub(
-            lambda m: Settings.__patch_instance(m.group(1)), value
-        )
+    def __patch(value: any) -> any:
+        if isinstance(value, str):
+            return Settings.ENV_VAR_PATTERN.sub(
+                lambda m: Settings.__patch_instance(m.group(1)), value
+            )
+
+        return value
 
     def __lookup(self, key: str, check: bool, default: any = None) -> any:
         # Settings passed in override everything
@@ -310,3 +314,15 @@ class Settings:
             Settings.__merge(settings, contents)
 
         return settings
+
+
+def main() -> None:
+    """Get settings values"""
+    settings = Settings(__file__, dirname(dirname(__file__)))
+
+    for arg in ARGV[1:]:
+        PRINT(settings.get(arg))
+
+
+if __name__ == "__main__":
+    main()
