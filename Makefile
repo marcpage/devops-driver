@@ -55,9 +55,6 @@ $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 lint: $(LINT_FILE)
 	@cat $^
 
-[![status sheild](https://img.shields.io/static/v1?label=released&message=v0.1.32&color=active&style=plastic)](https://pypi.org/project/devopsdriver/0.1.32/)
-
-
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
 	@rm -Rf dist build *.egg-info $(VENV_DIR)/test_published
 	@$(SET_ENV); \
@@ -66,8 +63,6 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		if grep -q "devopsdriver/v$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
-
-
 	@mkdir -p $(VENV_DIR)/test_published
 	@$(SET_ENV); pip install build twine --upgrade
 	@$(SET_ENV); $(VENV_PYTHON) -m build
