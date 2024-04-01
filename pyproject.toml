@@ -4,7 +4,7 @@ description = "DevOps tools"
 readme = "README.md"
 license = {file = "LICENSE"}
 dynamic = ["version"]
-requires-python = ">= 3.12"
+requires-python = ">= 3.10"
 dependencies = [
   "PyYAML==6.0.1",
 ]
