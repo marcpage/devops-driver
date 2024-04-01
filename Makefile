@@ -106,6 +106,7 @@ deploy: $(DEPLOY_FILE)
 clean:
 	@rm -Rf $(VENV_DIR)
 	@rm -f $(strip $(COVERAGE_FILE))*
+	@rm -Rf `find . -type d -name __pycache__`
 	@rm -Rf .pytest_cache
 	@rm -Rf dist
 	@rm -Rf build
