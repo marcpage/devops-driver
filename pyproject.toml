@@ -1,0 +1,40 @@
+[project]
+name = "devopsdriver"
+description = "DevOps tools"
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+requires-python = ">= 3.12"
+dependencies = [
+  "PyYAML==6.0.1",
+]
+keywords = ["azure", "devops", "jira", "confluence", "email", "pipelines", "tools"]
+classifiers=[
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: The Unlicense (Unlicense)",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+    "Topic :: Software Development",
+]
+authors = [
+  {name = "Marc Page", email = "marcallenpage@gmail.com"},
+]
+
+[project.urls]
+Homepage = "https://github.com/marcpage/devops-driver"
+Documentation = "https://github.com/marcpage/devops-driver"
+Repository = "https://github.com/marcpage/devops-driver.git"
+Issues = "https://github.com/marcpage/devops-driver/issues"
+Changelog = "https://github.com/marcpage/devops-driver"
+
+[tool.setuptools.dynamic]
+version = {attr = "devopsdriver.__version__"}
+
+[build-system]
+requires = ["setuptools >= 69.2"]
+build-backend = "setuptools.build_meta"
+

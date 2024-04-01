@@ -19,6 +19,7 @@ def __setup_settings(os: str = "Linux", shared: str = "test", **pref_dirs) -> No
     settings.ARGV = []
     settings.SYSTEM = lambda: os
     settings.SHARED = shared
+    settings.PRINT = lambda s: s
     # settings.MAKEDIRS = lambda p: p
     # settings.Settings.FORMATS = None
     settings.Settings.PREF_DIR = pref_dirs
@@ -282,7 +283,17 @@ def test_environ_values():
         assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
 
 
+def test_main():
+    """test the main entry point"""
+    with TemporaryDirectory() as working_dir:
+        __setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        settings.ARGV = ["ignore", "test"]
+        __write(join(working_dir, "Linux", "test.yml"), test=3)
+        settings.main()
+
+
 if __name__ == "__main__":
+    test_main()
     test_environ_values()
     test_cli_env_in_yaml()
     test_basic()
