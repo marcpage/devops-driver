@@ -9,4 +9,5 @@ pypi_prod:
     url: https://pypi.org/simple/
 
 secrets:
-    azure.token: azure/token
+    pypi_test.password: pypi_test/token
+    pypi_prod.password: pypi/token
