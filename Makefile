@@ -62,7 +62,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		if grep -q "released&message=v$$VERSION&" README.md; then true; else echo "Update README.md badge version" && false; fi
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		if grep -q "devopsdriver/v$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
+		if grep -q "devopsdriver/$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
 	@mkdir -p $(VENV_DIR)/test_published
 	@$(SET_ENV); pip install build twine --upgrade
 	@$(SET_ENV); $(VENV_PYTHON) -m build

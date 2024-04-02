@@ -1,5 +1,5 @@
 ![status sheild](https://img.shields.io/static/v1?label=status&message=starting...&color=inactive&style=plastic)
-[![status sheild](https://img.shields.io/static/v1?label=released&message=v0.1.32&color=active&style=plastic)](https://pypi.org/project/devopsdriver/0.1.32/)
+[![status sheild](https://img.shields.io/static/v1?label=released&message=v0.1.34&color=active&style=plastic)](https://pypi.org/project/devopsdriver/0.1.34/)
 [![GitHub](https://img.shields.io/github/license/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver?tab=Unlicense-1-ov-file#readme)
 [![commit sheild](https://img.shields.io/github/last-commit/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver/commits)
 [![activity sheild](https://img.shields.io/github/commit-activity/m/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver/commits)
