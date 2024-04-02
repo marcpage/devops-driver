@@ -20,6 +20,9 @@ def __setup_settings(os: str = "Linux", shared: str = "test", **pref_dirs) -> No
     settings.SYSTEM = lambda: os
     settings.SHARED = shared
     settings.PRINT = lambda s: s
+    settings.GET_PASSWORD = lambda s, n: f"{s}:{n}"
+    settings.GET_PASS = lambda p: p
+    settings.SET_PASSWORD = lambda s, n, p: f"{s} {n} {p}"
     # settings.MAKEDIRS = lambda p: p
     # settings.Settings.FORMATS = None
     settings.Settings.PREF_DIR = pref_dirs
@@ -292,7 +295,48 @@ def test_main():
         settings.main()
 
 
+def test_secret():
+    """test os secret storage"""
+    with TemporaryDirectory() as working_dir:
+        base_dir = join(working_dir, "base")
+        passwords = {"system": {"john": "setec astronomy"}}
+        __setup_settings(
+            os="Linux",
+            shared="test",
+            Linux=join(base_dir, "Linux"),
+            Darwin=join(base_dir, "macOS"),
+            Windows=join(base_dir, "Windows"),
+        )
+        settings.GET_PASSWORD = lambda s, e: passwords.get(s, {}).get(e, None)
+        __write(join(base_dir, "main.yml"), password="main")
+        opts = settings.Settings(join(base_dir, "main.py")).key(
+            "password", "system/john"
+        )
+        assert opts["password"] == "setec astronomy", opts["password"]
+
+
+def test_main_set_secret():
+    """test the main entry point when settings keychain secrets"""
+
+    def set_password(s, n, p):
+        assert s == "azure" and n == "token" and p == "setec astronomy", f"{s} {n} {p}"
+
+    with TemporaryDirectory() as working_dir:
+        __setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        settings.ARGV = ["ignore", "--set_secrets"]
+        settings.GET_PASSWORD = lambda s, n: None
+        settings.GET_PASS = lambda p: "setec astronomy"
+        settings.SET_PASSWORD = set_password
+        __write(
+            join(working_dir, "Linux", "test.yml"),
+            secrets={"azure.token": "azure/token"},
+        )
+        settings.main()
+
+
 if __name__ == "__main__":
+    test_main_set_secret()
+    test_secret()
     test_main()
     test_environ_values()
     test_cli_env_in_yaml()
