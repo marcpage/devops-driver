@@ -82,9 +82,10 @@ from os import environ as os_environ, makedirs as os_makedirs
 from re import compile as regex
 from platform import system as os_system
 from sys import argv as sys_argv
+from getpass import getpass as os_getpass
 
 from yaml import safe_load
-
+from keyring import get_password, set_password
 
 # for testing
 ENVIRON = os_environ
@@ -93,6 +94,9 @@ SYSTEM = os_system
 MAKEDIRS = os_makedirs
 SHARED = "devopsdriver"
 PRINT = print
+GET_PASSWORD = get_password
+SET_PASSWORD = set_password
+GET_PASS = os_getpass
 
 
 def load_json(path: str) -> dict:
@@ -154,6 +158,30 @@ class Settings:
         self.settings = Settings.__find_all_settings(search_info)
         self.opts = {}
         self.environ = {}
+        self.secrets = {}
+
+    def __bypass(self, key: str, name: str, store: dict):
+        if name is None:
+            for setting_key, store_name in self.settings.get(key, {}).items():
+                store[setting_key] = store_name
+            return self
+
+        store[key] = name
+        return self
+
+    def key(self, key: str, name: str = None):
+        """Sets a keychain name to map to a settings value.
+
+        Args:
+            key (str): The settings key it maps to, dotted for inside dictionary
+            name (str): Name of the keychain key
+                            If name is not specified, the key is a settings value
+                            to lookup up the mappings for keys to switches
+
+        Returns:
+            Settings: Returns self so you can chain calls
+        """
+        return self.__bypass(key, name, self.secrets)
 
     def cli(self, key: str, name: str = None):
         """Sets a command line switch to map to a settings value.
@@ -167,13 +195,7 @@ class Settings:
         Returns:
             Settings: Returns self so you can chain calls
         """
-        if name is None:
-            for setting_key, env_name in self.settings.get(key, {}).items():
-                self.opts[setting_key] = env_name
-            return self
-
-        self.opts[key] = name
-        return self
+        return self.__bypass(key, name, self.opts)
 
     def env(self, key: str, name: str = None):
         """Sets an environment variable to map to a settings value.
@@ -187,13 +209,7 @@ class Settings:
         Returns:
             Settings: Returns self so you can chain calls
         """
-        if name is None:
-            for setting_key, cli_name in self.settings.get(key, {}).items():
-                self.environ[setting_key] = cli_name
-            return self
-
-        self.environ[key] = name
-        return self
+        return self.__bypass(key, name, self.environ)
 
     @staticmethod
     def __patch_instance(key: str) -> str:
@@ -212,6 +228,23 @@ class Settings:
 
         return value
 
+    @staticmethod
+    def split_key(key: str) -> tuple[str, str]:
+        """Splits a keychain name into service and name
+
+        Args:
+            key (str): If there is a / then it is service/name
+                        otherwise it is "system"/name
+
+        Returns:
+            tuple[str, str]: The service and name
+        """
+        parts = key.split("/", 1)
+        assert len(parts) in {1, 2}, parts
+        service = parts[0] if len(parts) == 2 else "system"
+        secret_name = parts[1] if len(parts) == 2 else parts[0]
+        return (service, secret_name)
+
     def __lookup(self, key: str, check: bool, default: any = None) -> any:
         # Settings passed in override everything
         if key in self.overrides:
@@ -228,6 +261,13 @@ class Settings:
             for e_key in ENVIRON:
                 if e_key.lower() == self.environ[key].lower():
                     return True if check else ENVIRON[e_key]
+
+        # Settings in the keychain are next
+        if key in self.secrets:
+            value = GET_PASSWORD(*Settings.split_key(self.secrets[key]))
+
+            if value is not None:
+                return True if check else value
 
         # Last check the files for settings
         keys = key.split(".")
@@ -318,9 +358,21 @@ class Settings:
 
 def main() -> None:
     """Get settings values"""
-    settings = Settings(__file__, dirname(dirname(__file__)))
+    settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
 
-    for arg in ARGV[1:]:
+    args = list(ARGV[1:])
+
+    if "--set_secrets" in args:
+        args.remove("--set_secrets")
+
+        for secret, key in settings.secrets.items():
+            if not settings.has(secret):
+                value = GET_PASS(f"{secret} ({key}): ")
+
+                if value:
+                    SET_PASSWORD(*Settings.split_key(key), value)
+
+    for arg in args:
         PRINT(settings.get(arg))
 
 
