@@ -280,17 +280,21 @@ def test_main_set_secret():
     """test the main entry point when settings keychain secrets"""
 
     def set_password(s, n, p):
-        assert s == "azure" and n == "token" and p == "setec astronomy", f"{s} {n} {p}"
+        assert (
+            s in ("azure", "jira") and n == "token" and p == "setec astronomy"
+        ), f"{s} {n} {p}"
 
     with TemporaryDirectory() as working_dir:
         setup_settings(shared="test", Linux=join(working_dir, "Linux"))
-        settings.ARGV = ["ignore", "--set_secrets"]
-        settings.GET_PASSWORD = lambda s, n: None
+        settings.ARGV = ["ignore", "--secrets"]
+        settings.GET_PASSWORD = lambda s, n: (
+            "password" if f"{s}/{n}" == "azure/token" else None
+        )
         settings.GET_PASS = lambda p: "setec astronomy"
         settings.SET_PASSWORD = set_password
         write(
             join(working_dir, "Linux", "test.yml"),
-            secrets={"azure.token": "azure/token"},
+            secrets={"azure.token": "azure/token", "jira.token": "jira/token"},
         )
         settings.main()
 
