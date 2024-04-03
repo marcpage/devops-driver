@@ -17,7 +17,7 @@ CONNECTION = AzureConnection
 AUTHENTICATION = MSBasicAuthentication
 
 
-class Azure:
+class Azure:  # pylint: disable=too-few-public-methods
     """A connection to Azure clients"""
 
     SUPPORTED_CLIENTS = {"workitem", "pipeline"}
