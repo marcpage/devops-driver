@@ -34,7 +34,9 @@ class Azure:
         )
         assert (token or "azure.token" in settings) and (
             url or "azure.url" in settings
-        ), f"azure.token and azure.url not found in:\n{'\n'.join(settings.search_files)}"
+        ), "azure.token and azure.url not found in:\n" + "\n".join(
+            settings.search_files
+        )
         url = settings["azure.url"] if url is None else url
         token = settings["azure.token"] if token is None else token
         self.connection = CONNECTION(base_url=url, creds=AUTHENTICATION("", token))
