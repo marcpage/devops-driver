@@ -3,12 +3,13 @@
 """ Azure WorkItem Client """
 
 from azure.devops.v7_1.work_item_tracking.models import Wiql as AzureWiql
+from azure.devops.v7_1.work_item_tracking.models import WorkItem as AzureWorkItem
 from azure.devops.v7_1.work_item_tracking.models import TeamContext
 from azure.devops.v7_1.work_item_tracking.models import WorkItemQueryResult
 from devopsdriver.azure.workitem.wiql import Wiql
 
 
-class Client:  # pylint: disable=too-few-public-methods
+class Client:
     """Wraps work item client"""
 
     def __init__(self, client):
@@ -38,6 +39,17 @@ class Client:  # pylint: disable=too-few-public-methods
             time_precision=time_precision,
             top=top,
         )
+
+    def history(  # pylint: disable=too-many-arguments
+        self,
+        wi_id: int,
+        project: str = None,
+        top: int = None,
+        skip: int = None,
+        expand: str = None,
+    ) -> list[AzureWorkItem]:
+        """Simple wrapper around get_revisions"""
+        return self.client.get_revisions(wi_id, project, top, skip, expand)
 
     def find_ids(self, wiql: Wiql | str, top: int = None) -> list:
         """Given a query, find the work item ids
