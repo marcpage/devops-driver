@@ -3,52 +3,13 @@
 """ Tests Settings class """
 
 from tempfile import TemporaryDirectory
-from os.path import join, splitext, dirname
-from os import makedirs
-from json import dump
+from os.path import join
 from string import ascii_lowercase
 from itertools import product
 
-from yaml import safe_dump
+from helpers import setup_settings, ensure, write
 
 import devopsdriver.settings as settings
-
-
-def __setup_settings(os: str = "Linux", shared: str = "test", **pref_dirs) -> None:
-    settings.ENVIRON = {}
-    settings.ARGV = []
-    settings.SYSTEM = lambda: os
-    settings.SHARED = shared
-    settings.PRINT = lambda s: s
-    settings.GET_PASSWORD = lambda s, n: f"{s}:{n}"
-    settings.GET_PASS = lambda p: p
-    settings.SET_PASSWORD = lambda s, n, p: f"{s} {n} {p}"
-    # settings.MAKEDIRS = lambda p: p
-    # settings.Settings.FORMATS = None
-    settings.Settings.PREF_DIR = pref_dirs
-
-
-def ensure(directory: str) -> str:
-    """Ensures that a directory exists before using
-
-    Args:
-        directory (str): The directory to create
-
-    Returns:
-        str: The directory that now exists
-    """
-    makedirs(directory, exist_ok=True)
-    return directory
-
-
-def __write(path: str, **options) -> None:
-    ensure(dirname(path))
-
-    with open(path, "w", encoding="utf-8") as settings_file:
-        if splitext(path)[1] == ".json":
-            dump(options, settings_file)
-        else:
-            safe_dump(options, settings_file)
 
 
 def __setup_files(directory: str, dir1: str, dir2: str) -> None:
@@ -86,7 +47,7 @@ def __setup_files(directory: str, dir1: str, dir2: str) -> None:
 
     for name in ("test", "main"):
         for letter, os_dir in (("l", lin_dir), ("w", win_dir), ("m", mac_dir)):
-            __write(
+            write(
                 join(os_dir, "test.json"),
                 **{l: f"{name[0]}{letter}{l}" for l in letters},
                 dp={l: f"{name[0]}{letter}{l}" for l in letters},
@@ -97,7 +58,7 @@ def __setup_files(directory: str, dir1: str, dir2: str) -> None:
     for directory, name, ext in product(
         (dir2, dir1, directory), ("test", "main"), (".json", ".yaml", ".yml")
     ):
-        __write(
+        write(
             join(directory, name + ext),
             **{l: f"{directory[-1]}{ext[2]}{name[0]}{letter}{l}" for l in letters},
             dp={l: f"{directory[-1]}{ext[2]}{name[0]}{letter}{l}" for l in letters},
@@ -111,7 +72,7 @@ def test_basic():
         base_dir = join(working_dir, "base")
 
         for os in ("Linux", "Darwin", "Windows", "Unknown"):
-            __setup_settings(
+            setup_settings(
                 os=os,
                 shared="test",
                 Linux=join(base_dir, "Linux"),
@@ -206,14 +167,14 @@ def test_cli_env_in_yaml():
     """test setting cli and env lookups in the yaml itself"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
-        __setup_settings(
+        setup_settings(
             os="Linux",
             shared="test",
             Linux=join(base_dir, "Linux"),
             Darwin=join(base_dir, "macOS"),
             Windows=join(base_dir, "Windows"),
         )
-        __write(
+        write(
             join(base_dir, "main.yml"),
             env={"aa": "alpha", "yy": "yota"},
             cli={"bb": "--beta"},
@@ -221,7 +182,7 @@ def test_cli_env_in_yaml():
             aa="main aa",
             bb="main bb",
         )
-        __write(
+        write(
             join(base_dir, "test.yml"),
             env={"zz": "zeta"},
             cli={"dd": "--delta"},
@@ -259,14 +220,14 @@ def test_environ_values():
     """test environment variable substitution"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
-        __setup_settings(
+        setup_settings(
             os="Linux",
             shared="test",
             Linux=join(base_dir, "Linux"),
             Darwin=join(base_dir, "macOS"),
             Windows=join(base_dir, "Windows"),
         )
-        __write(
+        write(
             join(base_dir, "main.yml"),
             output="${home}/reports",
             settings="${appDir}/settings.json",
@@ -289,9 +250,9 @@ def test_environ_values():
 def test_main():
     """test the main entry point"""
     with TemporaryDirectory() as working_dir:
-        __setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
         settings.ARGV = ["ignore", "test"]
-        __write(join(working_dir, "Linux", "test.yml"), test=3)
+        write(join(working_dir, "Linux", "test.yml"), test=3)
         settings.main()
 
 
@@ -300,7 +261,7 @@ def test_secret():
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
         passwords = {"system": {"john": "setec astronomy"}}
-        __setup_settings(
+        setup_settings(
             os="Linux",
             shared="test",
             Linux=join(base_dir, "Linux"),
@@ -308,7 +269,7 @@ def test_secret():
             Windows=join(base_dir, "Windows"),
         )
         settings.GET_PASSWORD = lambda s, e: passwords.get(s, {}).get(e, None)
-        __write(join(base_dir, "main.yml"), password="main")
+        write(join(base_dir, "main.yml"), password="main")
         opts = settings.Settings(join(base_dir, "main.py")).key(
             "password", "system/john"
         )
@@ -322,12 +283,12 @@ def test_main_set_secret():
         assert s == "azure" and n == "token" and p == "setec astronomy", f"{s} {n} {p}"
 
     with TemporaryDirectory() as working_dir:
-        __setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
         settings.ARGV = ["ignore", "--set_secrets"]
         settings.GET_PASSWORD = lambda s, n: None
         settings.GET_PASS = lambda p: "setec astronomy"
         settings.SET_PASSWORD = set_password
-        __write(
+        write(
             join(working_dir, "Linux", "test.yml"),
             secrets={"azure.token": "azure/token"},
         )

@@ -304,6 +304,9 @@ class Settings:
         """
         return self.__lookup(key, check=True)
 
+    def __contains__(self, key: str) -> bool:
+        return self.has(key)
+
     def __getitem__(self, key: str) -> any:
         if not self.has(key):
             raise KeyError(key)
