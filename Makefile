@@ -17,7 +17,9 @@ INFRASTRUCTURE=requirements-infrastructure.txt
 INSTALL_INFRASTRUCTURE=$(VENV_PIP) install -q -r $(INFRASTRUCTURE)
 DEPLOY_FILE=$(VENV_DIR)/deploy.txt
 PROJECT_FILE=pyproject.toml
-SLEEP_TIME_IN_SECONDS=30
+SLEEP_TIME_IN_SECONDS=1
+TEST_SERVER_TEST_DIR=test_published
+PROD_SERVER_TEST_DIR=prod_published
 
 $(VENV_DIR)/touchfile: $(PROJECT_FILE)
 	@test -d $(VENV_DIR) || $(INITIAL_PYTHON) -m venv $(VENV_DIR)
@@ -56,14 +58,17 @@ lint: $(LINT_FILE)
 	@cat $^
 
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
-	@rm -Rf dist build *.egg-info $(VENV_DIR)/test_published
+	@rm -Rf dist build *.egg-info $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		if grep -q "released&message=v$$VERSION&" README.md; then true; else echo "Update README.md badge version" && false; fi
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		if grep -q "devopsdriver/$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
-	@mkdir -p $(VENV_DIR)/test_published
+	@mkdir -p $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)
+	@cp -R tests $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)/
+	@mkdir -p $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)
+	@cp -R tests $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)/
 	@$(SET_ENV); pip install build twine --upgrade
 	@$(SET_ENV); $(VENV_PYTHON) -m build
 	@$(SET_ENV); \
@@ -77,20 +82,19 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		cd $(VENV_DIR)/test_published; \
+		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install --no-cache-dir --log $@ -i $$TESTURL  $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
-		$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo
+		pip install --no-cache-dir --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 	@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		cd $(VENV_DIR)/test_published; \
+		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install --no-cache-dir --log $@ -i $$TESTURL  $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
-		$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo
+		pip install --no-cache-dir --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
+		$(VENV_PYTHON) -m pytest
 	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.username`; \
@@ -101,7 +105,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		cd $(VENV_DIR)/test_published; \
+		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
 		pip install  --no-cache-dir --log $@ -i $$URL  $(LIBRARY)==$$VERSION; \
