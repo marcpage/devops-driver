@@ -365,15 +365,19 @@ def main() -> None:
 
     args = list(ARGV[1:])
 
-    if "--set_secrets" in args:
-        args.remove("--set_secrets")
+    if "--secrets" in args:
+        args.remove("--secrets")
 
         for secret, key in settings.secrets.items():
+            PRINT(f"secret: {secret}  key: {key}")
+
             if not settings.has(secret):
                 value = GET_PASS(f"{secret} ({key}): ")
 
                 if value:
                     SET_PASSWORD(*Settings.split_key(key), value)
+            else:
+                PRINT("\tValue set")
 
     for arg in args:
         PRINT(settings.get(arg))

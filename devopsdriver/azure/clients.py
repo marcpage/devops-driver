@@ -28,7 +28,7 @@ class Azure:  # pylint: disable=too-few-public-methods
         unsupported_clients = set(clients) - Azure.SUPPORTED_CLIENTS
         assert not unsupported_clients, f"{unsupported_clients} not supported"
         settings = (
-            Settings(__file__)
+            Settings(__file__).key("secrets")
             if settings is None and token is None and url is None
             else settings
         )
