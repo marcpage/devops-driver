@@ -220,7 +220,7 @@ class Or(Expression):  # pylint: disable=too-few-public-methods
         super().__init__("OR", *compares)
 
 
-class Builder:
+class Wiql:
     """Build a WIQL query"""
 
     def __init__(self):
