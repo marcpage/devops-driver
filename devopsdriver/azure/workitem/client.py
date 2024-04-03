@@ -3,7 +3,7 @@
 """ Azure WorkItem Client """
 
 
-class Client:
+class Client:  # pylint: disable=too-few-public-methods
     """Wraps work item client"""
 
     def __init__(self, client):
