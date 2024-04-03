@@ -280,6 +280,3 @@ class Builder:
         )
         asof = f" ASOF {str(self.snapshot)}" if self.snapshot else ""
         return f"SELECT {select} FROM workitems{where}{order}{asof}"
-
-
-# 104, 159, 186, 195, 220
