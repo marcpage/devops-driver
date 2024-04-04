@@ -4,11 +4,11 @@
 
 from datetime import date, datetime
 
-from devopsdriver.azure.workitem.wiql import Wiql
-from devopsdriver.azure.workitem.wiql import Ascending, Descending, Value
-from devopsdriver.azure.workitem.wiql import IsEmpty, IsNotEmpty, And, Or
-from devopsdriver.azure.workitem.wiql import GreaterThan, LessThan, Equal, NotEqual
-from devopsdriver.azure.workitem.wiql import GreaterThanOrEqual, LessThanOrEqual
+from devopsdriver.azure import Wiql
+from devopsdriver.azure import Ascending, Descending, Value
+from devopsdriver.azure import IsEmpty, IsNotEmpty, And, Or
+from devopsdriver.azure import GreaterThan, LessThan, Equal, NotEqual
+from devopsdriver.azure import GreaterThanOrEqual, LessThanOrEqual
 
 
 def test_no_params() -> None:

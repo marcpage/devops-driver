@@ -5,7 +5,7 @@
 from types import SimpleNamespace
 
 from devopsdriver.azure.workitem.client import Client
-from devopsdriver.azure.workitem.wiql import Wiql, Equal
+from devopsdriver.azure import Wiql, Equal
 
 
 class MockClient:  # pylint: disable=too-few-public-methods
@@ -30,7 +30,7 @@ class MockClient:  # pylint: disable=too-few-public-methods
         assert top is None, top
         assert skip is None, skip
         assert expand is None, expand
-        assert wi_id > 0
+        assert 0 <= wi_id < 20
         return []
 
 
@@ -48,5 +48,14 @@ def test_history() -> None:
     assert not history
 
 
+def test_find() -> None:
+    """Tests the find with the devops azure WorkItem"""
+    client = Client(MockClient())
+    found = client.find(Wiql().select("State").where(Equal("State", "New")))
+    assert len(found) == 20
+
+
 if __name__ == "__main__":
+    test_find()
+    test_history()
     test_basic()

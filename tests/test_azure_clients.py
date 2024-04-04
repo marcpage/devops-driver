@@ -10,7 +10,7 @@ from os.path import join
 
 from helpers import setup_settings, write
 
-from devopsdriver.azure.clients import Azure
+from devopsdriver import Azure
 from devopsdriver.azure import clients
 
 
