@@ -11,7 +11,7 @@ from azure.devops.connection import Connection as AzureConnection
 from msrest.authentication import BasicAuthentication as MSBasicAuthentication
 
 from devopsdriver.settings import Settings
-from devopsdriver.azure.workitem.client import Client as WIClient
+from devopsdriver.azdo.workitem.client import Client as WIClient
 
 CONNECTION = AzureConnection
 AUTHENTICATION = MSBasicAuthentication

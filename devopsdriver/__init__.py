@@ -1,6 +1,6 @@
 """ DevOps tools """
 
-from .azure import Azure
+from .azdo import Azure
 
 __version__ = "0.1.35"
 __author__ = "Marc Page"

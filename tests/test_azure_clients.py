@@ -11,7 +11,7 @@ from os.path import join
 from helpers import setup_settings, write
 
 from devopsdriver import Azure
-from devopsdriver.azure import clients
+from devopsdriver.azdo import clients
 
 
 class MockConnection:  # pylint: disable=too-few-public-methods

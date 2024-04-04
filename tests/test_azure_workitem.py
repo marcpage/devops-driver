@@ -2,7 +2,7 @@
 
 """ Test work item """
 
-from devopsdriver.azure import WorkItem
+from devopsdriver.azdo import WorkItem
 
 
 class MockAzureWorkItem:
