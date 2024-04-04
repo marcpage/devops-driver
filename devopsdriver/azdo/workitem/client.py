@@ -6,8 +6,8 @@ from azure.devops.v7_1.work_item_tracking.models import Wiql as AzureWiql
 from azure.devops.v7_1.work_item_tracking.models import WorkItem as AzureWorkItem
 from azure.devops.v7_1.work_item_tracking.models import TeamContext
 from azure.devops.v7_1.work_item_tracking.models import WorkItemQueryResult
-from devopsdriver.azure.workitem import WorkItem
-from devopsdriver.azure.workitem.wiql import Wiql
+from devopsdriver.azdo.workitem import WorkItem
+from devopsdriver.azdo.workitem.wiql import Wiql
 
 
 class Client:

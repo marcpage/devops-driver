@@ -4,8 +4,8 @@
 
 from types import SimpleNamespace
 
-from devopsdriver.azure.workitem.client import Client
-from devopsdriver.azure import Wiql, Equal
+from devopsdriver.azdo.workitem.client import Client
+from devopsdriver.azdo import Wiql, Equal
 
 
 class MockClient:  # pylint: disable=too-few-public-methods
