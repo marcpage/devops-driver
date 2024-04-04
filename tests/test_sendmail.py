@@ -2,7 +2,8 @@
 
 """ Test sendmail """
 
-from devopsdriver import sendmail
+from devopsdriver import sendmail  # for debugging
+from devopsdriver import send_email
 
 
 class MockMultipart(dict):
@@ -118,7 +119,7 @@ def test_basic() -> None:
         "smtp.port": 1234,
         "smtp.password": "setec astronomy",
     }
-    sendmail.send_email(
+    send_email(
         "to@domain.com", "subject", "body", settings, image1=b"\x89PNG\r\n\x1a\n0000"
     )
 
@@ -138,9 +139,7 @@ def test_unknown_image_type() -> None:
     }
 
     try:
-        sendmail.send_email(
-            "to@domain.com", "subject", "body", settings, image1=b"bwahaha"
-        )
+        send_email("to@domain.com", "subject", "body", settings, image1=b"bwahaha")
         raise AssertionError("We should have thrown")
 
     except AttributeError:

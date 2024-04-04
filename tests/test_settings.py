@@ -9,7 +9,8 @@ from itertools import product
 
 from helpers import setup_settings, ensure, write
 
-import devopsdriver.settings as settings
+from devopsdriver import settings  # debug access
+from devopsdriver import Settings
 
 
 def __setup_files(directory: str, dir1: str, dir2: str) -> None:
@@ -40,9 +41,9 @@ def __setup_files(directory: str, dir1: str, dir2: str) -> None:
         <pref>/test.yaml w
         <pref>/test.json x
     """
-    lin_dir = ensure(settings.Settings.PREF_DIR["Linux"])
-    mac_dir = ensure(settings.Settings.PREF_DIR["Darwin"])
-    win_dir = ensure(settings.Settings.PREF_DIR["Windows"])
+    lin_dir = ensure(Settings.PREF_DIR["Linux"])
+    mac_dir = ensure(Settings.PREF_DIR["Darwin"])
+    win_dir = ensure(Settings.PREF_DIR["Windows"])
     letters = list(ascii_lowercase)
 
     for name in ("test", "main"):
@@ -90,9 +91,7 @@ def test_basic():
             }
             settings.ARGV = ["exe", "--beta", "bbcli", "--zeta", "zzcli"]
             opts = (
-                settings.Settings(
-                    join(base_dir, "main.py"), dir1, dir2, aa=1, bb=2, cc=3
-                )
+                Settings(join(base_dir, "main.py"), dir1, dir2, aa=1, bb=2, cc=3)
                 .cli("bb", "--beta")
                 .cli("zz", "--zeta")
                 .env("aa", "alpha")
@@ -204,11 +203,7 @@ def test_cli_env_in_yaml():
             "--delta",
             "cli dd",
         ]
-        opts = (
-            settings.Settings(join(base_dir, "main.py"), aa="code aa")
-            .cli("cli")
-            .env("env")
-        )
+        opts = Settings(join(base_dir, "main.py"), aa="code aa").cli("cli").env("env")
         assert opts["aa"] == "code aa", opts["aa"]
         assert opts["bb"] == "cli bb", opts["bb"]
         assert opts["dd"] == "cli dd", opts["dd"]
@@ -237,11 +232,7 @@ def test_environ_values():
             "HOME": "sweet home",
             "APPDIR": "app data dir",
         }
-        opts = (
-            settings.Settings(join(base_dir, "main.py"), aa="code aa")
-            .cli("cli")
-            .env("env")
-        )
+        opts = Settings(join(base_dir, "main.py"), aa="code aa").cli("cli").env("env")
         assert opts["output"] == "sweet home/reports", opts["output"]
         assert opts["settings"] == "app data dir/settings.json", opts["settings"]
         assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
@@ -270,9 +261,7 @@ def test_secret():
         )
         settings.GET_PASSWORD = lambda s, e: passwords.get(s, {}).get(e, None)
         write(join(base_dir, "main.yml"), password="main")
-        opts = settings.Settings(join(base_dir, "main.py")).key(
-            "password", "system/john"
-        )
+        opts = Settings(join(base_dir, "main.py")).key("password", "system/john")
         assert opts["password"] == "setec astronomy", opts["password"]
 
 
