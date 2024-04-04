@@ -102,6 +102,13 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
+	-@$(SET_ENV); \
+		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
+		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
+		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
+		$(INITIAL_PYTHON) -m venv .venv; \
+		$(SET_ENV); \
+		pip install  --no-cache-dir --log $@ -i $$URL  $(LIBRARY)==$$VERSION;
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
@@ -109,7 +116,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
 		pip install  --no-cache-dir --log $@ -i $$URL  $(LIBRARY)==$$VERSION; \
-		$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo
+		$(VENV_PYTHON) -m pytest
 	@touch $@
 
 deploy: $(DEPLOY_FILE)
