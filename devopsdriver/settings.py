@@ -387,7 +387,7 @@ def main() -> None:
                 PRINT("\tValue set")
 
     for arg in args:
-        PRINT(f"{arg} = {settings.get(arg)}")
+        PRINT(f"{settings.get(arg)}")
 
 
 if __name__ == "__main__":
