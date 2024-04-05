@@ -87,10 +87,10 @@ class Value:  # pylint: disable=too-few-public-methods
 
     def __str__(self) -> str:
         if isinstance(self.value, datetime):
-            return self.value.strftime("%Y-%m-%d %H:%M:%S")
+            return f'"{self.value.strftime("%m/%d/%Y %H:%M:%S")}"'
 
         if isinstance(self.value, date):
-            return self.value.strftime("%Y-%m-%d")
+            return f'"{self.value.strftime("%m/%d/%Y")}"'
 
         if isinstance(self.value, int):
             return str(self.value)
