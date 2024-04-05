@@ -17,6 +17,15 @@
 [![follow sheild](https://img.shields.io/github/followers/marcpage?label=Follow&style=social)](https://github.com/marcpage?tab=followers)
 [![watch sheild](https://img.shields.io/github/watchers/marcpage/devops-driver?label=Watch&style=social)](https://github.com/marcpage/devops-driver/watchers)
 
+[![Python](https://img.shields.io/static/v1?label=&message=Pure%20Python&color=ffde57&style=plastic&logo=python)](https://python.org/)
+[![Azure](https://img.shields.io/static/v1?label=&message=Supports%20Microsoft%20Azure&color=blue&style=plastic&logo=microsoftazure)](https://azure.microsoft.com/)
+[![Gmail](https://img.shields.io/static/v1?label=&message=Supports%20Google%20Gmail&color=white&style=plastic&logo=gmail)](https://gmail.com/)
+
+OS: 
+[![Windows](https://img.shields.io/static/v1?label=&message=Windows&color=blue&style=plastic&logo=windows)](https://microsoft.com/)
+[![macOS](https://img.shields.io/static/v1?label=&message=macOS&color=white&logoColor=black&style=plastic&logo=apple)](https://apple.com/)
+[![Linux](https://img.shields.io/static/v1?label=&message=Linux&color=seashell&logoColor=black&style=plastic&logo=linux)](https://linux.org/)
+
 # devops-driver
 
 Devops-driver is a set of tools to help streamline developer's experience. It is a collection of tools to help gain insights into various processes.
