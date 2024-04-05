@@ -46,12 +46,12 @@ def test_expressions() -> None:
         """SELECT [System.State], [System.Id] FROM workitems """
         + """WHERE [System.State] = "New" AND [System.Title] IS EMPTY """
         + """AND [Microsoft.VSTS.Common.Priority] IS NOT EMPTY """
-        + """AND [System.CreatedDate] > 2024-06-30 """
-        + """AND [System.CreatedDate] < 2025-01-01 18:30:15 AND [RootCause] IS EMPTY """
+        + """AND [System.CreatedDate] > "06/30/2024" """
+        + """AND [System.CreatedDate] < "01/01/2025 18:30:15" AND [RootCause] IS EMPTY """
         + """OR [Microsoft.VSTS.Common.Priority] <> 1 OR [Rank] < 5.000 """
         + """OR [time] <= 4.000 OR [BusinessValue] >= 4 """
         + """ORDER BY [Microsoft.VSTS.Common.Priority] DESC, [System.CreatedDate] ASC """
-        + """ASOF 2024-06-30"""
+        + """ASOF "06/30/2024\""""
     )
     assert str(builder) == expected, str(builder)
 
