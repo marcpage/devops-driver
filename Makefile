@@ -108,14 +108,14 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install  --no-cache-dir --log $@ -i $$URL  $(LIBRARY)==$$VERSION;
+		pip install  --no-cache-dir --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install  --no-cache-dir --log $@ -i $$URL  $(LIBRARY)==$$VERSION; \
+		pip install  --no-cache-dir --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION; \
 		$(VENV_PYTHON) -m pytest
 	@touch $@
 
