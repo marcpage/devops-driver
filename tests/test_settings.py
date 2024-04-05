@@ -247,6 +247,15 @@ def test_main():
         settings.main()
 
 
+def test_main_help():
+    """test the main entry point"""
+    with TemporaryDirectory() as working_dir:
+        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        settings.ARGV = ["ignore", "--help"]
+        write(join(working_dir, "Linux", "test.yml"), test=3)
+        settings.main()
+
+
 def test_secret():
     """test os secret storage"""
     with TemporaryDirectory() as working_dir:

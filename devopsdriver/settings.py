@@ -361,9 +361,16 @@ class Settings:
 
 def main() -> None:
     """Get settings values"""
-    settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
-
     args = list(ARGV[1:])
+
+    if not args or "--help" in args or "-h" in args:
+        PRINT("pass in settings to see if they are set and to what value")
+        PRINT("You can pass dotted names to get inner values, like smpt.server")
+        PRINT("You can pass --secrets to set keychain values that have not been set")
+        PRINT("You can also pass --help or -h to get this message")
+        return
+
+    settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
 
     if "--secrets" in args:
         args.remove("--secrets")
@@ -380,7 +387,7 @@ def main() -> None:
                 PRINT("\tValue set")
 
     for arg in args:
-        PRINT(settings.get(arg))
+        PRINT(f"{arg} = {settings.get(arg)}")
 
 
 if __name__ == "__main__":
