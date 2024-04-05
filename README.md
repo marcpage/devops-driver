@@ -19,5 +19,138 @@
 
 # devops-driver
 
-Devops-driver is a set of tools to help streamline developer's experience. It is a collection of tools to help gain insights into various processes.
+Devops-driver is a collection of tools to help streamline developer's experience and gain insights into various processes.
+
+## Access to secrets
+
+To allow seamless work in both pipelines as well as in the development environment, the `Settings` object gives you access to common settings among multiple scripts, secrets, and configuration constants in a way the helps keep secrets out of the repository but runs just as well in the pipeline as your machine.
+
+Say you want a pipeline that looks for User Stories that are newer than 3 days and send out an email.
+
+### \<platform dependent path\>/devopsdriver.yml
+```yaml
+smtp:
+    sender: JohnDoe@company.com
+
+secrets:
+    azure.token: azure/token
+    smtp.password: smtp/password
+```
+
+This file is in a global place (location various by OS) and stores information that you may not want in your repository or is specific to development. 
+The `secrets` are extra sensative and are stored in the OS keychain.
+
+### Set secrets in the keychain
+```bash
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install devopsdriver
+$ python -m devopsdriver.settings --secrets
+secret: smtp.password  key: smtp/password
+smtp.password (smtp/password): ****
+secret: azure.token  key: azure/token
+smtp.password (azure/token): ****
+$ python -m devopsdriver.settings --secrets
+secret: azure.token  key: azure/token
+	Value set
+secret: smtp.password  key: smtp/password
+	Value set
+$
+```
+The first call to `devopsdriver.settings` will look for every secret and check if they are already set in the keychain.
+For any secret that has not been set in the keychain, you will be prompted to enter the password to store.
+The second call to `devopsdriver.settings` will verify that all the values have been set in the keychain.
+
+### devopsdriver.yml
+```yaml
+azure:
+    url: https://dev.azure.com/MyCompany
+
+smtp:
+    server: smtp.company.com
+    port: 465
+
+cli:
+    azure.token: --azure-token
+    smtp.password: --smtp-password
+    smtp.sender: --smtp-sender
+
+env:
+    azure.token: AZURE_TOKEN
+    smtp.sender: SMTP_SENDER
+    smtp.password: SMTP_PASSWORD
+```
+
+This file lives next to your scripts in your repository.
+These are settings that would be used by everyone, including the pipeline.
+The `cli` and `env` map command line switches and environment variables to those keys.
+This allows for many options for setting values depending on your needs.
+
+### new_stories.yml
+```yaml
+scrum masters:
+    - JohnDoe@company.com
+    - JaneDoe@company.com
+```
+This file is specific to your script and not shared.
+These are values that you want to use in your script but have them here for easy adjustment.
+
+### new_stories.py
+```python
+from datetime import date, timedelta
+
+from devopsdriver import Settings
+from devopsdriver import Azure
+from devopsdriver import send_email
+from devopsdriver.azdo import Wiql, GreaterThan
+
+# Parse all the settings from files, command line, environment, and keychain
+settings = Settings(__file__).key("secrets").cli("cli").env("env")
+
+# Create connection to Azure Devops
+azure = Azure(settings)
+
+# Get User Stories created in the last three days
+three_days_ago = date.today() - timedelta(days=settings["days of recent stories"])
+new_stories = azure.workitem.find(
+    Wiql().where(GreaterThan("CreatedDate", three_days_ago))
+)
+
+# Generate html body of the email
+story_lines = [f"<li>{s[0].id} {s[0].title}</li>" for s in new_stories]
+message = [
+    f'<h1>Stories created in the last {settings["days of recent stories"]} days</h1>',
+    "<ul>",
+    *story_lines,
+    "</ul>"
+]
+
+# Send the email
+send_email(
+    recipients=settings["scrum masters"],
+    subject=f'Stories created in the last {settings["days of recent stories"]} days',
+    html_body="\n".join(message),
+    settings=settings,
+)
+```
+
+### The email sent
+
+**From**: JohnDoe@company.com
+
+**To**: JohnDoe@company.com, JaneDoe@company.com
+
+**Subject**: Stories created in the last 3 days
+
+#### Stories created in the last 3 days
+
+- 745 Needs a preprocessing step that makes it case insensitive
+- 749 Create GitHub action to automate process
+- 750 Create GitHub action to automate process
+- 751 Test
+- 752 Feedback Capture
+- 753 draft doc history retrieval method
+- 754 frontend - store to schema
+- 755 Transfer job to production. Setup migrations to move to production
+- 756 Query subscription status from App
 
