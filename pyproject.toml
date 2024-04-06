@@ -32,7 +32,10 @@ authors = [
 settings = "devopsdriver.manage_settings:main"
 
 [tool.setuptools.package-data]
-myModule = ["*.mako"]
+"*" = ["*.mako"]
+
+[tool.setuptools]
+include-package-data = true
 
 [project.optional-dependencies]
 dev = [

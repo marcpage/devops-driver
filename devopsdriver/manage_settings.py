@@ -4,7 +4,7 @@
 """ Module Doc """
 
 
-from os.path import dirname
+from os.path import dirname, join
 from sys import argv as sys_argv
 from getpass import getpass as os_getpass
 
@@ -24,7 +24,11 @@ def main() -> None:
     args = list(ARGV[1:])
 
     if not args or "--help" in args or "-h" in args:
-        PRINT(Template(__file__, extension=".txt.mako").render())
+        PRINT(
+            Template(
+                __file__, join(dirname(__file__), "templates"), extension=".txt.mako"
+            ).render()
+        )
         return
 
     settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
