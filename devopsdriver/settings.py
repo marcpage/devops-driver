@@ -87,6 +87,7 @@ from getpass import getpass as os_getpass
 from yaml import safe_load
 from keyring import get_password, set_password
 
+
 # for testing
 ENVIRON = os_environ
 ARGV = sys_argv
