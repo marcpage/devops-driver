@@ -30,7 +30,16 @@ OS:
 
 Devops-driver is a collection of tools to help streamline developer's experience and gain insights into various processes.
 
-## Access to secrets
+## Tools
+
+devopsdriver is a toolbox that helps to quickly put together reports. Some of the items in the toolbox are:
+
+- **Settings**: store data, constants, settings, keys, tokens, etc. both in and out of the repository
+- **send_email**: send emails over SMTP (including SSL), using `Settings` to store credentials
+- **Template**: Simplify generating reports using `.mako` templates
+- **Azure.workitem**: Search for and inspect Azure DevOps work items
+
+## Example use-case
 
 To allow seamless work in both pipelines as well as in the development environment, the `Settings` object gives you access to common settings among multiple scripts, secrets, and configuration constants in a way the helps keep secrets out of the repository but runs just as well in the pipeline as your machine.
 
@@ -47,13 +56,14 @@ secrets:
 ```
 
 This file is in a global place (location varies by OS) and stores information that you may not want in your repository or is specific to development. 
-The `secrets` are extra sensative and are stored in the OS keychain.
 
 | Platform | Global Directory       |
 |----------|------------------------|
 | Windows  | %APPDATA%\             |
 | Linux    | ~/.devopsdriver/       |
 | macOS    | ~/Library/Preferences/ |
+
+The `secrets` are extra sensative and are stored in the OS keychain.
 
 ### Set secrets in the keychain
 ```bash
@@ -119,6 +129,8 @@ These are values that you want to use in your script but have them here for easy
     % endfor
 </ul>
 ```
+
+This file is the template for the email body.
 
 ### new_stories.py
 ```python
