@@ -10,7 +10,7 @@ from itertools import product
 from helpers import setup_settings, ensure, write
 
 from devopsdriver import settings  # debug access
-from devopsdriver import Settings
+from devopsdriver.settings import Settings
 
 
 def __setup_files(directory: str, dir1: str, dir2: str) -> None:
