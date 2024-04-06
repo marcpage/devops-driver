@@ -15,17 +15,36 @@ def test_main():
     with TemporaryDirectory() as working_dir:
         setup_settings(shared="test", Linux=join(working_dir, "Linux"))
         settings.ARGV = ["ignore", "test"]
+        manage_settings.ARGV = ["ignore", "test"]
+        storage = {}
+
+        def mock_print(message: str) -> None:
+            storage["print"] = message
+
+        settings.PRINT = mock_print
+        manage_settings.PRINT = mock_print
         write(join(working_dir, "Linux", "test.yml"), test=3)
         manage_settings.main()
+        assert storage["print"] == "3", storage
 
 
 def test_main_help():
     """test the main entry point"""
     with TemporaryDirectory() as working_dir:
         setup_settings(shared="test", Linux=join(working_dir, "Linux"))
+        manage_settings.PRINT = settings.PRINT
         settings.ARGV = ["ignore", "--help"]
+        manage_settings.ARGV = settings.ARGV
+        storage = {}
+
+        def mock_print(message: str) -> None:
+            storage["print"] = message
+
+        settings.PRINT = mock_print
+        manage_settings.PRINT = mock_print
         write(join(working_dir, "Linux", "test.yml"), test=3)
         manage_settings.main()
+        assert storage["print"].startswith("Usage:"), storage
 
 
 def test_main_set_secret():

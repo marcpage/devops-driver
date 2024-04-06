@@ -13,7 +13,6 @@ class Template:  # pylint: disable=too-few-public-methods
     """render template files"""
 
     def __init__(self, file: str, *search_dirs, extension=None):
-        print(f"Template({file}, {search_dirs}, {extension})")
         self.template = file
         self.extension = extension
         self.lookup = TemplateLookup(
