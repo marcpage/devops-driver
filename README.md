@@ -70,21 +70,21 @@ The `secrets` are extra sensative and are stored in the OS keychain.
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install devopsdriver
-$ python -m devopsdriver.settings --secrets
+$ settings --secrets
 secret: smtp.password  key: smtp/password
 smtp.password (smtp/password): ****
 secret: azure.token  key: azure/token
 smtp.password (azure/token): ****
-$ python -m devopsdriver.settings --secrets
+$ settings --secrets
 secret: azure.token  key: azure/token
 	Value set
 secret: smtp.password  key: smtp/password
 	Value set
 $
 ```
-The first call to `devopsdriver.settings` will look for every secret and check if they are already set in the keychain.
+The first call to `settings` will look for every secret and check if they are already set in the keychain.
 For any secret that has not been set in the keychain, you will be prompted to enter the password to store.
-The second call to `devopsdriver.settings` will verify that all the values have been set in the keychain.
+The second call to `settings` will verify that all the values have been set in the keychain.
 
 ### devopsdriver.yml
 ```yaml
