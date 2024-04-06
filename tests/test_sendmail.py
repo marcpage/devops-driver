@@ -3,7 +3,7 @@
 """ Test sendmail """
 
 from devopsdriver import sendmail  # for debugging
-from devopsdriver import send_email
+from devopsdriver.sendmail import send_email
 
 
 class MockMultipart(dict):

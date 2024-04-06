@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
+
 """ Ability to send emails with embedded images """
+
+
 from smtplib import SMTP as OS_SMTP, SMTP_SSL as OS_SMTP_SSL
 from email.mime.multipart import MIMEMultipart as OS_MIMEMultipart
 from email.mime.text import MIMEText as OS_MIMEText
 from email.mime.image import MIMEImage as OS_MIMEImage
 
 from devopsdriver.settings import Settings
+
 
 IMAGE_HEADERS = {".png": b"\x89PNG\r\n\x1a\n", ".jpg": b"\xff\xd8\xff"}
 
