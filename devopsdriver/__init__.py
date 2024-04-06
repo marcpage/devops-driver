@@ -3,6 +3,7 @@
 from .azdo import Azure
 from .settings import Settings
 from .sendmail import send_email
+from .template import Template
 
 __version__ = "0.1.36"
 __author__ = "Marc Page"

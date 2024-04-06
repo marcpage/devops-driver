@@ -46,8 +46,14 @@ secrets:
     smtp.password: smtp/password
 ```
 
-This file is in a global place (location various by OS) and stores information that you may not want in your repository or is specific to development. 
+This file is in a global place (location varies by OS) and stores information that you may not want in your repository or is specific to development. 
 The `secrets` are extra sensative and are stored in the OS keychain.
+
+| Platform | Global Directory       |
+|----------|------------------------|
+| Windows  | %APPDATA%\             |
+| Linux    | ~/.devopsdriver/       |
+| macOS    | ~/Library/Preferences/ |
 
 ### Set secrets in the keychain
 ```bash
@@ -104,13 +110,21 @@ scrum masters:
 This file is specific to your script and not shared.
 These are values that you want to use in your script but have them here for easy adjustment.
 
+### new_stories.html.mako
+```html
+<h1>Stories created in the last ${days} days</h1>
+<ul>
+    % for story in stories:
+    <li>${story.id} ${story.title}</li>
+    % endfor
+</ul>
+```
+
 ### new_stories.py
 ```python
 from datetime import date, timedelta
 
-from devopsdriver import Settings
-from devopsdriver import Azure
-from devopsdriver import send_email
+from devopsdriver import Settings, Azure, send_email, Template
 from devopsdriver.azdo import Wiql, GreaterThan
 
 # Parse all the settings from files, command line, environment, and keychain
@@ -126,19 +140,16 @@ new_stories = azure.workitem.find(
 )
 
 # Generate html body of the email
-story_lines = [f"<li>{s[0].id} {s[0].title}</li>" for s in new_stories]
-message = [
-    f'<h1>Stories created in the last {settings["days of recent stories"]} days</h1>',
-    "<ul>",
-    *story_lines,
-    "</ul>"
-]
+message = Template(__file__).render(
+    days=settings["days of recent stories"],
+    stories=new_stories,
+)
 
 # Send the email
 send_email(
     recipients=settings["scrum masters"],
     subject=f'Stories created in the last {settings["days of recent stories"]} days',
-    html_body="\n".join(message),
+    html_body=message,
     settings=settings,
 )
 ```
