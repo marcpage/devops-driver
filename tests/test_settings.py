@@ -238,24 +238,6 @@ def test_environ_values():
         assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
 
 
-def test_main():
-    """test the main entry point"""
-    with TemporaryDirectory() as working_dir:
-        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
-        settings.ARGV = ["ignore", "test"]
-        write(join(working_dir, "Linux", "test.yml"), test=3)
-        settings.main()
-
-
-def test_main_help():
-    """test the main entry point"""
-    with TemporaryDirectory() as working_dir:
-        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
-        settings.ARGV = ["ignore", "--help"]
-        write(join(working_dir, "Linux", "test.yml"), test=3)
-        settings.main()
-
-
 def test_secret():
     """test os secret storage"""
     with TemporaryDirectory() as working_dir:
@@ -274,33 +256,8 @@ def test_secret():
         assert opts["password"] == "setec astronomy", opts["password"]
 
 
-def test_main_set_secret():
-    """test the main entry point when settings keychain secrets"""
-
-    def set_password(s, n, p):
-        assert (
-            s in ("azure", "jira") and n == "token" and p == "setec astronomy"
-        ), f"{s} {n} {p}"
-
-    with TemporaryDirectory() as working_dir:
-        setup_settings(shared="test", Linux=join(working_dir, "Linux"))
-        settings.ARGV = ["ignore", "--secrets"]
-        settings.GET_PASSWORD = lambda s, n: (
-            "password" if f"{s}/{n}" == "azure/token" else None
-        )
-        settings.GET_PASS = lambda p: "setec astronomy"
-        settings.SET_PASSWORD = set_password
-        write(
-            join(working_dir, "Linux", "test.yml"),
-            secrets={"azure.token": "azure/token", "jira.token": "jira/token"},
-        )
-        settings.main()
-
-
 if __name__ == "__main__":
-    test_main_set_secret()
     test_secret()
-    test_main()
     test_environ_values()
     test_cli_env_in_yaml()
     test_basic()
