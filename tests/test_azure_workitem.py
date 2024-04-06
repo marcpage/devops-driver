@@ -83,12 +83,7 @@ def test_workitem() -> None:
     assert wi.ChangedBy["displayName"] == "Edna Johnson", wi.changedBy
     assert wi.changedby.displayname == "Edna Johnson", wi.changedby.displayname
     assert wi.microsoft_vsts_common_priority == 2, wi.microsoft_vsts_common_priority
-
-    try:
-        _ = wi.not_a_field
-
-    except AttributeError as error:
-        assert "not_a_field" in str(error)
+    assert wi.not_a_field is None, wi.not_a_field
 
 
 if __name__ == "__main__":

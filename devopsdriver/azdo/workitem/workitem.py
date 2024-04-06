@@ -43,7 +43,7 @@ class WorkItem:  # pylint: disable=too-few-public-methods
         if "fields" in data:
             return WorkItem._parse_field(name, data["fields"])
 
-        raise AttributeError(f"'WorkItem' object has no attribute '{name}'")
+        return None
 
     class _Dict(dict):
         def __getattr__(self, name: str) -> Any:
