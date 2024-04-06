@@ -28,6 +28,17 @@ authors = [
   {name = "Marc Page", email = "marcallenpage@gmail.com"},
 ]
 
+[project.optional-dependencies]
+dev = [
+    "black>=24.3.0",
+    "pylint>=3.1.0",
+]
+test = [
+    "pytest>=8.1.1",
+    "coverage>=7.4.4",
+]
+doc = []
+
 [project.urls]
 Homepage = "https://github.com/marcpage/devops-driver"
 Documentation = "https://github.com/marcpage/devops-driver"
