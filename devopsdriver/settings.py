@@ -86,6 +86,7 @@ from getpass import getpass as os_getpass
 
 from yaml import safe_load
 from keyring import get_password, set_password
+from keyring.backends import fail
 
 
 # for testing
@@ -267,7 +268,7 @@ class Settings:
         if key in self.secrets:
             value = GET_PASSWORD(*Settings.split_key(self.secrets[key]))
 
-            if value is not None:
+            if value is not None and not isinstance(value, fail.Keyring):
                 return True if check else value
 
         # Last check the files for settings
