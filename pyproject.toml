@@ -50,7 +50,7 @@ Homepage = "https://github.com/marcpage/devops-driver"
 Documentation = "https://github.com/marcpage/devops-driver"
 Repository = "https://github.com/marcpage/devops-driver.git"
 Issues = "https://github.com/marcpage/devops-driver/issues"
-Changelog = "https://github.com/marcpage/devops-driver"
+Changelog = "https://github.com/marcpage/devops-driver/releases"
 
 [tool.setuptools.dynamic]
 version = {attr = "devopsdriver.__version__"}
