@@ -14,6 +14,29 @@ class Timestamp:
     US_PER_MS = 1000  # microseconds per millisecond
     US_PER_SEC = 1000 * US_PER_MS  # microseconds per second
 
+    @staticmethod
+    def is_timestamp(value: any) -> bool:
+        """Determines if the value is a timestamp string
+
+        Args:
+            value (any): The value to check
+
+        Returns:
+            bool: True if the value is an Azure timestamp
+        """
+        if not isinstance(value, str):
+            return False
+
+        if not value.endswith("Z"):
+            return False
+
+        try:
+            Timestamp.__parse_string(value)
+            return True
+
+        except ValueError:
+            return False
+
     def __init__(self, value: datetime | str | float | int):
         if isinstance(value, datetime):
             self.value = value
