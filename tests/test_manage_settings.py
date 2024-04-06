@@ -66,6 +66,7 @@ def test_main_set_secret():
         manage_settings.GET_PASS = settings.GET_PASS
         manage_settings.PRINT = settings.PRINT
         settings.SET_PASSWORD = set_password
+        manage_settings.SET_PASSWORD = settings.SET_PASSWORD
         write(
             join(working_dir, "Linux", "test.yml"),
             secrets={"azure.token": "azure/token", "jira.token": "jira/token"},
