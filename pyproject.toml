@@ -34,9 +34,6 @@ settings = "devopsdriver.manage_settings:main"
 [tool.setuptools.package-data]
 "*" = ["*.mako"]
 
-[tool.setuptools]
-include-package-data = true
-
 [project.optional-dependencies]
 dev = [
     "black>=24.3.0",
