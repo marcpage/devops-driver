@@ -3,7 +3,10 @@
 """ An Azure Devops WorkItem """
 
 from typing import Any
+
 from azure.devops.v7_1.work_item_tracking.models import WorkItem as AzureWorkItem
+
+from devopsdriver.azdo.timestamp import Timestamp
 
 
 class WorkItem:  # pylint: disable=too-few-public-methods
@@ -47,7 +50,17 @@ class WorkItem:  # pylint: disable=too-few-public-methods
 
     class _Dict(dict):
         def __getattr__(self, name: str) -> Any:
-            return WorkItem._parse_field(name, self)
+            value = WorkItem._parse_field(name, self)
+
+            if Timestamp.is_timestamp(value):
+                return Timestamp(value)
+
+            return value
 
     def __getattr__(self, name: str) -> Any:
-        return WorkItem._parse_field(name, self.raw.as_dict())
+        value = WorkItem._parse_field(name, self.raw.as_dict())
+
+        if Timestamp.is_timestamp(value):
+            return Timestamp(value)
+
+        return value
