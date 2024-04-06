@@ -358,38 +358,3 @@ class Settings:
             Settings.__merge(settings, contents)
 
         return settings
-
-
-def main() -> None:
-    """Get settings values"""
-    args = list(ARGV[1:])
-
-    if not args or "--help" in args or "-h" in args:
-        PRINT("pass in settings to see if they are set and to what value")
-        PRINT("You can pass dotted names to get inner values, like smpt.server")
-        PRINT("You can pass --secrets to set keychain values that have not been set")
-        PRINT("You can also pass --help or -h to get this message")
-        return
-
-    settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
-
-    if "--secrets" in args:
-        args.remove("--secrets")
-
-        for secret, key in settings.secrets.items():
-            PRINT(f"secret: {secret}  key: {key}")
-
-            if not settings.has(secret):
-                value = GET_PASS(f"{secret} ({key}): ")
-
-                if value:
-                    SET_PASSWORD(*Settings.split_key(key), value)
-            else:
-                PRINT("\tValue set")
-
-    for arg in args:
-        PRINT(f"{settings.get(arg)}")
-
-
-if __name__ == "__main__":
-    main()

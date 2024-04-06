@@ -21,6 +21,7 @@ PROD_SERVER_TEST_DIR=prod_published
 BUILD_LOG=$(VENV_DIR)/build_log.txt
 PIP_INSTALL=$(VENV_PIP) install --quiet --upgrade
 PIP_INSTALL_TEST=pip install --no-cache-dir --quiet
+SETTINGS_TOOL=devopsdriver.manage_settings
 
 $(VENV_DIR)/touchfile: $(PROJECT_FILE)
 	@test -d $(VENV_DIR) || $(INITIAL_PYTHON) -m venv $(VENV_DIR)
@@ -73,23 +74,23 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@$(SET_ENV); $(PIP_INSTALL) build twine
 	@$(SET_ENV); $(VENV_PYTHON) -m build > $(BUILD_LOG)
 	@$(SET_ENV); \
-		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo`; \
-		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.username`; \
-		PASSWORD=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.password`; \
+		REPO=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.repo`; \
+		USERNAME=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.username`; \
+		PASSWORD=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.password`; \
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
 	-@$(SET_ENV); \
-		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
-		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
+		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
+		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
 		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 	@$(SET_ENV); \
-		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
-		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
+		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
+		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
@@ -97,21 +98,21 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 		$(VENV_PYTHON) -m pytest
 	@$(SET_ENV); \
-		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.repo`; \
-		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.username`; \
-		PASSWORD=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.password`; \
+		REPO=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.repo`; \
+		USERNAME=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.username`; \
+		PASSWORD=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.password`; \
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
 	-@$(SET_ENV); \
-		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
+		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
 		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
 	@$(SET_ENV); \
-		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
+		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \

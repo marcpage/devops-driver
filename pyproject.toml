@@ -28,6 +28,12 @@ authors = [
   {name = "Marc Page", email = "marcallenpage@gmail.com"},
 ]
 
+[project.scripts]
+settings = "devopsdriver.manage_settings:main"
+
+[tool.setuptools.package-data]
+myModule = ["*.mako"]
+
 [project.optional-dependencies]
 dev = [
     "black>=24.3.0",
