@@ -2,6 +2,7 @@
 
 # re export symbols for easier use
 from .clients import Azure
+from .timestamp import Timestamp
 
 from .workitem import WorkItem
 from .workitem.wiql import Wiql, Value, Field
