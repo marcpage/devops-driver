@@ -20,6 +20,7 @@ PROJECT_FILE=pyproject.toml
 SLEEP_TIME_IN_SECONDS=1
 TEST_SERVER_TEST_DIR=test_published
 PROD_SERVER_TEST_DIR=prod_published
+BUILD_LOG=$(VENV_DIR)/build_log.txt
 
 $(VENV_DIR)/touchfile: $(PROJECT_FILE)
 	@test -d $(VENV_DIR) || $(INITIAL_PYTHON) -m venv $(VENV_DIR)
@@ -69,8 +70,8 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@cp -R tests $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)/
 	@mkdir -p $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)
 	@cp -R tests $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)/
-	@$(SET_ENV); pip install build twine --upgrade
-	@$(SET_ENV); $(VENV_PYTHON) -m build
+	@$(SET_ENV); pip install -q build twine --upgrade
+	@$(SET_ENV); $(VENV_PYTHON) -m build > $(BUILD_LOG)
 	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.username`; \
@@ -85,7 +86,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install --no-cache-dir --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
+		pip install --no-cache-dir -q --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 	@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
@@ -93,7 +94,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install --no-cache-dir --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
+		pip install --no-cache-dir -q --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 		$(VENV_PYTHON) -m pytest
 	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.repo`; \
@@ -108,20 +109,18 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install  --no-cache-dir --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
+		pip install  --no-cache-dir -q --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m devopsdriver.settings pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		pip install  --no-cache-dir --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION; \
+		pip install  --no-cache-dir -q --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION; \
 		$(VENV_PYTHON) -m pytest
 	@touch $@
 
 deploy: $(DEPLOY_FILE)
-
-
 
 clean:
 	@rm -Rf $(VENV_DIR)
