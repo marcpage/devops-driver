@@ -273,6 +273,15 @@ def test_comparison() -> None:
         assert "Timestamp" in str(error) and "int" in str(error), error
 
 
+def test_now() -> None:
+    """Test the now() method"""
+    now1 = Timestamp.now()
+    now2 = Timestamp.now()
+    assert now2 > now1
+    assert (now2.value - now1.value).total_seconds() < 1
+
+
 if __name__ == "__main__":
+    test_now()
     test_comparison()
     test_basic()
