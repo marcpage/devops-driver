@@ -4,7 +4,7 @@
 """ Tools that help when working with Azure """
 
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from functools import total_ordering
 
 
@@ -75,6 +75,21 @@ class Timestamp:
             case _:
                 return NotImplemented
 
+    def __sub__(self, other):
+        match Timestamp.__comparison_type(other):
+            case 1:
+                return self.value - other.value
+            case 2 | 3:
+                return self.value - other
+            case _:
+                return NotImplemented
+
+    def __add__(self, other):
+        if Timestamp.__comparison_type(other) != 3:
+            return NotImplemented
+
+        return Timestamp(self.value + other)
+
     def to_string(self) -> str:
         """Returns the Azure formatted timestamp
 
@@ -106,6 +121,9 @@ class Timestamp:
 
     @staticmethod
     def __comparison_type(other) -> int:
+        if isinstance(other, timedelta):
+            return 3
+
         if isinstance(other, datetime):
             return 2
 
