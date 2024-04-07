@@ -5,8 +5,10 @@
 
 
 from datetime import datetime, timezone
+from functools import total_ordering
 
 
+@total_ordering
 class Timestamp:
     """An Azure timestamp"""
 
@@ -50,6 +52,24 @@ class Timestamp:
     def __str__(self) -> str:
         return self.to_string()
 
+    def __lt__(self, other) -> bool:
+        match Timestamp.__comparison_type(other):
+            case 1:
+                return self.value < other.value
+            case 2:
+                return self.value < other
+            case _:
+                return NotImplemented
+
+    def __eq__(self, other) -> bool:
+        match Timestamp.__comparison_type(other):
+            case 1:
+                return self.value == other.value
+            case 2:
+                return self.value == other
+            case _:
+                return NotImplemented
+
     def to_string(self) -> str:
         """Returns the Azure formatted timestamp
 
@@ -78,3 +98,13 @@ class Timestamp:
         return result.replace(
             microsecond=int(fractional_seconds * Timestamp.US_PER_SEC)
         ).replace(tzinfo=timezone.utc)
+
+    @staticmethod
+    def __comparison_type(other) -> int:
+        if isinstance(other, datetime):
+            return 2
+
+        if hasattr(other, "value") and isinstance(other.value, datetime):
+            return 1
+
+        return 0
