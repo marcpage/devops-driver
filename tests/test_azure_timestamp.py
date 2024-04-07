@@ -2,6 +2,7 @@
 
 """ Test Azure Timestamp """
 
+from datetime import datetime, timezone, timedelta
 from devopsdriver.azdo import Timestamp
 
 TEST_TIMESTAMPS = [
@@ -243,5 +244,35 @@ def test_basic() -> None:
         ), f"{timestamp} != {Timestamp(value_under_test.value).to_timestamp()}"
 
 
+def test_comparison() -> None:
+    """test comparison operators"""
+    time1 = datetime.now(tz=timezone.utc)
+    time2 = time1 + timedelta(days=7)
+    assert time2 > time1
+    assert Timestamp(time2) > time1
+    assert Timestamp(time2) > Timestamp(time1)
+    assert time1 < time2
+    assert Timestamp(time1) < time2
+    assert Timestamp(time1) < Timestamp(time2)
+    assert time1 <= time1
+    assert Timestamp(time1) <= time1
+    assert Timestamp(time1) <= Timestamp(time1)
+    assert time2 >= time2
+    assert Timestamp(time2) >= time2
+    assert Timestamp(time2) >= Timestamp(time2)
+    assert Timestamp(time1) == time1
+    assert Timestamp(time2) == Timestamp(time2)
+    assert Timestamp(time1) != time2
+    assert Timestamp(time2) != Timestamp(time1)
+    assert Timestamp(time1) != 5
+
+    try:
+        assert Timestamp(time2) < 5
+
+    except TypeError as error:
+        assert "Timestamp" in str(error) and "int" in str(error), error
+
+
 if __name__ == "__main__":
+    test_comparison()
     test_basic()
