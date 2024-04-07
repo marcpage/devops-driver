@@ -39,6 +39,11 @@ class Timestamp:
         except ValueError:
             return False
 
+    @staticmethod
+    def now():
+        """Returns a timestamp representing now"""
+        return Timestamp(datetime.now(tz=timezone.utc))
+
     def __init__(self, value: datetime | str | float | int):
         if isinstance(value, datetime):
             self.value = value
