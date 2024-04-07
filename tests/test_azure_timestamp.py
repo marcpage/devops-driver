@@ -276,12 +276,33 @@ def test_comparison() -> None:
 def test_now() -> None:
     """Test the now() method"""
     now1 = Timestamp.now()
-    now2 = Timestamp.now()
+    now2 = Timestamp.now() + timedelta(milliseconds=50)
     assert now2 > now1
     assert (now2.value - now1.value).total_seconds() < 1
 
 
+def test_math() -> None:
+    """test addition and subtraction"""
+    now1 = Timestamp.now()
+    now2 = now1 + timedelta(days=7)
+    assert (now2 - now1).days == 7
+    assert now2 - timedelta(days=7) == now1
+
+    try:
+        assert now1 - 5 is False
+
+    except TypeError as error:
+        assert "Timestamp" in str(error) and "int" in str(error), error
+
+    try:
+        assert now2 + 5 is False
+
+    except TypeError as error:
+        assert "Timestamp" in str(error) and "int" in str(error), error
+
+
 if __name__ == "__main__":
+    test_math()
     test_now()
     test_comparison()
     test_basic()
