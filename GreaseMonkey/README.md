@@ -8,7 +8,11 @@ Currently supported pages:
 ## Install
 
 You will need to install a GreaseMonkey browser plugin.
-The recommended GreaseMonkey plugin is [ViolentMonkey](https://violentmonkey.github.io).
+
+The recommended GreaseMonkey plugin:
+
+- **Windows**: [ViolentMonkey](https://violentmonkey.github.io)
+- **macOS**: [TamperMonkey](https://www.tampermonkey.net)
 
 Once the plugin is installed, go to the Dashboard and click the plus `+` button.
 Copy the contents of `LinkGenerator.js` into a new script.

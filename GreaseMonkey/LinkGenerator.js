@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Link Generator
 // @namespace    http://github.com/marcpage
-// @version      0.0.1
+// @version      0.0.2
 // @description  Add a copy-link button to many sites that has Markdown and HTML formatted links
 // @author       MarcAllenPage@gmail.com
 // @homepageURL  https://github.com/marcpage/devops-driver/main/GreaseMonkey/README.md
+// @updateURL    https://raw.githubusercontent.com/marcpage/devops-driver/main/GreaseMonkey/LinkGenerator.js
 // @downloadURL  https://raw.githubusercontent.com/marcpage/devops-driver/main/GreaseMonkey/LinkGenerator.js
 // @supportURL   https://github.com/marcpage/devops-driver/issues
 // @license      Unlicense; https://opensource.org/license/unlicense/
@@ -21,6 +22,7 @@
     // =============== Templates ===============
     const MarkdownFormat = "[{{id}}]({{url}}): {{name}}";
     const HtmlFormat = "<a href='{{url}}' target='_blank'>{{id}}</a>: {{name}}";
+    const PlainFormat = "{{id}}: {{name}}";
 
     function fill_in_template(template, mappings) {
         return template.replaceAll("{{id}}", mappings.id)
@@ -81,8 +83,8 @@
 
         button.innerText = "📋";
         button.id = "generated_link_button";
-        button.onclick = function() {
-            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat, MarkdownFormat);
+        button.onclick = function(event) {
+            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat, event.shiftKey ? PlainFormat : MarkdownFormat);
         }
         lastBreadCrumb.appendChild(button); // add button to end of last breadcrumb
     }
