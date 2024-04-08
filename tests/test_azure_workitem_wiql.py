@@ -6,7 +6,7 @@ from datetime import date, datetime
 
 from devopsdriver.azdo import Wiql
 from devopsdriver.azdo import Ascending, Descending, Value
-from devopsdriver.azdo import IsEmpty, IsNotEmpty, And, Or
+from devopsdriver.azdo import IsEmpty, IsNotEmpty, And, Or, In, NotIn
 from devopsdriver.azdo import GreaterThan, LessThan, Equal, NotEqual
 from devopsdriver.azdo import GreaterThanOrEqual, LessThanOrEqual
 
@@ -65,7 +65,21 @@ def test_invalid_value_type() -> None:
         pass
 
 
+def test_in_and_not_in() -> None:
+    """Test in and not in operators"""
+    builder = Wiql().where(
+        And(In("State", "New", "Ready for Development"), NotIn("Priority", 1, 2))
+    )
+    expected = (
+        """SELECT [System.Id] FROM workitems WHERE [System.State] """
+        + """IN ("New", "Ready for Development") AND [Microsoft.VSTS.Common.Priority] """
+        + """NOT IN (1, 2)"""
+    )
+    assert str(builder) == expected, str(builder)
+
+
 if __name__ == "__main__":
+    test_in_and_not_in()
     test_invalid_value_type()
     test_expressions()
     test_no_params()

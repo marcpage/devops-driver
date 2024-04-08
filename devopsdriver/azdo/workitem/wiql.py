@@ -133,13 +133,48 @@ class Compare:  # pylint: disable=too-few-public-methods
         field: Field | str,
         value: Value | str | date | datetime | int | float,
         operator: str,
+        value_is_computed=False,
     ):
         self.left = field if isinstance(field, Field) else Field(field)
-        self.right = value if isinstance(value, Value) else Value(value)
+        self.right = (
+            value if value_is_computed or isinstance(value, Value) else Value(value)
+        )
         self.operator = operator
 
     def __str__(self) -> str:
         return f"{str(self.left)} {self.operator} {str(self.right)}"
+
+
+class In(Compare):  # pylint: disable=too-few-public-methods
+    """checks for field in a list of values"""
+
+    def __init__(
+        self,
+        field: Field | str,
+        *values: list[Value | str | date | datetime | int | float],
+    ):
+        super().__init__(
+            field,
+            f"({', '.join(str(v if isinstance(v, Value) else Value(v)) for v in values)})",
+            "IN",
+            value_is_computed=True,
+        )
+
+
+class NotIn(Compare):  # pylint: disable=too-few-public-methods
+    """checks for field in a list of values"""
+
+    def __init__(
+        self,
+        field: Field | str,
+        *values: list[Value | str | date | datetime | int | float],
+    ):
+        super().__init__(
+            field,
+            f"({', '.join(str(v if isinstance(v, Value) else Value(v)) for v in values)})",
+            "NOT IN",
+            value_is_computed=True,
+        )
 
 
 class Equal(Compare):  # pylint: disable=too-few-public-methods
