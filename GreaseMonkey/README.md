@@ -4,6 +4,7 @@ This GreaseMonkey script injects a "copy-link" button into certain web pages.
 
 Currently supported pages:
 - Jira tickets
+- Azure DevOps work items
 
 ## Install
 
