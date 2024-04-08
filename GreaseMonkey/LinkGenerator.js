@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Link Generator
 // @namespace    http://github.com/marcpage
-// @version      0.0.2
+// @version      0.0.3
 // @description  Add a copy-link button to many sites that has Markdown and HTML formatted links
 // @author       MarcAllenPage@gmail.com
 // @homepageURL  https://github.com/marcpage/devops-driver/main/GreaseMonkey/README.md
@@ -18,13 +18,19 @@
 
 (function() {
     'use strict';
+    const clipboardIcon = "📋";
+    const checkmarkIcon = "✅︎";
+    const failureIcon = "❌";
+    const plainCheckmarkIcon = "✔";
+    const buttonId = "generated_link_button";
+    const checkmarkDurationInSeconds = 0.500;
 
     // =============== Templates ===============
     const MarkdownFormat = "[{{id}}]({{url}}): {{name}}";
     const HtmlFormat = "<a href='{{url}}' target='_blank'>{{id}}</a>: {{name}}";
     const PlainFormat = "{{id}}: {{name}}";
 
-    function fill_in_template(template, mappings) {
+    function fillInTemplate(template, mappings) {
         return template.replaceAll("{{id}}", mappings.id)
             .replaceAll("{{name}}", mappings.name)
             .replaceAll("{{url}}", mappings.url);
@@ -37,37 +43,49 @@
         var title_container = document.getElementById("summary-val");
         var identifier_link = document.getElementById("key-val");
         var title = title_container ? title_container.innerText : title_container;
-        var identifier = identifier_link ? identifier_link.getAttribute("data-issue-key") : identifier_link;
-        var link = identifier_link ? new URL(identifier_link.getAttribute("href"), window.location) : identifier_link;
+        var identifier = (identifier_link
+                            ? identifier_link.getAttribute("data-issue-key")
+                            : identifier_link);
+        var link = (identifier_link
+                    ? new URL(identifier_link.getAttribute("href"), window.location)
+                    : identifier_link);
 
         if (title && identifier && link) {
             return {"name": title, "id": identifier, "url": link};
         }
-        
+
         return undefined;
     }
 
-    function copyDescriptionToClipboard(pageInfo, htmlTemplate, markdownTemplate) {
+    // =============== Mechanism ===============
+    function copyDescriptionToClipboard(pageInfo, htmlTemplate, markdownTemplate, icon) {
         if (!pageInfo) {
             return;
         }
 
-        const markdownText = fill_in_template(markdownTemplate, pageInfo);
-        const htmlText = fill_in_template(htmlTemplate, pageInfo);
-        const htmlType = "text/html";
-        const markdownType = "text/plain";
-        const htmlBlob = new Blob([htmlText], { type: htmlType });
-        const markdownBlob = new Blob([markdownText], {type: markdownType});
+        const plainText = fillInTemplate(markdownTemplate, pageInfo);
+        const richText = fillInTemplate(htmlTemplate, pageInfo);
+        const richTextType = "text/html";
+        const plainTextType = "text/plain";
+        const htmlBlob = new Blob([richText], { type: richTextType });
+        const markdownBlob = new Blob([plainText], {type: plainTextType});
         const data = [new ClipboardItem({
-            [htmlType]: htmlBlob,
-            [markdownType]: markdownBlob,
+            [richTextType]: htmlBlob,
+            [plainTextType]: markdownBlob,
         })];
 
         navigator.clipboard.write(data).then(
             () => {// Success
+                document.getElementById(buttonId).innerText = icon;
+                setTimeout ( function(){
+                    document.getElementById(buttonId).innerText = clipboardIcon;
+                }, checkmarkDurationInSeconds * 1000);
             },
             () => {
-                alert("Unable to set the clipboard")
+                document.getElementById(buttonId).innerText = failureIcon;
+                setTimeout ( function(){
+                    document.getElementById(buttonId).innerText = clipboardIcon;
+                }, checkmarkDurationInSeconds * 1000);
             },
         );
     }
@@ -81,10 +99,12 @@
         var lastBreadCrumb = container[container.length - 1]; // last breadcrumb
         var button = document.createElement("button");
 
-        button.innerText = "📋";
-        button.id = "generated_link_button";
+        button.innerText = clipboardIcon;
+        button.id = buttonId;
         button.onclick = function(event) {
-            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat, event.shiftKey ? PlainFormat : MarkdownFormat);
+            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat,
+                event.shiftKey ? PlainFormat : MarkdownFormat,
+                event.shiftKey ? plainCheckmarkIcon : checkmarkIcon);
         }
         lastBreadCrumb.appendChild(button); // add button to end of last breadcrumb
     }
