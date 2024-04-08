@@ -11,6 +11,7 @@
 // @license      Unlicense; https://opensource.org/license/unlicense/
 // @match        https://*.atlassian.com/*
 // @match        https://*.atlassian.net/*
+// @match        https://dev.azure.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=atlassian.com
 // @grant        none
 // @run-at       document-idle
@@ -33,7 +34,7 @@
     const HtmlFormat = "<a href='{{url}}' target='_blank'>{{id}}</a>: {{name}}";
     const PlainFormat = "{{id}}: {{name}}";
 
-    /** 
+    /**
     * Fills in a template string.
     * @summary Replaces "{{name}}" in a template string with the given mapping value.
     * @param {string} template - The template to start with.
@@ -48,12 +49,12 @@
 
     // =============== Parsers ===============
 
-    /** 
+    /**
     * Gets a sub-element with the given id, or `undefined` if it cannot.
     * @summary Prevents errors by allowing for missing id or even undefined element.
     * @param {DOMElement} element - The element to search on (may be `document`)
     * @param {string} id - The id of the element to find
-    * @return {DOMElement} The element with the id under element 
+    * @return {DOMElement} The element with the id under element
     *                           or undefined if not found or element is undefined.
     */
     function getIded(element, id) {
@@ -64,7 +65,7 @@
         return element.getElementById(id);
     }
 
-    /** 
+    /**
     * Gets a tag of the given type.
     * @summary Gets the nth tag of the given type.
     * @param {DOMElement} element - The element to search on (may be `document`)
@@ -80,9 +81,9 @@
         }
 
         return undefined;
-        
+
     }
-    /** 
+    /**
     * Get a tag that has an attribute with the given string in it.
     * @summary Given a type of tag, searches for tags of that type that have an attribute that contains the given string.
     * @param {DOMElement} element - The element to search on (may be `document`)
@@ -107,7 +108,7 @@
         return undefined;
     }
 
-    /** 
+    /**
     * Get the parent element.
     * @summary Safe method to get the parent element
     * @param {DOMElement} element - The element to search on (may be `document`)
@@ -116,8 +117,8 @@
     function getParent(element) {
         return element ? element.parentNode : undefined;
     }
-    
-    /** 
+
+    /**
     * Get the value of the given attribute
     * @summary Safely gets the value of the attribute or undefined
     * @param {DOMElement} element - The element to search on (may be `document`)
@@ -127,8 +128,8 @@
     function getAttribute(element, attribute) {
         return element ? element.getAttribute(attribute) : undefined;
     }
-    
-    /** 
+
+    /**
     * Get the innerText of the element
     * @summary Get the innerText or undefined if element is undefined
     * @param {DOMElement} element - The element to search on (may be `document`)
@@ -138,19 +139,34 @@
         return element ? element.innerText : undefined;
     }
 
-    /** 
+    /**
+    * Get the value of an input element
+    * @summary Get the value or undefined if element is undefined
+    * @param {DOMElement} element - The input element to search on (may be `document`)
+    * @return {string} The value or undefined if element is undefined
+    */
+    function getValue(element) {
+        return element ? element.value : undefined;
+    }
+
+    /**
     * Is the info valid and can be used to create the text
     * @summary Checks if the info is valid and can be converted to text
     * @param {object} info - Object with name, id, and url fields, or undefined
     * @return {boolean} True if info is an object and name, id, and url are all not undefined
-    */    
+    */
     function valid_info(info) {
+        if (!info) {
+            console.log("Unable to get any info to build link to copy");
+        } else if(!(info.name && info.id && info.url)) {
+            console.log("Missing information: name="+info.name+" id="+info.id+" url="+info.url);
+        }
         return info && info.name && info.id && info.url;
     }
 
     /**
      * Decriptions of how to navigate various pages
-     * @summary Handle different ways to determine the location to 
+     * @summary Handle different ways to determine the location to
      *              insert the button and how to get the text to copy
      */
     const parsers = [
@@ -172,9 +188,18 @@
                 "url": getAttribute(getAttributed(document, "a", "data-testid", "issue.views.issue-base.foundation.breadcrumbs.current-issue.item"), "href"),
             }}
         },
+        {
+            "name": "Azure DevOps",
+            "location": function() {return getAttributed(getIded(document, "skip-to-main-content"), "div", "class", "info-text-wrapper");},
+            "info": function() {return {
+                "name": getValue(getAttributed(getIded(document, "skip-to-main-content"), "input", "aria-label", "Title Field")),
+                "id": getText(getAttributed(getIded(document, "skip-to-main-content"), "span", "aria-label", "ID Field")),
+                "url": getAttribute(getTag(getAttributed(getIded(document, "skip-to-main-content"), "div", "class", "workitem-info-bar"), "a"), "href"),
+            }}
+        },
     ];
-    
-    /** 
+
+    /**
     * Determine which parser is successful at reading the page
     * @summary Walk through `parsers` and find a fit for this page
     * @return {object} Object with fields location {string} and info {function}
@@ -194,7 +219,7 @@
 
     // =============== Mechanism ===============
 
-    /** 
+    /**
     * Flash a given character (emoji) in the button
     * @summary Replaces the clipboard icon with the given character and schedule a refresh of the clipboard
     * @param {string} icon - The emoji to flash in the button
@@ -205,8 +230,8 @@
           document.getElementById(buttonId).innerText = clipboardIcon;
       }, checkmarkDurationInSeconds * 1000);
     }
-    
-    /** 
+
+    /**
     * Create the text and put it on the clipboard
     * @summary Creates the various clipboard texts and pushes to the clipboard
     * @param {object} pageInfo - The name, url, and id to turn into text
@@ -241,7 +266,7 @@
         );
     }
 
-    /** 
+    /**
     * Insert the button into the web page
     * @summary Attempts to insert the button into the page. THis function is recursive.
     * @param {int} attempt - The attempt we are on. Defaults to 1.
