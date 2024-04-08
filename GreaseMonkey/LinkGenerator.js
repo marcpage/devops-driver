@@ -20,6 +20,7 @@
     'use strict';
     const clipboardIcon = "📋";
     const checkmarkIcon = "✅︎";
+    const failureIcon = "❌";
     const plainCheckmarkIcon = "✔";
     const buttonId = "generated_link_button";
     const checkmarkDurationInSeconds = 0.500;
@@ -42,17 +43,17 @@
         var title_container = document.getElementById("summary-val");
         var identifier_link = document.getElementById("key-val");
         var title = title_container ? title_container.innerText : title_container;
-        var identifier = (identifier_link 
-                            ? identifier_link.getAttribute("data-issue-key") 
+        var identifier = (identifier_link
+                            ? identifier_link.getAttribute("data-issue-key")
                             : identifier_link);
-        var link = (identifier_link 
-                    ? new URL(identifier_link.getAttribute("href"), window.location) 
+        var link = (identifier_link
+                    ? new URL(identifier_link.getAttribute("href"), window.location)
                     : identifier_link);
 
         if (title && identifier && link) {
             return {"name": title, "id": identifier, "url": link};
         }
-        
+
         return undefined;
     }
 
@@ -81,7 +82,10 @@
                 }, checkmarkDurationInSeconds * 1000);
             },
             () => {
-                alert("Unable to set the clipboard")
+                document.getElementById(buttonId).innerText = failureIcon;
+                setTimeout ( function(){
+                    document.getElementById(buttonId).innerText = clipboardIcon;
+                }, checkmarkDurationInSeconds * 1000);
             },
         );
     }
@@ -98,8 +102,8 @@
         button.innerText = clipboardIcon;
         button.id = buttonId;
         button.onclick = function(event) {
-            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat, 
-                event.shiftKey ? PlainFormat : MarkdownFormat, 
+            copyDescriptionToClipboard(getJiraInfo(), HtmlFormat,
+                event.shiftKey ? PlainFormat : MarkdownFormat,
                 event.shiftKey ? plainCheckmarkIcon : checkmarkIcon);
         }
         lastBreadCrumb.appendChild(button); // add button to end of last breadcrumb
