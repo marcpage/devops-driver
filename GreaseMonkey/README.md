@@ -23,3 +23,5 @@ Click that button to copy the text to the clipboard.
 
 If you paste the link into a rich text context (like an email, PowerPoint, Word document, etc), if will be formatted correctly.
 If you paste the link into a plain text context (notepad, command line, etc) it will be formatted in Markdown.
+
+If you hold down the `shift` key while clicking, the plain text version will not contain any Markdown.
