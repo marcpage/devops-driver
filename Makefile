@@ -53,7 +53,7 @@ format: $(FORMAT_FILE)
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(PIP_INSTALL) ".[dev]"
-	-@$(SET_ENV); $(VENV_PYTHON) -m pylint --disable cyclic-import $(LIBRARY) &> $@
+	-@$(SET_ENV); $(VENV_PYTHON) -m pylint --disable cyclic-import $(LIBRARY) &> $@  2>&1
 	-@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) --check >> $@  2>&1
 
 lint: $(LINT_FILE)
