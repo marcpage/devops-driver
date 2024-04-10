@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+
 """ Azure Pipeline """
+
 
 from azure.devops.v7_1.pipelines.models import Pipeline as AzurePipeline
 from azure.devops.v7_1.pipelines import PipelinesClient
@@ -10,7 +12,7 @@ from devopsdriver.azdo import AzureObject
 from .run import Run
 
 
-class Pipeline(AzureObject):
+class Pipeline(AzureObject):  # pylint: disable=too-few-public-methods
     """Pipeline fields:
     folder ("\\")
     id (1)

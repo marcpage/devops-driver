@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
+
 """ Pipeline client """
+
 
 from azure.devops.v7_1.pipelines import PipelinesClient
 
 from .pipeline import Pipeline
 
 
-class PipelineClient:
+class PipelineClient:  # pylint: disable=too-few-public-methods
     """Pipeline Client wrapper"""
 
     def __init__(self, client: PipelinesClient):
