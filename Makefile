@@ -57,7 +57,9 @@ $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	-@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) --check >> $@  2>&1
 
 lint: $(LINT_FILE)
+	@echo "===== linting results ====="
 	@cat $^
+	@echo "==========================="
 	@if grep --quiet "would be reformatted" $^; then echo "black failure!" && false; else true; fi
 	@if grep --quiet "rated at 10.00/10" $^; then true; else echo "pylint failure!" && false; fi
 
