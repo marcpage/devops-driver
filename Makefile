@@ -53,11 +53,13 @@ format: $(FORMAT_FILE)
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(PIP_INSTALL) ".[dev]"
-	-@$(SET_ENV); $(VENV_PYTHON) -m pylint --disable cyclic-import $(LIBRARY) &> $@
+	-@$(SET_ENV); $(VENV_PYTHON) -m pylint --disable cyclic-import $(LIBRARY) --output $@
 	-@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) --check >> $@  2>&1
 
 lint: $(LINT_FILE)
 	@cat $^
+	@if grep --quiet "would be reformatted" $^; then echo "black failure!" && false; else true; fi
+	@if grep --quiet "rated at 10.00/10" $^; then true; else echo "pylint failure!" && false; fi
 
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
 	@echo "Preparation cleanup"
