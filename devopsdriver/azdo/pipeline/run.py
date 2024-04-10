@@ -41,5 +41,5 @@ class Run(AzureObject):  # pylint: disable=too-few-public-methods
             Log(l)
             for l in self.client.list_logs(
                 self.project, self.pipeline.id, self.raw.id, expand="signedContent"
-            )
+            ).logs
         ]
