@@ -58,6 +58,8 @@ $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 
 lint: $(LINT_FILE)
 	@cat $^
+	@if grep --quiet "rated at 10.00/10" $^; then true; else false; fi
+	@if grep --quiet "would be reformatted" $^; then false; else true; fi
 
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
 	@echo "Preparation cleanup"
