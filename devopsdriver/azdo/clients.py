@@ -53,11 +53,11 @@ class Azure:  # pylint: disable=too-few-public-methods,too-many-instance-attribu
         assert not unsupported_clients, f"{unsupported_clients} not supported"
         self.workitem = WIClient(Azure.__client("workitem", clients, client_calls))
         self.pipeline = PLClient(Azure.__client("pipeline", clients, client_calls))
-        self.core = Azure.__client("core", clients, client_calls)
-        self.task = Azure.__client("task", clients, client_calls)
-        self.git = Azure.__client("git", clients, client_calls)
-        self.build = Azure.__client("build", clients, client_calls)
-        self.identity = Azure.__client("identity", clients, client_calls)
+        self._core = Azure.__client("core", clients, client_calls)
+        self._task = Azure.__client("task", clients, client_calls)
+        self._git = Azure.__client("git", clients, client_calls)
+        self._build = Azure.__client("build", clients, client_calls)
+        self._identity = Azure.__client("identity", clients, client_calls)
 
     @staticmethod
     def __client(name: str, clients: dict, calls: dict) -> any:
