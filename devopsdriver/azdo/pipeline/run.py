@@ -35,7 +35,7 @@ class Run(AzureObject):  # pylint: disable=too-few-public-methods
         self.pipeline = pipeline
         super().__init__(run)
 
-    def logs(self):
+    def get_logs(self):
         """Get Logs for the run"""
         return [
             Log(l)

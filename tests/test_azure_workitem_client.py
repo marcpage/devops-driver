@@ -44,7 +44,7 @@ def test_basic() -> None:
 def test_history() -> None:
     """test history"""
     client = Client(MockClient())
-    history = client.history(2)
+    history = client.get_history(2)
     assert not history
 
 

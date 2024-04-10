@@ -43,7 +43,7 @@ class Client:
             top=top,
         )
 
-    def history(  # pylint: disable=too-many-arguments
+    def get_history(  # pylint: disable=too-many-arguments
         self,
         wi_id: int,
         project: str = None,
@@ -86,5 +86,6 @@ class Client:
             list[list[WorkItem]]: List of work items, each is a history of work items
         """
         return [
-            [AzureObject(e) for e in self.history(i)] for i in self.find_ids(wiql, top)
+            [AzureObject(e) for e in self.get_history(i)]
+            for i in self.find_ids(wiql, top)
         ]

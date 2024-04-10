@@ -60,7 +60,7 @@ def test_basic() -> None:
     """test basic run and log"""
     log.GET_URL = lambda x, timeout: x
     run = Run(MockPipelineClient(), "project", MockPipeline(5), MockAzureRun(83))
-    logs = run.logs()
+    logs = run.get_logs()
     assert len(logs) == 2, logs
 
 
