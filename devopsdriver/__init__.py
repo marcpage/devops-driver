@@ -6,6 +6,6 @@ from .template import Template
 from .azdo.clients import Azure
 
 
-__version__ = "0.1.41"
+__version__ = "0.1.42"
 __author__ = "Marc Page"
 __credits__ = ""
