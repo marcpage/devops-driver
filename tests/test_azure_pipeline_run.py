@@ -46,7 +46,7 @@ class MockPipelineClient:  # pylint: disable=too-few-public-methods
         self.pipeline_id = pipeline_id
         self.run_id = run_id
         self.expand = expand
-        return [MockLog("log 1"), MockLog("log 2")]
+        return SimpleNamespace(logs=[MockLog("log 1"), MockLog("log 2")])
 
 
 class MockPipeline:  # pylint: disable=too-few-public-methods
