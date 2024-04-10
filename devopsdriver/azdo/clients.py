@@ -21,7 +21,7 @@ CONNECTION = AzureConnection
 AUTHENTICATION = MSBasicAuthentication
 
 
-class Azure:  # pylint: disable=too-few-public-methods
+class Azure:  # pylint: disable=too-few-public-methods,too-many-instance-attributes
     """A connection to Azure clients"""
 
     def __init__(
@@ -43,11 +43,21 @@ class Azure:  # pylint: disable=too-few-public-methods
         client_calls = {
             "workitem": self.connection.clients_v7_1.get_work_item_tracking_client,
             "pipeline": self.connection.clients_v7_1.get_pipelines_client,
+            "task": self.connection.clients_v7_1.get_task_agent_client,
+            "git": self.connection.clients_v7_1.get_git_client,
+            "core": self.connection.clients_v7_1.get_core_client,
+            "build": self.connection.clients_v7_1.get_build_client,
+            "identity": self.connection.clients_v7_1.get_identity_client,
         }
         unsupported_clients = set(clients) - set(client_calls)
         assert not unsupported_clients, f"{unsupported_clients} not supported"
         self.workitem = WIClient(Azure.__client("workitem", clients, client_calls))
         self.pipeline = PLClient(Azure.__client("pipeline", clients, client_calls))
+        self._core = Azure.__client("core", clients, client_calls)
+        self._task = Azure.__client("task", clients, client_calls)
+        self._git = Azure.__client("git", clients, client_calls)
+        self._build = Azure.__client("build", clients, client_calls)
+        self._identity = Azure.__client("identity", clients, client_calls)
 
     @staticmethod
     def __client(name: str, clients: dict, calls: dict) -> any:

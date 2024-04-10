@@ -24,13 +24,23 @@ class MockConnection:  # pylint: disable=too-few-public-methods
         class Clients71:  # pylint: disable=too-few-public-methods
             """Fakes a 7.1 clients factory"""
 
-            def get_work_item_tracking_client(self) -> str:
-                """fakes getting work item client"""
-                return "work_item_tracking_client"
+            SUPPORTED = {
+                "get_work_item_tracking_client",
+                "get_pipelines_client",
+                "get_task_agent_client",
+                "get_git_client",
+                "get_core_client",
+                "get_build_client",
+                "get_identity_client",
+            }
 
-            def get_pipelines_client(self) -> str:
-                """mocks getting pipeline client"""
-                return "get_pipelines_client"
+            def __getattr__(self, name: str) -> str:
+                assert name in Clients71.SUPPORTED, name
+
+                def function():
+                    return name.replace("get_", "")
+
+                return function
 
         self.clients_v7_1 = Clients71()
 
@@ -124,7 +134,9 @@ def test_load_settings() -> None:
         ), azure.connection.base_url
         assert azure.connection.creds.token == "token", azure.connection.creds.token
         assert azure.connection.creds.empty == "", azure.connection.creds.empty
-        assert azure.workitem.client == "work_item_tracking_client"
+        assert (
+            azure.workitem.client == "work_item_tracking_client"
+        ), azure.workitem.client
 
 
 def test_not_all_clients() -> None:
