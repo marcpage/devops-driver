@@ -13,6 +13,7 @@ from msrest.authentication import BasicAuthentication as MSBasicAuthentication
 
 from devopsdriver.settings import Settings
 from devopsdriver.azdo.workitem.client import Client as WIClient
+from devopsdriver.azdo.pipeline.client import Client as PLClient
 
 
 # for testing
@@ -44,9 +45,11 @@ class Azure:  # pylint: disable=too-few-public-methods
         token = settings["azure.token"] if token is None else token
         self.connection = CONNECTION(base_url=url, creds=AUTHENTICATION("", token))
         client_calls = {
-            "workitem": self.connection.clients_v7_1.get_work_item_tracking_client
+            "workitem": self.connection.clients_v7_1.get_work_item_tracking_client,
+            "pipeline": self.connection.clients_v7_1.get_pipelines_client,
         }
         self.workitem = WIClient(Azure.__client("workitem", clients, client_calls))
+        self.pipeline = PLClient(Azure.__client("pipeline", clients, client_calls))
 
     @staticmethod
     def __client(name: str, clients: dict, calls: dict) -> any:

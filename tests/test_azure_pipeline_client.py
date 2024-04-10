@@ -2,7 +2,7 @@
 
 """ Test Pipeline Client"""
 
-from devopsdriver.azdo.pipeline.client import PipelineClient
+from devopsdriver.azdo.pipeline.client import Client
 
 
 class MockAzurePipeline:  # pylint: disable=too-few-public-methods
@@ -26,7 +26,7 @@ class MockAzurePipelinesClient:  # pylint: disable=too-few-public-methods
 
 def test_client() -> None:
     """tests the pipeline client"""
-    client = PipelineClient(MockAzurePipelinesClient())
+    client = Client(MockAzurePipelinesClient())
     pipelines = client.list("project")
     assert len(pipelines) == 2, pipelines
 

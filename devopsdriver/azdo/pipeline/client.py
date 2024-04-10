@@ -9,7 +9,7 @@ from azure.devops.v7_1.pipelines import PipelinesClient
 from .pipeline import Pipeline
 
 
-class PipelineClient:  # pylint: disable=too-few-public-methods
+class Client:  # pylint: disable=too-few-public-methods
     """Pipeline Client wrapper"""
 
     def __init__(self, client: PipelinesClient):
