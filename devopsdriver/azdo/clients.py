@@ -24,8 +24,6 @@ AUTHENTICATION = MSBasicAuthentication
 class Azure:  # pylint: disable=too-few-public-methods
     """A connection to Azure clients"""
 
-    SUPPORTED_CLIENTS = {"workitem", "pipeline"}
-
     def __init__(
         self, settings: Settings = None, token: str = None, url: str = None, **clients
     ):
