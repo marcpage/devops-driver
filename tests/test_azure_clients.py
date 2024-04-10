@@ -140,7 +140,20 @@ def test_not_all_clients() -> None:
     assert azure.workitem.client is None
 
 
+def test_unsupported_client() -> None:
+    """test the basic calling"""
+    clients.CONNECTION = MockConnection
+    clients.AUTHENTICATION = lambda a, b: SimpleNamespace(empty=a, token=b)
+    try:
+        _ = Azure(None, "token", "https://url.com/project", google=True)
+        raise KeyError("google should not have worked")
+
+    except AssertionError as error:
+        assert "google" in str(error), error
+
+
 if __name__ == "__main__":
+    test_unsupported_client()
     test_not_all_clients()
     test_load_settings()
     test_mixed_settings()

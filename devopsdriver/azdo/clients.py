@@ -29,8 +29,6 @@ class Azure:  # pylint: disable=too-few-public-methods
     def __init__(
         self, settings: Settings = None, token: str = None, url: str = None, **clients
     ):
-        unsupported_clients = set(clients) - Azure.SUPPORTED_CLIENTS
-        assert not unsupported_clients, f"{unsupported_clients} not supported"
         settings = (
             Settings(__file__).key("secrets")
             if settings is None and token is None and url is None
@@ -48,6 +46,8 @@ class Azure:  # pylint: disable=too-few-public-methods
             "workitem": self.connection.clients_v7_1.get_work_item_tracking_client,
             "pipeline": self.connection.clients_v7_1.get_pipelines_client,
         }
+        unsupported_clients = set(clients) - set(client_calls)
+        assert not unsupported_clients, f"{unsupported_clients} not supported"
         self.workitem = WIClient(Azure.__client("workitem", clients, client_calls))
         self.pipeline = PLClient(Azure.__client("pipeline", clients, client_calls))
 
