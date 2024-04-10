@@ -20,7 +20,7 @@ classifiers=[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: The Unlicense (Unlicense)",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.10",
     "Topic :: Utilities",
     "Topic :: Software Development",
 ]
