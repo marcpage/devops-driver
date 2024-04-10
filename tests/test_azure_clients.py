@@ -28,6 +28,10 @@ class MockConnection:  # pylint: disable=too-few-public-methods
                 """fakes getting work item client"""
                 return "work_item_tracking_client"
 
+            def get_pipelines_client(self) -> str:
+                """mocks getting pipeline client"""
+                return "get_pipelines_client"
+
         self.clients_v7_1 = Clients71()
 
 

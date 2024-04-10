@@ -2,10 +2,10 @@
 
 """ Test work item """
 
-from devopsdriver.azdo import DataObject
+from devopsdriver.azdo import AzureObject
 
 
-class MockAzureWorkItem:
+class MockAzureWorkItem:  # pylint: disable=too-few-public-methods
     """mock out work item"""
 
     def as_dict(self):
@@ -76,7 +76,7 @@ class MockAzureWorkItem:
 
 def test_workitem() -> None:
     """test basic work item"""
-    wi = DataObject(MockAzureWorkItem())
+    wi = AzureObject(MockAzureWorkItem())
     assert wi.id == 5, wi.id
     assert wi.ID == 5, wi.ID
     assert wi.workitemtype == "User Story", wi.workitemtype
@@ -87,7 +87,7 @@ def test_workitem() -> None:
 
 def test_timestamp() -> None:
     """test timestamps"""
-    wi = DataObject(MockAzureWorkItem())
+    wi = AzureObject(MockAzureWorkItem())
     assert wi.StateChangeDate.to_string() == "2023-11-16T03:12:32.94Z"
     assert wi.CreatedDate.to_string() == "2023-11-16T03:12:32.94Z"
     assert wi.ChangedDate.to_string() == "2023-11-16T03:12:32.94Z"

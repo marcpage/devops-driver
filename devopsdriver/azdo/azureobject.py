@@ -4,17 +4,17 @@
 """ An Azure Devops WorkItem """
 
 
-from azure.devops.v7_1.work_item_tracking.models import WorkItem as AzureWorkItem
+from msrest.serialization import Model
 
 from devopsdriver.azdo.timestamp import Timestamp
-from devopsdriver.dataobject import DataObject as GenericDataObject
+from devopsdriver.dataobject import DataObject
 
 
-class DataObject(GenericDataObject):  # pylint: disable=too-few-public-methods
+class AzureObject(DataObject):  # pylint: disable=too-few-public-methods
     """Azure WorkItem"""
 
-    def __init__(self, work_item: AzureWorkItem):
-        self.raw = work_item
+    def __init__(self, azure_object: Model):
+        self.raw = azure_object
         super().__init__(self.raw.as_dict())
 
     def _parse_value(self, data: any) -> any:
