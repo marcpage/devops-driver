@@ -10,11 +10,11 @@ from devopsdriver.azdo.timestamp import Timestamp
 from devopsdriver.dataobject import DataObject as GenericDataObject
 
 
-class DataObject(GenericDataObject):  # pylint: disable=too-few-public-methods
+class AzureObject(GenericDataObject):  # pylint: disable=too-few-public-methods
     """Azure WorkItem"""
 
-    def __init__(self, work_item: AzureWorkItem):
-        self.raw = work_item
+    def __init__(self, azure_object: AzureWorkItem):
+        self.raw = azure_object
         super().__init__(self.raw.as_dict())
 
     def _parse_value(self, data: any) -> any:

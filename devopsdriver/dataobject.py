@@ -34,7 +34,7 @@ class DataObject:  # pylint: disable=too-few-public-methods
         return data
 
     def _get_field(self, name: str, data: dict) -> any:
-        assert name and data
+        assert name and data, f"name = {name} data = {data}"
         found = [f for f in data if self._matches_field(name, f)]
         assert len(found) in {0, 1}, found
 
