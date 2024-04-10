@@ -3,7 +3,7 @@
 """ Data Objects """
 
 
-class DataObject:
+class DataObject:  # pylint: disable=too-few-public-methods
     """dict like object with fuzzy field matching"""
 
     def __init__(self, data: dict):

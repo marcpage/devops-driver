@@ -2,7 +2,7 @@
 
 """ Test work item """
 
-from devopsdriver.azdo import WorkItem
+from devopsdriver.azdo import DataObject
 
 
 class MockAzureWorkItem:
@@ -76,7 +76,7 @@ class MockAzureWorkItem:
 
 def test_workitem() -> None:
     """test basic work item"""
-    wi = WorkItem(MockAzureWorkItem())
+    wi = DataObject(MockAzureWorkItem())
     assert wi.id == 5, wi.id
     assert wi.ID == 5, wi.ID
     assert wi.workitemtype == "User Story", wi.workitemtype
@@ -87,7 +87,7 @@ def test_workitem() -> None:
 
 def test_timestamp() -> None:
     """test timestamps"""
-    wi = WorkItem(MockAzureWorkItem())
+    wi = DataObject(MockAzureWorkItem())
     assert wi.StateChangeDate.to_string() == "2023-11-16T03:12:32.94Z"
     assert wi.CreatedDate.to_string() == "2023-11-16T03:12:32.94Z"
     assert wi.ChangedDate.to_string() == "2023-11-16T03:12:32.94Z"

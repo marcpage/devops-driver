@@ -287,6 +287,7 @@ def test_math() -> None:
     now2 = now1 + timedelta(days=7)
     assert (now2 - now1).days == 7
     assert now2 - timedelta(days=7) == now1
+    assert not Timestamp.is_timestamp(5)
 
     try:
         assert now1 - 5 is False
