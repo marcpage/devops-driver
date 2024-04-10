@@ -60,26 +60,34 @@ lint: $(LINT_FILE)
 	@cat $^
 
 $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint coverage
-	@rm -Rf dist build *.egg-info $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)
+	@echo "Preparation cleanup"
+	@rm -Rf dist build *.egg-info $(VENV_DIR)/$(TEST_SERVER_TEST_DIR) $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)
+	@echo "Validating version strings are correct"
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		if grep --quiet "released&message=v$$VERSION&" README.md; then true; else echo "Update README.md badge version" && false; fi
 	@$(SET_ENV); \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		if grep --quiet "devopsdriver/$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
+	@echo "Putting tests in staging test dir: $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)"
 	@mkdir -p $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)
 	@cp -R tests $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)/
+	@echo "Putting tests in prod test dir: $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)"
 	@mkdir -p $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)
 	@cp -R tests $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)/
+	@echo "Installing tools"
 	@$(SET_ENV); $(PIP_INSTALL) build twine
+	@echo "Building package"
 	@$(SET_ENV); $(VENV_PYTHON) -m build > $(BUILD_LOG)
+	@echo "Uploading package to test server"
 	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.username`; \
 		PASSWORD=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.password`; \
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
-	@echo Waiting for uploaded package to be avilable before testing
+	@echo "Waiting for uploaded package to be avilable before testing"
 	@sleep $(SLEEP_TIME_IN_SECONDS)
+	@echo "First attempt at testing staging package"
 	-@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
@@ -87,7 +95,8 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
+		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL;
+	@echo "Second attempt at testing staging package"
 	@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
@@ -97,6 +106,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(SET_ENV); \
 		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
 		$(VENV_PYTHON) -m pytest
+	@echo "Uploading package to production server"
 	@$(SET_ENV); \
 		REPO=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.repo`; \
 		USERNAME=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.username`; \
@@ -104,6 +114,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(VENV_PYTHON) -m twine upload --repository $$REPO dist/* --username $$USERNAME --password $$PASSWORD
 	@echo Waiting for uploaded package to be avilable before testing
 	@sleep $(SLEEP_TIME_IN_SECONDS)
+	@echo "First attempt at testing production package"
 	-@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
@@ -111,6 +122,7 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
 		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
+	@echo "Second attempt at testing production package"
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
 		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \

@@ -4,7 +4,7 @@
 from .clients import Azure
 from .timestamp import Timestamp
 
-from .workitem.workitem import WorkItem
+from .dataobject import DataObject
 from .workitem.wiql import Wiql, Value, Field
 from .workitem.wiql import Ascending, Descending, And, Or, In, NotIn
 from .workitem.wiql import Equal, NotEqual, LessThanOrEqual, GreaterThanOrEqual

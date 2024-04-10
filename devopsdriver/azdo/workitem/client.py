@@ -8,7 +8,7 @@ from azure.devops.v7_1.work_item_tracking.models import Wiql as AzureWiql
 from azure.devops.v7_1.work_item_tracking.models import WorkItem as AzureWorkItem
 from azure.devops.v7_1.work_item_tracking.models import TeamContext
 from azure.devops.v7_1.work_item_tracking.models import WorkItemQueryResult
-from devopsdriver.azdo.workitem.workitem import WorkItem
+from devopsdriver.azdo.dataobject import DataObject
 from devopsdriver.azdo.workitem.wiql import Wiql
 
 
@@ -75,7 +75,7 @@ class Client:
         # columns: list of name, reference_name, url
         return [i.id for i in found.work_items]
 
-    def find(self, wiql: Wiql | str, top: int = None) -> list[list[WorkItem]]:
+    def find(self, wiql: Wiql | str, top: int = None) -> list[list[DataObject]]:
         """Gets the full history of items found in a WIQL search
 
         Args:
@@ -86,5 +86,5 @@ class Client:
             list[list[WorkItem]]: List of work items, each is a history of work items
         """
         return [
-            [WorkItem(e) for e in self.history(i)] for i in self.find_ids(wiql, top)
+            [DataObject(e) for e in self.history(i)] for i in self.find_ids(wiql, top)
         ]
