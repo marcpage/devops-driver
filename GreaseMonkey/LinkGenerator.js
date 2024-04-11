@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Link Generator
 // @namespace    http://github.com/marcpage
-// @version      0.0.4
+// @version      0.0.5
 // @description  Add a copy-link button to many sites that has Markdown and HTML formatted links
 // @author       MarcAllenPage@gmail.com
 // @homepageURL  https://github.com/marcpage/devops-driver/main/GreaseMonkey/README.md
@@ -176,7 +176,7 @@
             "info": function() {return {
                 "name": getText(getIded(document, "summary-val")),
                 "id": getAttribute(getIded(document, "key-val"), "data-issue-key"),
-                "url": getAttribute(getIded(document, "key-val"), "href"),
+                "url": new URL(getAttribute(getIded(document, "key-val"), "href"), window.location),
             }}
         },
         {
@@ -185,7 +185,7 @@
             "info": function() {return {
                 "name": getText(getAttributed(document, "h1", "data-testid", "issue.views.issue-base.foundation.summary.heading")),
                 "id": getText(getTag(getAttributed(document, "a", "data-testid", "issue.views.issue-base.foundation.breadcrumbs.current-issue.item"), "span")),
-                "url": getAttribute(getAttributed(document, "a", "data-testid", "issue.views.issue-base.foundation.breadcrumbs.current-issue.item"), "href"),
+                "url": new URL(getAttribute(getAttributed(document, "a", "data-testid", "issue.views.issue-base.foundation.breadcrumbs.current-issue.item"), "href"), window.location),
             }}
         },
         {
@@ -194,7 +194,7 @@
             "info": function() {return {
                 "name": getValue(getAttributed(getIded(document, "skip-to-main-content"), "input", "aria-label", "Title Field")),
                 "id": getText(getAttributed(getIded(document, "skip-to-main-content"), "span", "aria-label", "ID Field")),
-                "url": getAttribute(getTag(getAttributed(getIded(document, "skip-to-main-content"), "div", "class", "workitem-info-bar"), "a"), "href"),
+                "url": new URL(getAttribute(getTag(getAttributed(getIded(document, "skip-to-main-content"), "div", "class", "workitem-info-bar"), "a"), "href"), window.location),
             }}
         },
     ];
