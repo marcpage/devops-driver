@@ -10,7 +10,7 @@ dependencies = [
   "keyring==25.1.0",
   "setuptools==69.2.0",  # neded for azure-devops to use 7.1 API
   "azure-devops==7.1.0b4",
-  "Mako==1.3.2",
+  "Mako==1.3.3",
 ]
 keywords = ["azure", "devops", "jira", "confluence", "email", "pipelines", "tools"]
 classifiers=[
