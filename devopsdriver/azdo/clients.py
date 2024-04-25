@@ -14,6 +14,7 @@ from msrest.authentication import BasicAuthentication as MSBasicAuthentication
 from devopsdriver.settings import Settings
 from devopsdriver.azdo.workitem.client import Client as WIClient
 from devopsdriver.azdo.pipeline.client import Client as PLClient
+from devopsdriver.azdo.builds.client import Client as BClient
 
 
 # for testing
@@ -60,7 +61,7 @@ class Azure:  # pylint: disable=too-few-public-methods,too-many-instance-attribu
         self.core = Azure._Client(Azure.__client("core", clients, client_calls))
         self.task = Azure._Client(Azure.__client("task", clients, client_calls))
         self.git = Azure._Client(Azure.__client("git", clients, client_calls))
-        self.build = Azure._Client(Azure.__client("build", clients, client_calls))
+        self.build = BClient(Azure.__client("build", clients, client_calls))
         self.identity = Azure._Client(Azure.__client("identity", clients, client_calls))
 
     @staticmethod
