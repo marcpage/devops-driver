@@ -9,19 +9,28 @@ from azure.devops.v7_1.build.models import TimelineRecord
 from devopsdriver.azdo import AzureObject
 
 
-class Build(AzureObject):
+class Build(AzureObject):  # pylint: disable=too-few-public-methods
+    """Azure Build"""
+
     def __init__(self, client: BuildClient, build: AzureBuild):
         self.client = client
         self.build = build
         super().__init__(build)
 
-    class Step(AzureObject):
+    class Step(AzureObject):  # pylint: disable=too-few-public-methods
+        """Azure Build Step (job, task, step)"""
+
         def __init__(self, entry: TimelineRecord):
             self.children = []
             self.log_contents: str = None
             super().__init__(entry)
 
         def all_logs(self) -> list[str]:
+            """Get a list of all logs in chronological order
+
+            Returns:
+                list[str]: List of all the logs
+            """
             logs = [] if self.log_contents is None else [self.log_contents]
 
             for child in self.children:
@@ -47,6 +56,11 @@ class Build(AzureObject):
         return entry
 
     def get_logs(self) -> Step:
+        """Gets the logs in a hierarchical structure
+
+        Returns:
+            Step: The root element of the log hierarchy
+        """
         project = self.build.project.name
         build_id = self.build.id
         steps = [
