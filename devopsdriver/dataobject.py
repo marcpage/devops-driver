@@ -3,6 +3,9 @@
 """ Data Objects """
 
 
+from json import dumps
+
+
 class DataObject:  # pylint: disable=too-few-public-methods
     """dict like object with fuzzy field matching"""
 
@@ -45,6 +48,12 @@ class DataObject:  # pylint: disable=too-few-public-methods
 
     def __getattr__(self, name: str) -> any:
         return self._get_field(name, self.data)
+
+    def __str__(self) -> str:
+        return dumps(self.data, indent=2)
+
+    def __repr__(self) -> str:
+        return dumps(self.data, indent=2)
 
     class _Dict(dict):
         def __init__(self, dataobject, data: dict):
