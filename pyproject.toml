@@ -6,7 +6,7 @@ license = {file = "LICENSE"}
 dynamic = ["version"]
 requires-python = ">= 3.10"
 dependencies = [
-  "PyYAML==6.0.1",
+  "PyYAML==6.0.2",
   "keyring==25.3.0",
   "setuptools==72.1.0",  # neded for azure-devops to use 7.1 API
   "azure-devops==7.1.0b4",
