@@ -147,15 +147,21 @@ class Settings:
     }
     ENV_VAR_PATTERN = regex(r"\${(\S+)}")
 
-    def __init__(self, file: str, *directories, **settings):
+    def __init__(self, file: str, *directories, shared_name: str = None, **settings):
         """Create a settings object using a file, directories to search, and settings overrides
 
         Args:
             file (str): The basename to use and a directory to search. pass __file__
+            *directories (list[str]): You can pass other directories to search for files
+            shared (str, optional): The name of the common settings file.
+                                        Defaults to "devopsdriver".
+            **settings (dict[str,str]): Keys you want to directly override in the code
         """
         self.overrides = settings
         directories = [dirname(file), *directories, Settings.__preferences_dir()]
-        search_info = Settings.__all_paths(file, directories)
+        search_info = Settings.__all_paths(
+            file, directories, SHARED if shared_name is None else shared_name
+        )
         self.search_files = [join(d, n + e) for e, n, d, _ in search_info]
         self.settings = Settings.__find_all_settings(search_info)
         self.opts = {}
@@ -341,8 +347,8 @@ class Settings:
                 Settings.__merge(base[key], new[key])
 
     @staticmethod
-    def __all_paths(file: str, directories: list[str]) -> list[tuple]:
-        names = [splitext(basename(file))[0], SHARED]
+    def __all_paths(file: str, directories: list[str], shared: str) -> list[tuple]:
+        names = [splitext(basename(file))[0], shared]
         return [
             (e, n, d, f)
             for n in names
