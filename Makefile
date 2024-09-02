@@ -22,6 +22,7 @@ BUILD_LOG=$(VENV_DIR)/build_log.txt
 PIP_INSTALL=$(VENV_PIP) install --quiet --upgrade
 PIP_INSTALL_TEST=pip install --no-cache-dir --quiet
 SETTINGS_TOOL=devopsdriver.manage_settings
+VERSION=$(shell python -c "print(__import__('devopsdriver').__version__)")
 
 $(VENV_DIR)/touchfile: $(PROJECT_FILE)
 	@test -d $(VENV_DIR) || $(INITIAL_PYTHON) -m venv $(VENV_DIR)
@@ -49,6 +50,8 @@ $(FORMAT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) &> $@
 
 format: $(FORMAT_FILE)
+	@perl -i -pe's@released&message=v\d+.\d+.\d+&@released&message=v$(VERSION)&@g' README.md
+	@perl -i -pe's@devopsdriver/\d+.\d+.\d+/@devopsdriver/$(VERSION)/@g' README.md
 	@cat $^
 	@perl -i -pe's/test\+coverage\&message=..%/test\+coverage\&message=$(MIN_TEST_COVERAGE)%/g' README.md
 
@@ -66,12 +69,8 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@echo "Preparation cleanup"
 	@rm -Rf dist build *.egg-info $(VENV_DIR)/$(TEST_SERVER_TEST_DIR) $(VENV_DIR)/$(PROD_SERVER_TEST_DIR)
 	@echo "Validating version strings are correct"
-	@$(SET_ENV); \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		if grep --quiet "released&message=v$$VERSION&" README.md; then true; else echo "Update README.md badge version" && false; fi
-	@$(SET_ENV); \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
-		if grep --quiet "devopsdriver/$$VERSION/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
+	@if grep --quiet "released&message=v$(VERSION)&" README.md; then true; else echo "Update README.md badge version" && false; fi
+	@if grep --quiet "devopsdriver/$(VERSION)/" README.md; then true; else echo "Update README.md PyPI version" && false; fi
 	@echo "Putting tests in staging test dir: $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)"
 	@mkdir -p $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)
 	@cp -R tests $(VENV_DIR)/$(TEST_SERVER_TEST_DIR)/
@@ -94,20 +93,18 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	-@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL;
+		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$(VERSION) --extra-index-url $$URL;
 	@echo "Second attempt at testing staging package"
 	@$(SET_ENV); \
 		TESTURL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_test.url`; \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(TEST_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$$VERSION --extra-index-url $$URL; \
+		$(PIP_INSTALL_TEST) --log $@ -i $$TESTURL  pytest $(LIBRARY)==$(VERSION) --extra-index-url $$URL; \
 		$(VENV_PYTHON) -m pytest
 	@echo "Uploading package to production server"
 	@$(SET_ENV); \
@@ -120,19 +117,17 @@ $(DEPLOY_FILE):$(LINT_FILE) $(COVERAGE_FILE) $(PROJECT_FILE) $(SOURCES) lint cov
 	@echo "First attempt at testing production package"
 	-@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION;
+		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$(VERSION);
 	@echo "Second attempt at testing production package"
 	@$(SET_ENV); \
 		URL=`$(VENV_PYTHON) -m $(SETTINGS_TOOL) pypi_prod.url`; \
-		VERSION=`python -c "print(__import__('devopsdriver').__version__)"`; \
 		cd $(VENV_DIR)/$(PROD_SERVER_TEST_DIR); \
 		$(INITIAL_PYTHON) -m venv .venv; \
 		$(SET_ENV); \
-		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$$VERSION; \
+		$(PIP_INSTALL_TEST) --log $@ -i $$URL pytest  $(LIBRARY)==$(VERSION); \
 		$(VENV_PYTHON) -m pytest
 	@touch $@
 
