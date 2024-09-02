@@ -50,7 +50,8 @@ $(FORMAT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) &> $@
 
 format: $(FORMAT_FILE)
-	@echo VERSION = $(VERSION)
+	@perl -i -pe's@released&message=v\d+.\d+.\d+&@released&message=v$(VERSION)&@g' README.md
+	@perl -i -pe's@devopsdriver/\d+.\d+.\d+/@devopsdriver/$(VERSION)/@g' README.md
 	@cat $^
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
