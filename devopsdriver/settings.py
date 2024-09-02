@@ -153,7 +153,7 @@ class Settings:
         Args:
             file (str): The basename to use and a directory to search. pass __file__
             *directories (list[str]): You can pass other directories to search for files
-            shared (str, optional): The name of the common settings file.
+            shared_name (str, optional): The name of the common settings file.
                                         Defaults to "devopsdriver".
             **settings (dict[str,str]): Keys you want to directly override in the code
         """
