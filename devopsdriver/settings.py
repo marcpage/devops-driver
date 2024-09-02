@@ -143,7 +143,7 @@ class Settings:
     PREF_DIR = {
         "Darwin": join(ENVIRON.get("HOME", ""), "Library", "Preferences"),
         "Windows": join(ENVIRON.get("APPDATA", "")),
-        "Linux": join(ENVIRON.get("HOME", ""), ".devopsdriver"),
+        "Linux": join(ENVIRON.get("HOME", ""), ".%shared_name%"),
     }
     ENV_VAR_PATTERN = regex(r"\${(\S+)}")
 
@@ -158,7 +158,11 @@ class Settings:
             **settings (dict[str,str]): Keys you want to directly override in the code
         """
         self.overrides = settings
-        directories = [dirname(file), *directories, Settings.__preferences_dir()]
+        directories = [
+            dirname(file),
+            *directories,
+            Settings.__preferences_dir(SHARED if shared_name is None else shared_name),
+        ]
         search_info = Settings.__all_paths(
             file, directories, SHARED if shared_name is None else shared_name
         )
@@ -322,9 +326,14 @@ class Settings:
         return self.get(key)
 
     @staticmethod
-    def __preferences_dir() -> str:
-        default_dir = Settings.PREF_DIR[Settings.DEFAULT_PREF_DIR]
-        directory = Settings.PREF_DIR.get(SYSTEM(), default_dir)
+    def __preferences_dir(shared_name: str) -> str:
+
+        default_dir = Settings.PREF_DIR[Settings.DEFAULT_PREF_DIR].replace(
+            "%shared_name%", shared_name
+        )
+        directory = Settings.PREF_DIR.get(SYSTEM(), default_dir).replace(
+            "%shared_name%", shared_name
+        )
         MAKEDIRS(directory, exist_ok=True)
         return directory
 
