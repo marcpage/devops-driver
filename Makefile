@@ -53,6 +53,7 @@ format: $(FORMAT_FILE)
 	@perl -i -pe's@released&message=v\d+.\d+.\d+&@released&message=v$(VERSION)&@g' README.md
 	@perl -i -pe's@devopsdriver/\d+.\d+.\d+/@devopsdriver/$(VERSION)/@g' README.md
 	@cat $^
+	@perl -i -pe's/test\+coverage\&message=..%/test\+coverage\&message=$(MIN_TEST_COVERAGE)%/g' README.md
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(PIP_INSTALL) ".[dev]"
