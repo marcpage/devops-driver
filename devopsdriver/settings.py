@@ -154,7 +154,7 @@ class Settings:
             file (str): The basename to use and a directory to search. pass __file__
         """
         self.overrides = settings
-        directories = [dirname(file), *directories, Settings.__preferences_dir()]
+        directories = [Settings.__preferences_dir(), dirname(file), *directories]
         search_info = Settings.__all_paths(file, directories)
         self.search_files = [join(d, n + e) for e, n, d, _ in search_info]
         self.settings = Settings.__find_all_settings(search_info)
