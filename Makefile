@@ -22,7 +22,7 @@ BUILD_LOG=$(VENV_DIR)/build_log.txt
 PIP_INSTALL=$(VENV_PIP) install --quiet --upgrade
 PIP_INSTALL_TEST=pip install --no-cache-dir --quiet
 SETTINGS_TOOL=devopsdriver.manage_settings
-VERSION=$(shell python -c "print(__import__('devopsdriver').__version__)")
+VERSION=$(shell $(SET_ENV); python -c "print(__import__('devopsdriver').__version__)")
 
 $(VENV_DIR)/touchfile: $(PROJECT_FILE)
 	@test -d $(VENV_DIR) || $(INITIAL_PYTHON) -m venv $(VENV_DIR)
@@ -50,10 +50,10 @@ $(FORMAT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(VENV_PYTHON) -m black $(LIBRARY) &> $@
 
 format: $(FORMAT_FILE)
-	@perl -i -pe's@released&message=v\d+.\d+.\d+&@released&message=v$(VERSION)&@g' README.md
-	@perl -i -pe's@devopsdriver/\d+.\d+.\d+/@devopsdriver/$(VERSION)/@g' README.md
 	@cat $^
 	@perl -i -pe's/test\+coverage\&message=..%/test\+coverage\&message=$(MIN_TEST_COVERAGE)%/g' README.md
+	@perl -i -pe's@released&message=v\d+.\d+.\d+&@released&message=v$(VERSION)&@g' README.md
+	@perl -i -pe's@devopsdriver/\d+.\d+.\d+/@devopsdriver/$(VERSION)/@g' README.md
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(PIP_INSTALL) ".[dev]"
