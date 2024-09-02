@@ -143,19 +143,29 @@ class Settings:
     PREF_DIR = {
         "Darwin": join(ENVIRON.get("HOME", ""), "Library", "Preferences"),
         "Windows": join(ENVIRON.get("APPDATA", "")),
-        "Linux": join(ENVIRON.get("HOME", ""), ".devopsdriver"),
+        "Linux": join(ENVIRON.get("HOME", ""), ".%shared_name%"),
     }
     ENV_VAR_PATTERN = regex(r"\${(\S+)}")
 
-    def __init__(self, file: str, *directories, **settings):
+    def __init__(self, file: str, *directories, shared_name: str = None, **settings):
         """Create a settings object using a file, directories to search, and settings overrides
 
         Args:
             file (str): The basename to use and a directory to search. pass __file__
+            *directories (list[str]): You can pass other directories to search for files
+            shared_name (str, optional): The name of the common settings file.
+                                        Defaults to "devopsdriver".
+            **settings (dict[str,str]): Keys you want to directly override in the code
         """
         self.overrides = settings
-        directories = [Settings.__preferences_dir(), dirname(file), *directories]
-        search_info = Settings.__all_paths(file, directories)
+        directories = [
+            Settings.__preferences_dir(SHARED if shared_name is None else shared_name),
+            dirname(file),
+            *directories,
+        ]
+        search_info = Settings.__all_paths(
+            file, directories, SHARED if shared_name is None else shared_name
+        )
         self.search_files = [join(d, n + e) for e, n, d, _ in search_info]
         self.settings = Settings.__find_all_settings(search_info)
         self.opts = {}
@@ -316,9 +326,14 @@ class Settings:
         return self.get(key)
 
     @staticmethod
-    def __preferences_dir() -> str:
-        default_dir = Settings.PREF_DIR[Settings.DEFAULT_PREF_DIR]
-        directory = Settings.PREF_DIR.get(SYSTEM(), default_dir)
+    def __preferences_dir(shared_name: str) -> str:
+
+        default_dir = Settings.PREF_DIR[Settings.DEFAULT_PREF_DIR].replace(
+            "%shared_name%", shared_name
+        )
+        directory = Settings.PREF_DIR.get(SYSTEM(), default_dir).replace(
+            "%shared_name%", shared_name
+        )
         MAKEDIRS(directory, exist_ok=True)
         return directory
 
@@ -341,8 +356,8 @@ class Settings:
                 Settings.__merge(base[key], new[key])
 
     @staticmethod
-    def __all_paths(file: str, directories: list[str]) -> list[tuple]:
-        names = [splitext(basename(file))[0], SHARED]
+    def __all_paths(file: str, directories: list[str], shared: str) -> list[tuple]:
+        names = [splitext(basename(file))[0], shared]
         return [
             (e, n, d, f)
             for n in names
