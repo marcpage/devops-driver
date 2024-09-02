@@ -50,6 +50,7 @@ $(FORMAT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 
 format: $(FORMAT_FILE)
 	@cat $^
+	@perl -i -pe's/test\+coverage\&message=..%/test\+coverage\&message=$(MIN_TEST_COVERAGE)%/g' README.md
 
 $(LINT_FILE): $(VENV_DIR)/touchfile $(SOURCES)
 	@$(SET_ENV); $(PIP_INSTALL) ".[dev]"
