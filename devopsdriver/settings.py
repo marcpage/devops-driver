@@ -20,7 +20,7 @@
         or next to the file passed in (__file__).
     This allows for secrets, keys, and tokens to be stored on the machine and not in the repo.
     
-    The OS specific directories are:
+    Files in the OS specific directories have priority over other files and are stored in:
     - macOS: ~/Library/Preferences/
     - Windows: %APPDATA%/
     - Linux: ~/.devopsdriver/
@@ -53,11 +53,11 @@
         This could be colors, emails, repos, queries, whatever.
     
     Use case 4: override secrets for specific script
-        Overriding secrets stored in <pref>/devopsdrive.yml for specific scripts.
-        If your script is `cool_script.py` save them to <pref>cool_script.yml.
+        Overriding secrets stored in `<pref>/devopsdriver.yml` for specific scripts.
+        If your script is `cool_script.py` save them to `<pref>/cool_script.yml`.
     
     *Note*: You can override a specific setting in a sub-dictionary.
-    For instance, say <pref>/devopsdrive.yml:
+    For instance, say `<pref>/devopsdriver.yml`:
     
     ```yaml
     api:
@@ -65,7 +65,7 @@
         password: Setec Astronomy
     ```
     
-    You could override this for `cool_script.py` be adding <pref>cool_script.yml:
+    You could override this for `cool_script.py` be adding `<pref>/cool_script.yml`:
     
     ```yaml
     api:
@@ -154,7 +154,7 @@ class Settings:
             file (str): The basename to use and a directory to search. pass __file__
         """
         self.overrides = settings
-        directories = [dirname(file), *directories, Settings.__preferences_dir()]
+        directories = [Settings.__preferences_dir(), dirname(file), *directories]
         search_info = Settings.__all_paths(file, directories)
         self.search_files = [join(d, n + e) for e, n, d, _ in search_info]
         self.settings = Settings.__find_all_settings(search_info)

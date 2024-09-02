@@ -98,6 +98,40 @@ def test_basic():
                 .env("yy", "yota")
             )
             ltr = {"Linux": "l", "Darwin": "m", "Windows": "w", "Unknown": "l"}
+            local_overrides = {
+                "Darwin": {
+                    "v": "mmv",
+                    "dp.v": "mmv",
+                    "w": "mmw",
+                    "dp.w": "mmw",
+                    "x": "mmx",
+                    "dp.x": "mmx",
+                },
+                "Linux": {
+                    "v": "mlv",
+                    "dp.v": "mlv",
+                    "w": "mlw",
+                    "dp.w": "mlw",
+                    "x": "mlx",
+                    "dp.x": "mlx",
+                },
+                "Windows": {
+                    "v": "mwv",
+                    "dp.v": "mwv",
+                    "w": "mww",
+                    "dp.w": "mww",
+                    "x": "mwx",
+                    "dp.x": "mwx",
+                },
+                "Unknown": {
+                    "v": "mlv",
+                    "dp.v": "mlv",
+                    "w": "mlw",
+                    "dp.w": "mlw",
+                    "x": "mlx",
+                    "dp.x": "mlx",
+                },
+            }
             assert opts["yy"] == "yyenviron", opts["yy"]
             assert opts["aa"] == 1, f"{opts['aa']} {os}"
             assert opts["bb"] == 2, f"{opts['bb']} {os}"
@@ -145,12 +179,12 @@ def test_basic():
             assert opts["dp.t"] == "2ammt", f"{opts['dp.t']} {os}"
             assert opts["u"] == "2smmu", f"{opts['u']} {os}"
             assert opts["dp.u"] == "2smmu", f"{opts['dp.u']} {os}"
-            assert opts["v"] == "2mtmv", f"{opts['v']} {os}"
-            assert opts["dp.v"] == "2mtmv", f"{opts['dp.v']} {os}"
-            assert opts["w"] == "2atmw", f"{opts['w']} {os}"
-            assert opts["dp.w"] == "2atmw", f"{opts['dp.w']} {os}"
-            assert opts["x"] == "2stmx", f"{opts['x']} {os}"
-            assert opts["dp.x"] == "2stmx", f"{opts['dp.x']} {os}"
+            assert opts["v"] == local_overrides[os]["v"], f"{opts['v']} {os}"
+            assert opts["dp.v"] == local_overrides[os]["dp.v"], f"{opts['dp.v']} {os}"
+            assert opts["w"] == local_overrides[os]["w"], f"{opts['w']} {os}"
+            assert opts["dp.w"] == local_overrides[os]["dp.w"], f"{opts['dp.w']} {os}"
+            assert opts["x"] == local_overrides[os]["x"], f"{opts['x']} {os}"
+            assert opts["dp.x"] == local_overrides[os]["dp.x"], f"{opts['dp.x']} {os}"
             assert opts["y"] == f"m{ltr[os]}y", f"{opts['y']} m{ltr[os]}y {os}"
             assert opts["dp.y"] == f"m{ltr[os]}y", f"{opts['dp.y']} m{ltr[os]}y {os}"
 
