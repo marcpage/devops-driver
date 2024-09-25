@@ -16,7 +16,7 @@ class Client:  # pylint: disable=too-few-public-methods
     def __init__(self, client: BuildClient):
         self.client = client
 
-    def list(  # pylint: disable=too-many-positional-arguments
+    def list(  # pylint: disable=too-many-positional-arguments,too-many-arguments
         self,
         project: str,
         pipelines: list[int] = None,
