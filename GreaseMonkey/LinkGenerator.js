@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Link Generator
 // @namespace    http://github.com/marcpage
-// @version      0.0.5
+// @version      0.0.6
 // @description  Add a copy-link button to many sites that has Markdown and HTML formatted links
 // @author       MarcAllenPage@gmail.com
 // @homepageURL  https://github.com/marcpage/devops-driver/main/GreaseMonkey/README.md
@@ -75,6 +75,8 @@
     */
     function getTag(element, tagname, index=0) {
         var elements = element ? element.getElementsByTagName(tagname) : undefined;
+
+        index = index < 0 ? elements.length + index : index;
 
         if (elements && elements.length > index) {
             return elements[index];
@@ -181,7 +183,7 @@
         },
         {
             "name": "Jira version 2",
-            "location": function() {return getParent(getTag(getIded(document, "jira-issue-header"), "li"));},
+            "location": function() {return getParent(getTag(getIded(document, "jira-issue-header"), "div", 3));},
             "info": function() {return {
                 "name": getText(getAttributed(document, "h1", "data-testid", "issue.views.issue-base.foundation.summary.heading")),
                 "id": getText(getTag(getAttributed(document, "a", "data-testid", "issue.views.issue-base.foundation.breadcrumbs.current-issue.item"), "span")),
