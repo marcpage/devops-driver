@@ -14,6 +14,6 @@ $
 ## Deploy
 
 1. Make sure `__version__` is updated to a version that does not exist on the test or productin PyPI server
-3. Execute `make format deploy`
-4. Create a PR with your changes after a successful deployment
-5. After the PR merges, create a new release in GitHub
+2. Execute `make format deploy`
+3. Create a PR with your changes after a successful deployment
+4. After the PR merges, create a new release in GitHub
