@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Azure Build Client """
+"""Azure Build Client"""
 
 
 from datetime import datetime

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Establish a connection to Azure Devops 
+"""Establish a connection to Azure Devops
 
 API Documented here:
 https://github.com/microsoft/azure-devops-python-api

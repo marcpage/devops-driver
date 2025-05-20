@@ -1,1 +1,1 @@
-""" init workitem module """
+"""init workitem module"""

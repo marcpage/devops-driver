@@ -1,4 +1,4 @@
-""" initialize azure module """
+"""initialize azure module"""
 
 # re export symbols for easier use
 from .azureobject import AzureObject

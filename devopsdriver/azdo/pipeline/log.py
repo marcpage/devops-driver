@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Azure Pipeline Run Log """
+"""Azure Pipeline Run Log"""
 
 
 from azure.devops.v7_1.pipelines.models import Log as AzureLog

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Builds a WIQL query
+"""Builds a WIQL query
 https://learn.microsoft.com/en-us/azure/devops/boards/queries/wiql-syntax?view=azure-devops
 
 SELECT

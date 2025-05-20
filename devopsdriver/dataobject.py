@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Data Objects """
+"""Data Objects"""
 
 
 from json import dumps

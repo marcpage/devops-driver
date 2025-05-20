@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Module Doc """
+"""Module Doc"""
 
 
 from os.path import dirname, basename, splitext

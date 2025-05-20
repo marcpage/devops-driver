@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" An Azure Devops WorkItem """
+"""An Azure Devops WorkItem"""
 
 
 from msrest.serialization import Model

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Azure Build """
+"""Azure Build"""
 
 from azure.devops.v7_1.build.models import Build as AzureBuild
 from azure.devops.v7_1.build import BuildClient

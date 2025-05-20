@@ -1,3 +1,5 @@
+# devops-driver
+
 ![status sheild](https://img.shields.io/static/v1?label=status&message=beta&color=blue&style=plastic)
 [![status sheild](https://img.shields.io/static/v1?label=released&message=v0.1.48&color=active&style=plastic)](https://pypi.org/project/devopsdriver/0.1.48/)
 [![GitHub](https://img.shields.io/github/license/marcpage/devops-driver?style=plastic)](https://github.com/marcpage/devops-driver?tab=Unlicense-1-ov-file#readme)
@@ -21,12 +23,10 @@
 [![Azure](https://img.shields.io/static/v1?label=&message=Supports%20Microsoft%20Azure&color=blue&style=plastic&logo=microsoftazure)](https://azure.microsoft.com/)
 [![Gmail](https://img.shields.io/static/v1?label=&message=Supports%20Google%20Gmail&color=white&style=plastic&logo=gmail)](https://gmail.com/)
 
-OS: 
+OS:
 [![Windows](https://img.shields.io/static/v1?label=&message=Windows&color=blue&style=plastic&logo=windows)](https://microsoft.com/)
 [![macOS](https://img.shields.io/static/v1?label=&message=macOS&color=white&logoColor=black&style=plastic&logo=apple)](https://apple.com/)
 [![Linux](https://img.shields.io/static/v1?label=&message=Linux&color=seashell&logoColor=black&style=plastic&logo=linux)](https://linux.org/)
-
-# devops-driver
 
 Devops-driver is a collection of tools to help streamline developer's experience and gain insights into various processes.
 
@@ -46,6 +46,7 @@ To allow seamless work in both pipelines as well as in the development environme
 Say you want a pipeline that looks for User Stories that are newer than 3 days and send out an email.
 
 ### \<platform dependent path\>/devopsdriver.yml
+
 ```yaml
 smtp:
     sender: JohnDoe@company.com
@@ -55,7 +56,7 @@ secrets:
     smtp.password: smtp/password
 ```
 
-This file is in a global place (location varies by OS) and stores information that you may not want in your repository or is specific to development. 
+This file is in a global place (location varies by OS) and stores information that you may not want in your repository or is specific to development.
 
 | Platform | Global Directory       |
 |----------|------------------------|
@@ -66,6 +67,7 @@ This file is in a global place (location varies by OS) and stores information th
 The `secrets` are extra sensative and are stored in the OS keychain.
 
 ### Set secrets in the keychain
+
 ```bash
 $ python3 -m venv .venv
 $ source .venv/bin/activate
@@ -77,16 +79,21 @@ secret: azure.token  key: azure/token
 smtp.password (azure/token): ****
 $ settings --secrets
 secret: azure.token  key: azure/token
-	Value set
+    Value set
 secret: smtp.password  key: smtp/password
-	Value set
+    Value set
 $
 ```
+
 The first call to `settings` will look for every secret and check if they are already set in the keychain.
 For any secret that has not been set in the keychain, you will be prompted to enter the password to store.
 The second call to `settings` will verify that all the values have been set in the keychain.
 
+**Note**: If your `secrets`, `cli`, or `env` are in a yaml file named after your script,
+you can call `settings --secrets --script my_script.py`.
+
 ### devopsdriver.yml
+
 ```yaml
 azure:
     url: https://dev.azure.com/MyCompany
@@ -112,15 +119,18 @@ The `cli` and `env` map command line switches and environment variables to those
 This allows for many options for setting values depending on your needs.
 
 ### new_stories.yml
+
 ```yaml
 scrum masters:
     - JohnDoe@company.com
     - JaneDoe@company.com
 ```
+
 This file is specific to your script and not shared.
 These are values that you want to use in your script but have them here for easy adjustment.
 
 ### new_stories.html.mako
+
 ```html
 <h1>Stories created in the last ${days} days</h1>
 <ul>
@@ -133,6 +143,7 @@ These are values that you want to use in your script but have them here for easy
 This file is the template for the email body.
 
 ### new_stories.py
+
 ```python
 from datetime import date, timedelta
 
@@ -168,9 +179,9 @@ send_email(
 
 ### The email sent
 
-**From**: JohnDoe@company.com
+**From**: `JohnDoe@company.com`
 
-**To**: JohnDoe@company.com, JaneDoe@company.com
+**To**: `JohnDoe@company.com`, `JaneDoe@company.com`
 
 **Subject**: Stories created in the last 3 days
 
@@ -185,4 +196,3 @@ send_email(
 - 754 frontend - store to schema
 - 755 Transfer job to production. Setup migrations to move to production
 - 756 Query subscription status from App
-
