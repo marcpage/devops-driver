@@ -43,7 +43,7 @@ class Client:
             top=top,
         )
 
-    def get_history(  # pylint: disable=too-many-arguments
+    def get_history(  # pylint: disable=too-many-positional-arguments,too-many-arguments
         self,
         wi_id: int,
         project: str = None,
