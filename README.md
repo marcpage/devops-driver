@@ -89,6 +89,9 @@ The first call to `settings` will look for every secret and check if they are al
 For any secret that has not been set in the keychain, you will be prompted to enter the password to store.
 The second call to `settings` will verify that all the values have been set in the keychain.
 
+**Note**: If your `secrets`, `cli`, or `env` are in a yaml file named after your script,
+you can call `settings --secrets --script my_script.py`.
+
 ### devopsdriver.yml
 
 ```yaml
