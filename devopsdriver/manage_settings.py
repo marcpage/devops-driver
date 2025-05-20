@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 
-""" Module Doc """
+"""Module Doc"""
 
 
-from os.path import dirname, join
+from os.path import dirname, join, abspath
 from sys import argv as sys_argv
 from getpass import getpass as os_getpass
 
@@ -31,7 +31,14 @@ def main() -> None:
         )
         return
 
-    settings = Settings(__file__, dirname(dirname(__file__))).key("secrets")
+    position = args.index("--script") if "--script" in args else len(args)
+    script = __file__
+
+    if position + 1 < len(args):
+        args.pop(position)
+        script = abspath(args.pop(position))
+
+    settings = Settings(script, dirname(dirname(__file__))).key("secrets")
 
     if "--secrets" in args:
         args.remove("--secrets")
