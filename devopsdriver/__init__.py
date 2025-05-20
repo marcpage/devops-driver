@@ -1,4 +1,4 @@
-""" DevOps tools """
+"""DevOps tools"""
 
 from .settings import Settings
 from .sendmail import send_email
