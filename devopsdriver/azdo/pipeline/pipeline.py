@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Azure Pipeline """
+"""Azure Pipeline"""
 
 
 from azure.devops.v7_1.pipelines.models import Pipeline as AzurePipeline

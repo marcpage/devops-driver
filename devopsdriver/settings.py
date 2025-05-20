@@ -1,78 +1,78 @@
 #!/usr/bin/env python3
 
 
-""" Settings that can be in files, environment, or on the command line 
+"""Settings that can be in files, environment, or on the command line
 
-    Settings can be set on the command line, environment, in the code, or in files.
-    
-    Priority order:
-    - in code
-    - command line
-    - environment
-    - files
-    
-    Files can be JSON or YAML.
-    They must have .json, .yml, or .yaml extension.
-    Files can be named after the file passed in (__file__) or "devopsdriver".
-    All files named after the file passed in have priority over "devopsdriver".
-    This allows for shared settings for multiple scripts as well as specific settings.
-    Files can be in an OS-specific preferences location, a series of specified directories, 
-        or next to the file passed in (__file__).
-    This allows for secrets, keys, and tokens to be stored on the machine and not in the repo.
-    
-    Files in the OS specific directories have priority over other files and are stored in:
-    - macOS: ~/Library/Preferences/
-    - Windows: %APPDATA%/
-    - Linux: ~/.devopsdriver/
-    
-    You can have environment variable substitutions in the values in the files.
-    For instance, you can specify:
-    
-    output: ${home}/reports
-    
-    The `${home}` will be replaced with the value of the HOME environment variable, if it exists.
-    If the environment variable does not exist, no change is made.
-    
-    Use case 1: Secrets not in repo
-        tokens, passwords, etc can be stored in <pref>/devopsdriver.yml
-        This will allow for all scripts to access those secrets
-            but they are not in the repo.
-        For pipeline runs these secrets can be passed on the command line or in the environment.
-    
-    Use case 2: common settings among scripts
-        Store your common settings in devopsdriver.yml next to your script.
-        All scripts in this directory will have access to these settings.
-        For instance, say you want all emails sent from the same person.
-        You could set 'email: me@domain.com' in devopsdriver.html.
-        You could also, store report paths, emails, groups, holidays, etc.
-        Any data all scripts may want to have access to.
-        
-    Use case 3: configurable settings
-        Any settings in your script that you may want to configure.
-        If your script is `cool_script.py` then put the settings in `cool_script.yml` next to it.
-        This could be colors, emails, repos, queries, whatever.
-    
-    Use case 4: override secrets for specific script
-        Overriding secrets stored in `<pref>/devopsdriver.yml` for specific scripts.
-        If your script is `cool_script.py` save them to `<pref>/cool_script.yml`.
-    
-    *Note*: You can override a specific setting in a sub-dictionary.
-    For instance, say `<pref>/devopsdriver.yml`:
-    
-    ```yaml
-    api:
-        user: johndoe
-        password: Setec Astronomy
-    ```
-    
-    You could override this for `cool_script.py` be adding `<pref>/cool_script.yml`:
-    
-    ```yaml
-    api:
-        user: janedoe
-    ```
-    
-    johndoe and janedoe share the same password, so you just need to update the `user`
+Settings can be set on the command line, environment, in the code, or in files.
+
+Priority order:
+- in code
+- command line
+- environment
+- files
+
+Files can be JSON or YAML.
+They must have .json, .yml, or .yaml extension.
+Files can be named after the file passed in (__file__) or "devopsdriver".
+All files named after the file passed in have priority over "devopsdriver".
+This allows for shared settings for multiple scripts as well as specific settings.
+Files can be in an OS-specific preferences location, a series of specified directories,
+    or next to the file passed in (__file__).
+This allows for secrets, keys, and tokens to be stored on the machine and not in the repo.
+
+Files in the OS specific directories have priority over other files and are stored in:
+- macOS: ~/Library/Preferences/
+- Windows: %APPDATA%/
+- Linux: ~/.devopsdriver/
+
+You can have environment variable substitutions in the values in the files.
+For instance, you can specify:
+
+output: ${home}/reports
+
+The `${home}` will be replaced with the value of the HOME environment variable, if it exists.
+If the environment variable does not exist, no change is made.
+
+Use case 1: Secrets not in repo
+    tokens, passwords, etc can be stored in <pref>/devopsdriver.yml
+    This will allow for all scripts to access those secrets
+        but they are not in the repo.
+    For pipeline runs these secrets can be passed on the command line or in the environment.
+
+Use case 2: common settings among scripts
+    Store your common settings in devopsdriver.yml next to your script.
+    All scripts in this directory will have access to these settings.
+    For instance, say you want all emails sent from the same person.
+    You could set 'email: me@domain.com' in devopsdriver.html.
+    You could also, store report paths, emails, groups, holidays, etc.
+    Any data all scripts may want to have access to.
+
+Use case 3: configurable settings
+    Any settings in your script that you may want to configure.
+    If your script is `cool_script.py` then put the settings in `cool_script.yml` next to it.
+    This could be colors, emails, repos, queries, whatever.
+
+Use case 4: override secrets for specific script
+    Overriding secrets stored in `<pref>/devopsdriver.yml` for specific scripts.
+    If your script is `cool_script.py` save them to `<pref>/cool_script.yml`.
+
+*Note*: You can override a specific setting in a sub-dictionary.
+For instance, say `<pref>/devopsdriver.yml`:
+
+```yaml
+api:
+    user: johndoe
+    password: Setec Astronomy
+```
+
+You could override this for `cool_script.py` be adding `<pref>/cool_script.yml`:
+
+```yaml
+api:
+    user: janedoe
+```
+
+johndoe and janedoe share the same password, so you just need to update the `user`
 """
 
 

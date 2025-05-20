@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Tools that help when working with Azure """
+"""Tools that help when working with Azure"""
 
 
 from datetime import datetime, timezone, timedelta

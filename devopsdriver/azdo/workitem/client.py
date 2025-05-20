@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Azure WorkItem Client """
+"""Azure WorkItem Client"""
 
 
 from azure.devops.v7_1.work_item_tracking.models import Wiql as AzureWiql

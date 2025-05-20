@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Pipeline Run """
+"""Pipeline Run"""
 
 
 from azure.devops.v7_1.pipelines.models import Pipeline

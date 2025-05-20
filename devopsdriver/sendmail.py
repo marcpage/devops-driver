@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Ability to send emails with embedded images """
+"""Ability to send emails with embedded images"""
 
 
 from smtplib import SMTP as OS_SMTP, SMTP_SSL as OS_SMTP_SSL

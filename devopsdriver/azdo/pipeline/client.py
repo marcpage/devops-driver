@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" Pipeline client """
+"""Pipeline client"""
 
 
 from azure.devops.v7_1.pipelines import PipelinesClient
