@@ -2,11 +2,10 @@
 
 """Manages GitHub connection"""
 
-from devopsdriver.settings import Settings
 
 from github import Github as Github_connection, Auth
-from github.Issue import Issue
-from github.PullRequest import PullRequest
+
+from devopsdriver.settings import Settings
 
 
 class Github:
