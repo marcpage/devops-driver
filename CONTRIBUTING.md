@@ -50,6 +50,6 @@ Once you submit your PR, a team member will review your proposal. We may ask que
 
 *todo* add more info
 
-### Your PR is merged!
+### Your PR is merged
 
 Congratulations :tada::tada: Thank you :sparkles:.
