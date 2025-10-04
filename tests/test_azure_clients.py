@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" test azure client logic """
+"""test azure client logic"""
 
 
 from tempfile import TemporaryDirectory
@@ -32,6 +32,7 @@ class MockConnection:  # pylint: disable=too-few-public-methods
                 "get_core_client",
                 "get_build_client",
                 "get_identity_client",
+                "get_graph_client",
             }
 
             def __getattr__(self, name: str) -> str:
