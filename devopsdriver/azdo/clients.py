@@ -53,6 +53,7 @@ class Azure:  # pylint: disable=too-few-public-methods,too-many-instance-attribu
             "core": self.connection.clients_v7_1.get_core_client,
             "build": self.connection.clients_v7_1.get_build_client,
             "identity": self.connection.clients_v7_1.get_identity_client,
+            "graph": self.connection.clients_v7_1.get_graph_client,
         }
         unsupported_clients = set(clients) - set(client_calls)
         assert not unsupported_clients, f"{unsupported_clients} not supported"
@@ -63,6 +64,7 @@ class Azure:  # pylint: disable=too-few-public-methods,too-many-instance-attribu
         self.git = Azure._Client(Azure.__client("git", clients, client_calls))
         self.build = BClient(Azure.__client("build", clients, client_calls))
         self.identity = Azure._Client(Azure.__client("identity", clients, client_calls))
+        self.graph = Azure._Client(Azure.__client("graph", clients, client_calls))
 
     @staticmethod
     def __client(name: str, clients: dict, calls: dict) -> any:
