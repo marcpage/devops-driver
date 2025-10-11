@@ -41,11 +41,11 @@ def image_extension(data: bytes) -> str:
     raise AttributeError("Image not a known format: " + ",".join(IMAGE_HEADERS))
 
 
-def send_email(
+def send_email(  # pylint: disable=too-many-locals
     recipients: str | list[str],
     subject: str,
     html_body: str,
-    settings: Settings = None,
+    settings: Settings | None = None,
     **image_data,
 ):
     """Sends an email with embedded images
@@ -65,7 +65,9 @@ def send_email(
         ", ".join(missing) + " not found in:\n" + "\n".join(settings.search_files)
     )
     sender = settings["smtp.sender"]
+    assert isinstance(sender, str), sender
     username = settings.get("smtp.username", sender)
+    assert isinstance(username, str), username
     message = MIMEMULTIPART()
     message["Subject"] = subject
     message["From"] = sender
@@ -85,8 +87,14 @@ def send_email(
         )
         message.attach(image)
 
-    with connection_type(settings["smtp.server"], settings["smtp.port"]) as smtp:
+    server = settings["smtp.server"]
+    assert isinstance(server, str), server
+    port = settings["smtp.port"]
+    assert isinstance(port, int), port
+    password = settings["smtp.password"]
+    assert isinstance(password, str), password
+    with connection_type(server, port) as smtp:
         smtp.set_debuglevel(False)
-        smtp.login(username, settings["smtp.password"])
+        smtp.login(username, password)
         smtp.sendmail(sender, recipients, message.as_string())
         smtp.quit()

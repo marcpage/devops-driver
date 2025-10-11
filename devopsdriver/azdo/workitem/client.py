@@ -21,9 +21,9 @@ class Client:
     def query(
         self,
         wiql: Wiql | str,
-        team_context: TeamContext = None,
-        time_precision: bool = None,
-        top: int = None,
+        team_context: TeamContext | None = None,
+        time_precision: bool | None = None,
+        top: int | None = None,
     ) -> WorkItemQueryResult:
         """Perform a wiql query
 
@@ -46,15 +46,15 @@ class Client:
     def get_history(  # pylint: disable=too-many-positional-arguments,too-many-arguments
         self,
         wi_id: int,
-        project: str = None,
-        top: int = None,
-        skip: int = None,
-        expand: str = None,
+        project: str | None = None,
+        top: int | None = None,
+        skip: int | None = None,
+        expand: str | None = None,
     ) -> list[AzureWorkItem]:
         """Simple wrapper around get_revisions"""
         return self.client.get_revisions(wi_id, project, top, skip, expand)
 
-    def find_ids(self, wiql: Wiql | str, top: int = None) -> list[int]:
+    def find_ids(self, wiql: Wiql | str, top: int | None = None) -> list[int]:
         """Given a query, find the work item ids
 
         Args:
@@ -73,9 +73,9 @@ class Client:
         # query_results_type: workItem
         # query_type: flat
         # columns: list of name, reference_name, url
-        return [i.id for i in found.work_items]
+        return [i.id for i in found.work_items] if found.work_items else []
 
-    def find(self, wiql: Wiql | str, top: int = None) -> list[list[AzureObject]]:
+    def find(self, wiql: Wiql | str, top: int | None = None) -> list[list[AzureObject]]:
         """Gets the full history of items found in a WIQL search
 
         Args:

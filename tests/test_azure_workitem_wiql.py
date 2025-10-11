@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Test work item query language """
+"""Test work item query language"""
 
 from datetime import date, datetime
 
@@ -13,7 +13,7 @@ from devopsdriver.azdo import GreaterThanOrEqual, LessThanOrEqual
 
 def test_no_params() -> None:
     """Test empty, default wiql"""
-    assert str(Wiql()) == "SELECT [System.Id] FROM workitems", str(Wiql())
+    assert str(Wiql()) == "SELECT [System.Id] FROM WorkItems", str(Wiql())
 
 
 def test_expressions() -> None:
@@ -43,7 +43,7 @@ def test_expressions() -> None:
         .asof(start)
     )
     expected = (
-        """SELECT [System.State], [System.Id] FROM workitems """
+        """SELECT [System.State], [System.Id] FROM WorkItems """
         + """WHERE [System.State] = "New" AND [System.Title] IS EMPTY """
         + """AND [Microsoft.VSTS.Common.Priority] IS NOT EMPTY """
         + """AND [System.CreatedDate] > "06/30/2024" """
@@ -71,7 +71,7 @@ def test_in_and_not_in() -> None:
         And(In("State", "New", "Ready for Development"), NotIn("Priority", 1, 2))
     )
     expected = (
-        """SELECT [System.Id] FROM workitems WHERE [System.State] """
+        """SELECT [System.Id] FROM WorkItems WHERE [System.State] """
         + """IN ("New", "Ready for Development") AND [Microsoft.VSTS.Common.Priority] """
         + """NOT IN (1, 2)"""
     )
