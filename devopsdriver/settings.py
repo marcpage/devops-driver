@@ -316,7 +316,7 @@ class Settings:
         Returns:
             bool: True if the key exists
         """
-        return True if self.__lookup(key, check=True) else False
+        return bool(self.__lookup(key, check=True))
 
     def __contains__(self, key: str) -> bool:
         return self.has(key)

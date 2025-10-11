@@ -41,7 +41,7 @@ def image_extension(data: bytes) -> str:
     raise AttributeError("Image not a known format: " + ",".join(IMAGE_HEADERS))
 
 
-def send_email(
+def send_email(  # pylint: disable=too-many-locals
     recipients: str | list[str],
     subject: str,
     html_body: str,
