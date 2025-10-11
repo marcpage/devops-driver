@@ -17,13 +17,13 @@ class AzureObject(DataObject):  # pylint: disable=too-few-public-methods
         self.raw = azure_object
         super().__init__(self.raw.as_dict())
 
-    def _parse_value(self, data: any) -> any:
+    def _parse_value(self, data):
         if isinstance(data, str) and Timestamp.is_timestamp(data):
             return Timestamp(data)
 
         return super()._parse_value(data)
 
-    def _get_field(self, name: str, data: dict) -> any:
+    def _get_field(self, name: str, data: dict):
         value = super()._get_field(name, data)
 
         if value is None and "fields" in data:

@@ -147,7 +147,9 @@ class Settings:
     }
     ENV_VAR_PATTERN = regex(r"\${(\S+)}")
 
-    def __init__(self, file: str, *directories, shared_name: str = None, **settings):
+    def __init__(
+        self, file: str, *directories, shared_name: str | None = None, **settings
+    ):
         """Create a settings object using a file, directories to search, and settings overrides
 
         Args:
@@ -172,7 +174,7 @@ class Settings:
         self.environ = {}
         self.secrets = {}
 
-    def __bypass(self, key: str, name: str, store: dict):
+    def __bypass(self, key: str, name: str | None, store: dict):
         if name is None:
             for setting_key, store_name in self.settings.get(key, {}).items():
                 store[setting_key] = store_name
@@ -181,7 +183,7 @@ class Settings:
         store[key] = name
         return self
 
-    def key(self, key: str, name: str = None):
+    def key(self, key: str, name: str | None = None):
         """Sets a keychain name to map to a settings value.
 
         Args:
@@ -195,7 +197,7 @@ class Settings:
         """
         return self.__bypass(key, name, self.secrets)
 
-    def cli(self, key: str, name: str = None):
+    def cli(self, key: str, name: str | None = None):
         """Sets a command line switch to map to a settings value.
 
         Args:
@@ -209,7 +211,7 @@ class Settings:
         """
         return self.__bypass(key, name, self.opts)
 
-    def env(self, key: str, name: str = None):
+    def env(self, key: str, name: str | None = None):
         """Sets an environment variable to map to a settings value.
 
         Args:
@@ -232,7 +234,7 @@ class Settings:
         return "${" + key + "}"
 
     @staticmethod
-    def __patch(value: any) -> any:
+    def __patch(value):
         if isinstance(value, str):
             return Settings.ENV_VAR_PATTERN.sub(
                 lambda m: Settings.__patch_instance(m.group(1)), value
@@ -257,7 +259,7 @@ class Settings:
         secret_name = parts[1] if len(parts) == 2 else parts[0]
         return (service, secret_name)
 
-    def __lookup(self, key: str, check: bool, default: any = None) -> any:
+    def __lookup(self, key: str, check: bool, default=None):
         # Settings passed in override everything
         if key in self.overrides:
             return True if check else self.overrides[key]
@@ -293,7 +295,7 @@ class Settings:
 
         return Settings.__patch(level.get(keys[-1], default))
 
-    def get(self, key: str, default: any = None) -> any:
+    def get(self, key: str, default=None):
         """Dictionary-like get
 
         Args:
@@ -314,12 +316,12 @@ class Settings:
         Returns:
             bool: True if the key exists
         """
-        return self.__lookup(key, check=True)
+        return True if self.__lookup(key, check=True) else False
 
     def __contains__(self, key: str) -> bool:
         return self.has(key)
 
-    def __getitem__(self, key: str) -> any:
+    def __getitem__(self, key: str):
         if not self.has(key):
             raise KeyError(key)
 

@@ -151,7 +151,7 @@ class In(Compare):  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         field: Field | str,
-        *values: list[Value | str | date | datetime | int | float],
+        *values: Value | str | date | datetime | int | float,
     ):
         super().__init__(
             field,
@@ -167,7 +167,7 @@ class NotIn(Compare):  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         field: Field | str,
-        *values: list[Value | str | date | datetime | int | float],
+        *values: Value | str | date | datetime | int | float,
     ):
         super().__init__(
             field,
@@ -234,7 +234,7 @@ class GreaterThanOrEqual(Compare):  # pylint: disable=too-few-public-methods
 class Expression:  # pylint: disable=too-few-public-methods
     """Join several compares"""
 
-    def __init__(self, operator: str, *compares: list[Compare]):
+    def __init__(self, operator: str, *compares):
         self.operator = operator
         self.expressions = compares
 
@@ -245,14 +245,14 @@ class Expression:  # pylint: disable=too-few-public-methods
 class And(Expression):  # pylint: disable=too-few-public-methods
     """Join compares via AND"""
 
-    def __init__(self, *compares: list[Compare | Expression]):
+    def __init__(self, *compares: Compare | Expression):
         super().__init__("AND", *compares)
 
 
 class Or(Expression):  # pylint: disable=too-few-public-methods
     """join compares via OR"""
 
-    def __init__(self, *compares: list[Compare | Expression]):
+    def __init__(self, *compares: Compare | Expression):
         super().__init__("OR", *compares)
 
 
@@ -264,8 +264,10 @@ class Wiql:
         self.search = None
         self.order = []
         self.snapshot = None
+        self.source = "WorkItems"
+        self.mode_type = None
 
-    def select(self, *fields: list[Field | str]):
+    def select(self, *fields: Field | str):
         """The fields to select
 
         Returns:
@@ -284,6 +286,16 @@ class Wiql:
             Builder: self for chaining calls
         """
         self.search = expression
+        return self
+
+    def from_source(self, source: str):
+        """Sets the FROM field"""
+        self.source = source
+        return self
+
+    def mode(self, results_mode: str):
+        """Sets the mode for link queries"""
+        self.mode_type = results_mode
         return self
 
     def order_by(self, *orders):
@@ -315,4 +327,5 @@ class Wiql:
             f" ORDER BY {', '.join(str(o) for o in self.order)}" if self.order else ""
         )
         asof = f" ASOF {str(self.snapshot)}" if self.snapshot else ""
-        return f"SELECT {select} FROM workitems{where}{order}{asof}"
+        mode = f" MODE({self.mode_type})" if self.mode_type else ""
+        return f"SELECT {select} FROM {self.source}{where}{order}{asof}{mode}"
