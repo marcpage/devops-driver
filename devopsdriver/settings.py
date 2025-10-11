@@ -373,6 +373,6 @@ class Settings:
 
         for extension, name, directory, loader in search_info:
             contents = loader(join(directory, name + extension))
-            Settings.__merge(settings, contents)
+            Settings.__merge(settings, contents if contents else {})
 
         return settings
