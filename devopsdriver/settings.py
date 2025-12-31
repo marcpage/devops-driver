@@ -92,13 +92,13 @@ from keyring.backends import fail
 # for testing
 ENVIRON = os_environ
 ARGV = sys_argv
-SYSTEM = os_system
-MAKEDIRS = os_makedirs
+SYSTEM = os_system  # pylint: disable=invalid-name
+MAKEDIRS = os_makedirs  # pylint: disable=invalid-name
 SHARED = "devopsdriver"
-PRINT = print
-GET_PASSWORD = get_password
-SET_PASSWORD = set_password
-GET_PASS = os_getpass
+PRINT = print  # pylint: disable=invalid-name
+GET_PASSWORD = get_password  # pylint: disable=invalid-name
+SET_PASSWORD = set_password  # pylint: disable=invalid-name
+GET_PASS = os_getpass  # pylint: disable=invalid-name
 
 
 def load_json(path: str) -> dict:
