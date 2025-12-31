@@ -14,9 +14,9 @@ from .settings import Settings
 from .template import Template
 
 ARGV = sys_argv
-PRINT = print
-SET_PASSWORD = set_password
-GET_PASS = os_getpass
+PRINT = print  # pylint: disable=invalid-name
+SET_PASSWORD = set_password  # pylint: disable=invalid-name
+GET_PASS = os_getpass  # pylint: disable=invalid-name
 
 
 def main() -> None:
