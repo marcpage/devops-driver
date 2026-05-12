@@ -3,7 +3,6 @@
 
 """Pipeline client"""
 
-
 from azure.devops.v7_1.pipelines import PipelinesClient
 
 from .pipeline import Pipeline

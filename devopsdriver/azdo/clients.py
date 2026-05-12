@@ -7,7 +7,6 @@ API Documented here:
 https://github.com/microsoft/azure-devops-python-api
 """
 
-
 from azure.devops.connection import Connection as AzureConnection
 from msrest.authentication import BasicAuthentication as MSBasicAuthentication
 
@@ -15,7 +14,6 @@ from devopsdriver.settings import Settings
 from devopsdriver.azdo.workitem.client import Client as WIClient
 from devopsdriver.azdo.pipeline.client import Client as PLClient
 from devopsdriver.azdo.builds.client import Client as BClient
-
 
 # for testing
 CONNECTION = AzureConnection

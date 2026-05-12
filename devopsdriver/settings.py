@@ -75,7 +75,8 @@ api:
 johndoe and janedoe share the same password, so you just need to update the `user`
 """
 
-
+from __future__ import annotations
+from dataclasses import MISSING, fields, is_dataclass
 from json import load
 from os.path import dirname, basename, splitext, join
 from os import environ as os_environ, makedirs as os_makedirs
@@ -83,11 +84,11 @@ from re import compile as regex
 from platform import system as os_system
 from sys import argv as sys_argv
 from getpass import getpass as os_getpass
+from typing import Any, TypeVar, Union, cast, get_args, get_origin, get_type_hints
 
 from yaml import safe_load
 from keyring import get_password, set_password
 from keyring.backends import fail
-
 
 # for testing
 ENVIRON = os_environ
@@ -99,6 +100,65 @@ PRINT = print  # pylint: disable=invalid-name
 GET_PASSWORD = get_password  # pylint: disable=invalid-name
 SET_PASSWORD = set_password  # pylint: disable=invalid-name
 GET_PASS = os_getpass  # pylint: disable=invalid-name
+T = TypeVar("T")
+
+
+def _is_instance_of_type(  # pylint: disable=too-many-branches, too-many-return-statements
+    value: Any, expected: Any
+) -> bool:
+    """Check if a value matches an expected type, including support for common typing constructs."""
+    if expected is Any:
+        return True
+
+    origin = get_origin(expected)
+    args = get_args(expected)
+
+    if origin is Union:  # Optional[T] / Union[T1, T2, ...]
+        return any(_is_instance_of_type(value, t) for t in args)
+
+    if origin is list:  # list[T]
+        if not isinstance(value, list):
+            return False
+
+        if not args:
+            return True
+
+        item_type = args[0]
+        return all(_is_instance_of_type(v, item_type) for v in value)
+
+    if origin is dict:  # dict[K, V]
+        if not isinstance(value, dict):
+            return False
+
+        if len(args) != 2:
+            return True
+
+        key_type, val_type = args
+        return all(
+            _is_instance_of_type(k, key_type) and _is_instance_of_type(v, val_type)
+            for k, v in value.items()
+        )
+
+    if origin is tuple:  # tuple[T1, T2] or tuple[T, ...]
+        if not isinstance(value, tuple):
+            return False
+
+        if not args:
+            return True
+
+        if len(args) == 2 and args[1] is Ellipsis:
+            return all(_is_instance_of_type(v, args[0]) for v in value)
+
+        if len(value) != len(args):
+            return False
+
+        return all(_is_instance_of_type(v, t) for v, t in zip(value, args))
+
+    try:  # Fallback to normal isinstance
+        return isinstance(value, expected)
+
+    except TypeError:
+        return False  # Covers unsupported runtime checks for some typing constructs
 
 
 def load_json(path: str) -> dict:
@@ -224,6 +284,37 @@ class Settings:
             Settings: Returns self so you can chain calls
         """
         return self.__bypass(key, name, self.environ)
+
+    def parse(self, cls: type[T]) -> T:
+        """Extract settings into a dataclass for type safety"""
+        if not is_dataclass(cls):
+            raise TypeError(f"{cls} must be a dataclass type")
+
+        type_hints = get_type_hints(cls)
+        kwargs = {}
+
+        for f in fields(cls):
+            expected_type = type_hints.get(f.name, Any)
+
+            # Pull from settings if present, otherwise use dataclass default/default_factory
+            if self.has(f.name):
+                value = self.get(f.name)
+            elif f.default is not MISSING:
+                value = f.default
+            elif f.default_factory is not MISSING:
+                value = f.default_factory()
+            else:
+                raise KeyError(f"Missing required setting: {f.name}")
+
+            if not _is_instance_of_type(value, expected_type):
+                raise TypeError(
+                    f"Invalid type for '{f.name}': expected {expected_type}, "
+                    + f"got {type(value).__name__}"
+                )
+
+            kwargs[f.name] = value
+
+        return cast(T, cls(**kwargs))
 
     @staticmethod
     def __patch_instance(key: str) -> str:
