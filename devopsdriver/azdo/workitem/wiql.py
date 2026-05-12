@@ -144,6 +144,13 @@ class Compare:  # pylint: disable=too-few-public-methods
         return f"{str(self.left)} {self.operator} {str(self.right)}"
 
 
+class Under(Compare):  # pylint: disable=too-few-public-methods
+    """checks for under, like area path or iteration path"""
+
+    def __init__(self, field_name: Field | str, value: Value | str):
+        super().__init__(field_name, value, "UNDER")
+
+
 class In(Compare):  # pylint: disable=too-few-public-methods
     """checks for field in a list of values"""
 
@@ -293,7 +300,9 @@ class Wiql:
         return self
 
     def mode(self, results_mode: str):
-        """Sets the mode for link queries"""
+        """Sets the mode for link queries
+        results_mode may be one of: MustContain, MayContain, DoesNotContain, Recursive, None
+        """
         self.mode_type = results_mode
         return self
 
