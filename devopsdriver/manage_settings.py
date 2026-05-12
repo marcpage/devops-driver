@@ -3,7 +3,6 @@
 
 """Module Doc"""
 
-
 from os.path import dirname, join, abspath
 from sys import argv as sys_argv
 from getpass import getpass as os_getpass

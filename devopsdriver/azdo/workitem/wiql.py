@@ -19,7 +19,6 @@ ORDER BY [System.ChangedDate] DESC
 ASOF '02-11-2020'
 """
 
-
 from datetime import datetime, date
 
 

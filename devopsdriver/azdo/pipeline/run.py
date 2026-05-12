@@ -3,7 +3,6 @@
 
 """Pipeline Run"""
 
-
 from azure.devops.v7_1.pipelines.models import Pipeline
 from azure.devops.v7_1.pipelines.models import Run as AzureRun
 from azure.devops.v7_1.pipelines import PipelinesClient

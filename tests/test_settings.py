@@ -1,16 +1,33 @@
 #!/usr/bin/env python3
 
-""" Tests Settings class """
+"""Tests Settings class"""
 
-from tempfile import TemporaryDirectory
+from dataclasses import dataclass, field
+from itertools import product
 from os.path import join
 from string import ascii_lowercase
-from itertools import product
+from tempfile import TemporaryDirectory
+from typing import Any
 
 from helpers import setup_settings, ensure, write
 
 from devopsdriver import settings  # debug access
 from devopsdriver.settings import Settings
+
+
+@dataclass
+class MockSettings:  # pylint: disable=too-many-instance-attributes
+    """Testing type-safe class"""
+
+    name: str
+    names: list[str]
+    age_names: dict[int, str]
+    age: int
+    stuff: list
+    info: dict
+    alive: bool = True
+    years: list[int] = field(default_factory=lambda: [2004, 2104])
+    random: Any = None
 
 
 def __setup_files(directory: str, dir1: str, dir2: str) -> None:
@@ -67,7 +84,7 @@ def __setup_files(directory: str, dir1: str, dir2: str) -> None:
         letters.pop()
 
 
-def test_basic():
+def test_basic() -> None:  # pylint: disable=too-many-statements
     """test the basic functionality"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
@@ -196,7 +213,7 @@ def test_basic():
                 pass
 
 
-def test_cli_env_in_yaml():
+def test_cli_env_in_yaml() -> None:
     """test setting cli and env lookups in the yaml itself"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
@@ -245,7 +262,7 @@ def test_cli_env_in_yaml():
         assert opts["zz"] == "environ zz", opts["zz"]
 
 
-def test_environ_values():
+def test_environ_values() -> None:
     """test environment variable substitution"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
@@ -272,7 +289,7 @@ def test_environ_values():
         assert opts["value"] == "testing ${noenv} for noenv", opts["value"]
 
 
-def test_secret():
+def test_secret() -> None:
     """test os secret storage"""
     with TemporaryDirectory() as working_dir:
         base_dir = join(working_dir, "base")
@@ -290,7 +307,225 @@ def test_secret():
         assert opts["password"] == "setec astronomy", opts["password"]
 
 
+def test_parse():  # pylint: disable=too-many-statements
+    """Test parsing into type-safe type"""
+    with TemporaryDirectory() as working_dir:
+        base_dir = join(working_dir, "base")
+        settings_path = join(base_dir, "parse.yml")
+        setup_settings(
+            os="Unknown",
+            shared="test",
+            Linux=join(base_dir, "Linux"),
+            Darwin=join(base_dir, "macOS"),
+            Windows=join(base_dir, "Windows"),
+        )
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        test_settings = Settings(settings_path).parse(MockSettings)
+
+        assert test_settings.name == "John Doe", test_settings.name
+        assert len(test_settings.names) == 2, test_settings.names
+        assert test_settings.names[0] == "John", test_settings.names
+        assert test_settings.names[1] == "Doe", test_settings.names
+        assert len(test_settings.age_names) == 3, test_settings.age_names
+        assert 0 in test_settings.age_names, test_settings.age_names
+        assert 50 in test_settings.age_names, test_settings.age_names
+        assert 100 in test_settings.age_names, test_settings.age_names
+        assert test_settings.age_names[0] == "Newborn", test_settings.age_names
+        assert test_settings.age_names[50] == "Middle age", test_settings.age_names
+        assert test_settings.age_names[100] == "Old", test_settings.age_names
+        assert test_settings.age == 50
+        assert test_settings.alive
+        assert len(test_settings.years) == 2, test_settings.years
+        assert test_settings.years[0] == 1973, test_settings.years
+        assert test_settings.years[1] == 2073, test_settings.years
+        assert test_settings.random is None, test_settings.random
+        assert len(test_settings.stuff) == 0, test_settings.stuff
+        assert len(test_settings.info) == 0, test_settings.info
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            stuff=[],
+            info={},
+        )
+        test_settings = Settings(settings_path).parse(MockSettings)
+
+        assert test_settings.name == "John Doe", test_settings.name
+        assert len(test_settings.names) == 2, test_settings.names
+        assert test_settings.names[0] == "John", test_settings.names
+        assert test_settings.names[1] == "Doe", test_settings.names
+        assert len(test_settings.age_names) == 3, test_settings.age_names
+        assert 0 in test_settings.age_names, test_settings.age_names
+        assert 50 in test_settings.age_names, test_settings.age_names
+        assert 100 in test_settings.age_names, test_settings.age_names
+        assert test_settings.age_names[0] == "Newborn", test_settings.age_names
+        assert test_settings.age_names[50] == "Middle age", test_settings.age_names
+        assert test_settings.age_names[100] == "Old", test_settings.age_names
+        assert test_settings.age == 50
+        assert test_settings.alive
+        assert len(test_settings.years) == 2, test_settings.years
+        assert test_settings.years[0] == 2004, test_settings.years
+        assert test_settings.years[1] == 2104, test_settings.years
+        assert test_settings.random is None, test_settings.random
+        assert len(test_settings.stuff) == 0, test_settings.stuff
+        assert len(test_settings.info) == 0, test_settings.info
+
+        write(
+            settings_path,
+            name=None,
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=[1, 2],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=None,
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={"0": "Newborn", "50": "Middle age", "100": "Old"},
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names=None,
+            age=50,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=None,
+            alive=True,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            age=50,
+            alive=None,
+            years=(1973, 2073),
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+        write(
+            settings_path,
+            name="John Doe",
+            names=["John", "Doe"],
+            age_names={0: "Newborn", 50: "Middle age", 100: "Old"},
+            stuff=[],
+            info={},
+        )
+        try:
+            test_settings = Settings(settings_path).parse(MockSettings)
+            assert False, "Expected KeyError Exception"
+        except KeyError:
+            pass
+
+        try:
+            test_settings = Settings(settings_path).parse(Settings)
+            assert False, "Expected TypeError Exception"
+        except TypeError:
+            pass
+
+
 if __name__ == "__main__":
+    test_parse()
     test_secret()
     test_environ_values()
     test_cli_env_in_yaml()
