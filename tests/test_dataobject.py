@@ -28,94 +28,94 @@ def test_lookup() -> None:
     """Tests lookup"""
     data = DataObject(
         {
-            "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/"
+            "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
             + "_apis/wit/workItems/956619/revisions/200",
             "fields": {
                 "System.WorkItemType": "Initiative",
                 "System.State": "Active",
                 "System.Reason": "Moved to state Active",
                 "System.AssignedTo": {
-                    "displayName": "Samant, Abhay",
+                    "displayName": "User One",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/"
-                    + "_apis/Identities/838da6d7-6336-68fa-9b48-053771a4d16f",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/"
+                    + "_apis/Identities/838da6d7-68fa-9b48-6336-053771a4d16f",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/"
+                            "href": "https://dev.azure.com/company/"
                             + "_apis/GraphProfile/MemberAvatars/"
-                            + "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1"
+                            + "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O"
                         }
                     },
-                    "id": "838da6d7-6336-68fa-9b48-053771a4d16f",
-                    "uniqueName": "abhay.samant@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/"
+                    "id": "838da6d7-68fa-9b48-6336-053771a4d16f",
+                    "uniqueName": "user1@company.com",
+                    "imageUrl": "https://dev.azure.com/company/"
                     + "_apis/GraphProfile/MemberAvatars/"
-                    + "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1",
-                    "descriptor": "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1",
+                    + "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O",
+                    "descriptor": "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O",
                 },
                 "System.CreatedDate": "2020-01-08T22:59:16.223Z",
                 "System.CreatedBy": {
-                    "displayName": "Tillerson, Michael",
+                    "displayName": "User Two",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/"
-                    + "_apis/Identities/dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/"
+                    + "_apis/Identities/dc42cd0e-4553-8516-ab09-9efe930b92a2",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/"
+                            "href": "https://dev.azure.com/company/"
                             + "_apis/GraphProfile/MemberAvatars/"
-                            + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                            + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O"
                         }
                     },
-                    "id": "dc42cd0e-ab09-4553-8516-9efe930b92a2",
-                    "uniqueName": "michael.tillerson@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/"
+                    "id": "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "uniqueName": "user2@company.com",
+                    "imageUrl": "https://dev.azure.com/company/"
                     + "_apis/GraphProfile/MemberAvatars/"
-                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
-                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
+                    "descriptor": "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
                 },
                 "System.ChangedDate": "2021-02-25T16:50:38.367Z",
                 "System.ChangedBy": {
-                    "displayName": "SVC, tmrdazdoservice1",
+                    "displayName": "Service Account",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/"
-                    + "_apis/Identities/760b4082-c90f-6f25-986a-2e22b876ccd7",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/"
+                    + "_apis/Identities/760b4082-6f25-986a-c90f-2e22b876ccd7",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/"
+                            "href": "https://dev.azure.com/company/"
                             + "_apis/GraphProfile/MemberAvatars/"
-                            + "aad.ODg2NDQ0NGMtNWJlNy03ZWRkLTljOTEtZmJiNTE4MzFlZjFj"
+                            + "aad.jFjODg2NDTE4MzFlZQ0NGMtNTEtZmJiNWJlNy03ZWRkLTljO"
                         }
                     },
-                    "id": "760b4082-c90f-6f25-986a-2e22b876ccd7",
-                    "uniqueName": "tm-rd-azdo-service-1@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/"
+                    "id": "760b4082-6f25-986a-c90f-2e22b876ccd7",
+                    "uniqueName": "azdo-service@company.com",
+                    "imageUrl": "https://dev.azure.com/company/"
                     + "_apis/GraphProfile/MemberAvatars/"
-                    + "aad.ODg2NDQ0NGMtNWJlNy03ZWRkLTljOTEtZmJiNTE4MzFlZjFj",
-                    "descriptor": "aad.ODg2NDQ0NGMtNWJlNy03ZWRkLTljOTEtZmJiNTE4MzFlZjFj",
+                    + "aad.jFjODg2NDTE4MzFlZQ0NGMtNTEtZmJiNWJlNy03ZWRkLTljO",
+                    "descriptor": "aad.jFjODg2NDTE4MzFlZQ0NGMtNTEtZmJiNWJlNy03ZWRkLTljO",
                 },
                 "System.CommentCount": 0,
-                "System.TeamProject": "DevCentral",
-                "System.AreaPath": "DevCentral\\Business Units\\ADG\\ElectroMag\\MMIC",
-                "System.IterationPath": "DevCentral",
+                "System.TeamProject": "Project",
+                "System.AreaPath": "Project\\Group\\Area\\Product\\Team3",
+                "System.IterationPath": "Project",
                 "Microsoft.VSTS.Common.ActivatedDate": "2021-01-13T17:33:29.453Z",
                 "Microsoft.VSTS.Common.ActivatedBy": {
-                    "displayName": "Samant, Abhay",
+                    "displayName": "User One",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/"
-                    + "_apis/Identities/838da6d7-6336-68fa-9b48-053771a4d16f",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/"
+                    + "_apis/Identities/838da6d7-68fa-9b48-6336-053771a4d16f",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/"
+                            "href": "https://dev.azure.com/company/"
                             + "_apis/GraphProfile/MemberAvatars/"
-                            + "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1"
+                            + "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O"
                         }
                     },
-                    "id": "838da6d7-6336-68fa-9b48-053771a4d16f",
-                    "uniqueName": "abhay.samant@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/"
+                    "id": "838da6d7-68fa-9b48-6336-053771a4d16f",
+                    "uniqueName": "user1@company.com",
+                    "imageUrl": "https://dev.azure.com/company/"
                     + "_apis/GraphProfile/MemberAvatars/"
-                    + "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1",
-                    "descriptor": "aad.M2NkOWZmNWQtMDMwZC03NDNlLTk5OTUtZTc2MGFhZDRhYmM1",
+                    + "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O",
+                    "descriptor": "aad.mM1M2NkOWGFhZDRhYZmNWQtMTUtZTc2MDMwZC03NDNlLTk5O",
                 },
                 "Microsoft.VSTS.Scheduling.TargetDate": "2021-09-30T05:00:00Z",
                 "Microsoft.VSTS.Scheduling.StartDate": "2021-01-13T17:21:25.887Z",
@@ -127,7 +127,7 @@ def test_lookup() -> None:
                 "Custom.AssignedToDate": "2021-01-13T17:33:29Z",
                 "Custom.DaysUntilAssigned": 370.8,
                 "Custom.AllocationLevel": "Level 1",
-                "Custom.OfferingAffinity": "Cognitive RF Sensor Prototyping Testbed ",
+                "Custom.OfferingAffinity": "The offering affinity ",
                 "Custom.AeroDefGovAllocation": 100,
                 "WEF_E2F7AF0C84D84051A09966884CE567A9_Kanban.Column.Done": False,
                 "Custom.InitiativeType": "P&T Managed",
@@ -135,14 +135,14 @@ def test_lookup() -> None:
                 "Custom.ScopeorQualityRisk": False,
                 "Custom.ScheduleRisk": False,
                 "Custom.DaysUntilActive": 370.8,
-                "System.Description": '<div><img src="https://dev.azure.com/ni/'
-                + '94b22d7b-ad7b-4f5e-88f0-867910f91c94/"+"_apis/wit/attachments/'
-                + '64027421-bbca-408e-a742-209aa15366a3?fileName=image.png" alt=Image><br></div>',
+                "System.Description": '<div><img src="https://dev.azure.com/company/'
+                + '94b22d7b-4f5e-88f0-ad7b-867910f91c94/"+"_apis/wit/attachments/'
+                + '64027421-408e-a742-bbca-209aa15366a3?fileName=image.png" alt=Image><br></div>',
                 "Microsoft.VSTS.Common.AcceptanceCriteria": "<span>Measurement IP library"
                 + "<br></span>"
                 + "<div>Interactive Examples<br></div><div>For interactive use-case and demos"
                 + "<br></div>"
-                + "<div>Programming Examples<br></div><div>Demonstrate how to use the MMIC VIs"
+                + "<div>Programming Examples<br></div><div>Demonstrate how to use the Stuff"
                 + "<br></div>"
                 + "<div>Datasheet with Performance Metrics<br></div>"
                 + "<span>Documentation of the system and recommendation about the "
@@ -159,11 +159,11 @@ def test_lookup() -> None:
                 "System.BoardColumn": "Active",
                 "System.BoardColumnDone": False,
                 "Custom.ParentID": 1081371,
-                "Custom.ParentTitle": "MMIC: SDP Dev Planning",
-                "System.Title": "MMIC Reference Architecture for PA/TRM Test Using 5841/5831",
+                "Custom.ParentTitle": "Project: SDP Dev Planning",
+                "System.Title": "Project Reference Architecture for PA/TRM Test Using 541/531",
                 "Microsoft.VSTS.Scheduling.StoryPoints": 390.6,
                 "Custom.CompletedStoryPoints": 180.0,
-                "System.Tags": "ADG Offering",
+                "System.Tags": "Business Offering",
                 "System.Parent": 1081371,
             },
             "id": 956619,
@@ -171,25 +171,25 @@ def test_lookup() -> None:
                 {
                     "attributes": {"isLocked": False, "name": "Child"},
                     "rel": "System.LinkTypes.Hierarchy-Forward",
-                    "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/"
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
                     + "_apis/wit/workItems/1094328",
                 },
                 {
                     "attributes": {"isLocked": False, "name": "Child"},
                     "rel": "System.LinkTypes.Hierarchy-Forward",
-                    "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/"
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
                     + "_apis/wit/workItems/956628",
                 },
                 {
                     "attributes": {"isLocked": False, "name": "Child"},
                     "rel": "System.LinkTypes.Hierarchy-Forward",
-                    "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/"
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
                     + "_apis/wit/workItems/1198202",
                 },
                 {
                     "attributes": {"isLocked": False, "name": "Parent"},
                     "rel": "System.LinkTypes.Hierarchy-Reverse",
-                    "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/"
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
                     + "_apis/wit/workItems/1081371",
                 },
             ],
@@ -200,7 +200,7 @@ def test_lookup() -> None:
     assert data.lookup("/id") == 956619, data.lookup("/id")
     assert (
         data.lookup("/fields/System.Title")
-        == "MMIC Reference Architecture for PA/TRM Test Using 5841/5831"
+        == "Project Reference Architecture for PA/TRM Test Using 541/531"
     ), data.lookup("/fields/System.Title")
     assert (
         data.lookup("/relations/(/attributes/name=Parent).first/url.split(/).last.int")
@@ -218,13 +218,12 @@ def test_lookup() -> None:
         "/fields/System.WorkItemType"
     )
     assert (
-        data.lookup("/fields/System.AreaPath")
-        == "DevCentral\\Business Units\\ADG\\ElectroMag\\MMIC"
+        data.lookup("/fields/System.AreaPath") == "Project\\Group\\Area\\Product\\Team3"
     ), data.lookup("/fields/System.AreaPath")
-    assert data.lookup("/fields/System.IterationPath") == "DevCentral", data.lookup(
+    assert data.lookup("/fields/System.IterationPath") == "Project", data.lookup(
         "/fields/System.IterationPath"
     )
-    assert data.lookup("/fields/System.Tags") == "ADG Offering", data.lookup(
+    assert data.lookup("/fields/System.Tags") == "Business Offering", data.lookup(
         "/fields/System.Tags"
     )
     assert int(
@@ -252,68 +251,68 @@ def test_lookup_missing() -> None:
     """Tests lookup when a key is missing"""
     data = DataObject(
         {
-            "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/_apis/"
+            "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/_apis/"
             + "wit/workItems/949367/revisions/54",
             "fields": {
-                "System.AreaPath": "DevCentral\\Business Units\\ADG\\SharedRepo\\MMSsc",
-                "System.TeamProject": "DevCentral",
-                "System.IterationPath": "DevCentral\\zzzArchive\\Cycles\\Cycle 17\\i77 "
+                "System.AreaPath": "Project\\Group\\Area\\Product\\Team2",
+                "System.TeamProject": "Project",
+                "System.IterationPath": "Project\\zzzArchive\\Cycles\\Cycle 17\\i77 "
                 + "(ends 2020-02-28)",
                 "System.WorkItemType": "Research",
                 "System.State": "Closed",
                 "System.Reason": "Moved to state Closed",
                 "System.AssignedTo": {
-                    "displayName": "Brown, Andy",
+                    "displayName": "User Three",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
-                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
-                    "uniqueName": "andy.c.brown@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
-                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "id": "d91becd5-6967-a84a-72ba-6a6708550e20",
+                    "uniqueName": "user3@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
+                    "descriptor": "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
                 },
                 "System.CreatedDate": "2019-12-10T20:33:08.743Z",
                 "System.CreatedBy": {
-                    "displayName": "Tillerson, Michael",
+                    "displayName": "User Two",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "dc42cd0e-4553-8516-ab09-9efe930b92a2",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                            + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O"
                         }
                     },
-                    "id": "dc42cd0e-ab09-4553-8516-9efe930b92a2",
-                    "uniqueName": "michael.tillerson@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
-                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "id": "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "uniqueName": "user2@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
+                    "descriptor": "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
                 },
                 "System.ChangedDate": "2026-05-07T16:20:55.96Z",
                 "System.ChangedBy": {
-                    "displayName": "Tillerson, Michael",
+                    "displayName": "User Two",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "dc42cd0e-4553-8516-ab09-9efe930b92a2",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/"
-                            + "MemberAvatars/aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O"
                         }
                     },
-                    "id": "dc42cd0e-ab09-4553-8516-9efe930b92a2",
-                    "uniqueName": "michael.tillerson@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
-                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "id": "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "uniqueName": "user2@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
+                    "descriptor": "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O",
                 },
                 "System.CommentCount": 7,
                 "System.Title": "PA: RFSA: Test Bench Architecture (time boxed)",
@@ -323,58 +322,58 @@ def test_lookup_missing() -> None:
                 "Microsoft.VSTS.Common.ClosedDate": "2020-02-14T18:17:33.233Z",
                 "Microsoft.VSTS.Common.ValueArea": "Business",
                 "Microsoft.VSTS.Common.ClosedBy": {
-                    "displayName": "Brown, Andy",
+                    "displayName": "User Three",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
-                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
-                    "uniqueName": "andy.c.brown@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
-                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "id": "d91becd5-6967-a84a-72ba-6a6708550e20",
+                    "uniqueName": "user3@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
+                    "descriptor": "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
                 },
                 "Microsoft.VSTS.Common.ResolvedDate": "2020-02-06T03:21:28.327Z",
                 "Microsoft.VSTS.Common.ResolvedBy": {
-                    "displayName": "Brown, Andy",
+                    "displayName": "User Three",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
-                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
-                    "uniqueName": "andy.c.brown@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
-                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "id": "d91becd5-6967-a84a-72ba-6a6708550e20",
+                    "uniqueName": "user3@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
+                    "descriptor": "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
                 },
                 "Microsoft.VSTS.Common.StackRank": 388652161.0,
                 "Microsoft.VSTS.Scheduling.StoryPoints": 5.0,
                 "Custom.PendingValidationBy": {
-                    "displayName": "Brown, Andy",
+                    "displayName": "User Three",
                     "url": "https://spsprodeus24.vssps.visualstudio.com/"
-                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
-                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
-                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
-                    "uniqueName": "andy.c.brown@emerson.com",
-                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
-                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
-                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "id": "d91becd5-6967-a84a-72ba-6a6708550e20",
+                    "uniqueName": "user3@company.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
+                    "descriptor": "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM",
                 },
                 "Custom.PendingValidationDate": "2020-02-06T03:21:28.327Z",
                 "WEF_D8499809B15042DAABC202ECF51A67D8_Kanban.Column": "Closed",
@@ -388,7 +387,7 @@ def test_lookup_missing() -> None:
                 "System.Description": "<div>As a developer, I need a testbench to measure and "
                 + "validate these features and assess performance</div>",
                 "Microsoft.VSTS.Common.AcceptanceCriteria": "<ul><li>Expect documentation "
-                + 'similar to <a href="https://dev.azure.com/ni/DevCentral/_wiki/wikis/'
+                + 'similar to <a href="https://dev.azure.com/company/Project/_wiki/wikis/'
                 + 'AppCentral.wiki/8216/EV-Battery-Test-System">this EV Battery Test System '
                 + "documentation</a></li><li>Purchase HW&nbsp;</li><ul><li>controller, chassis, "
                 + "modules, cables, host computer</li><li><br></li></ul><li>Able to deploy SW to "
