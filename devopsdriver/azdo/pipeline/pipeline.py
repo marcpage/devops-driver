@@ -3,7 +3,6 @@
 
 """Azure Pipeline"""
 
-
 from azure.devops.v7_1.pipelines.models import Pipeline as AzurePipeline
 from azure.devops.v7_1.pipelines import PipelinesClient
 

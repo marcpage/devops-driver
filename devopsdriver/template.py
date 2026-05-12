@@ -3,7 +3,6 @@
 
 """Module Doc"""
 
-
 from os.path import dirname, basename, splitext
 
 from mako.lookup import TemplateLookup

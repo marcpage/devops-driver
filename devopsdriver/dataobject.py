@@ -2,7 +2,6 @@
 
 """Data Objects"""
 
-
 from json import dumps
 
 

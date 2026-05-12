@@ -3,7 +3,6 @@
 
 """Azure Build Client"""
 
-
 from datetime import datetime
 from azure.devops.v7_1.build import BuildClient
 

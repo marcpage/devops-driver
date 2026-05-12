@@ -3,7 +3,6 @@
 
 """An Azure Devops WorkItem"""
 
-
 from msrest.serialization import Model
 
 from devopsdriver.azdo.timestamp import Timestamp
