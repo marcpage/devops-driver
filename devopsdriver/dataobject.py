@@ -56,7 +56,7 @@ class DataObject:  # pylint: disable=too-few-public-methods
     def __repr__(self) -> str:
         return dumps(self.data, indent=2)
 
-    def lookup(self, path: str) -> Any:
+    def lookup(self, path: str, default: Any = None) -> Any:
         """
         Resolves a custom path expression against the underlying data.
 
@@ -77,8 +77,12 @@ class DataObject:  # pylint: disable=too-few-public-methods
         tokens = self._tokenize(path)
         current = self.data
 
-        for token in tokens:
-            current = self._apply_token(current, token)
+        try:
+            for token in tokens:
+                current = self._apply_token(current, token)
+
+        except KeyError:
+            return default
 
         return current
 

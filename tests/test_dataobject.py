@@ -248,6 +248,173 @@ def test_lookup() -> None:
         pass
 
 
+def test_lookup_missing() -> None:
+    """Tests lookup when a key is missing"""
+    data = DataObject(
+        {
+            "url": "https://dev.azure.com/ni/94b22d7b-ad7b-4f5e-88f0-867910f91c94/_apis/"
+            + "wit/workItems/949367/revisions/54",
+            "fields": {
+                "System.AreaPath": "DevCentral\\Business Units\\ADG\\SharedRepo\\MMSsc",
+                "System.TeamProject": "DevCentral",
+                "System.IterationPath": "DevCentral\\zzzArchive\\Cycles\\Cycle 17\\i77 "
+                + "(ends 2020-02-28)",
+                "System.WorkItemType": "Research",
+                "System.State": "Closed",
+                "System.Reason": "Moved to state Closed",
+                "System.AssignedTo": {
+                    "displayName": "Brown, Andy",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                        }
+                    },
+                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "uniqueName": "andy.c.brown@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                },
+                "System.CreatedDate": "2019-12-10T20:33:08.743Z",
+                "System.CreatedBy": {
+                    "displayName": "Tillerson, Michael",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                        }
+                    },
+                    "id": "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    "uniqueName": "michael.tillerson@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                },
+                "System.ChangedDate": "2026-05-07T16:20:55.96Z",
+                "System.ChangedBy": {
+                    "displayName": "Tillerson, Michael",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/"
+                            + "MemberAvatars/aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                        }
+                    },
+                    "id": "dc42cd0e-ab09-4553-8516-9efe930b92a2",
+                    "uniqueName": "michael.tillerson@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                },
+                "System.CommentCount": 7,
+                "System.Title": "PA: RFSA: Test Bench Architecture (time boxed)",
+                "System.BoardColumn": "Closed",
+                "System.BoardColumnDone": False,
+                "Microsoft.VSTS.Common.StateChangeDate": "2019-12-10T20:33:08.743Z",
+                "Microsoft.VSTS.Common.ClosedDate": "2020-02-14T18:17:33.233Z",
+                "Microsoft.VSTS.Common.ValueArea": "Business",
+                "Microsoft.VSTS.Common.ClosedBy": {
+                    "displayName": "Brown, Andy",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                        }
+                    },
+                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "uniqueName": "andy.c.brown@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                },
+                "Microsoft.VSTS.Common.ResolvedDate": "2020-02-06T03:21:28.327Z",
+                "Microsoft.VSTS.Common.ResolvedBy": {
+                    "displayName": "Brown, Andy",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                        }
+                    },
+                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "uniqueName": "andy.c.brown@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                },
+                "Microsoft.VSTS.Common.StackRank": 388652161.0,
+                "Microsoft.VSTS.Scheduling.StoryPoints": 5.0,
+                "Custom.PendingValidationBy": {
+                    "displayName": "Brown, Andy",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-6afd-42ea-b8cb-e21a431ec8dd/_apis/Identities/"
+                    + "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                            + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl"
+                        }
+                    },
+                    "id": "d91becd5-72ba-6967-a84a-6a6708550e20",
+                    "uniqueName": "andy.c.brown@emerson.com",
+                    "imageUrl": "https://dev.azure.com/ni/_apis/GraphProfile/MemberAvatars/"
+                    + "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                    "descriptor": "aad.ZDIxNmMzY2EtMDdiMi03MmQ1LWFjMWQtNmJhMThhZDlhN2Zl",
+                },
+                "Custom.PendingValidationDate": "2020-02-06T03:21:28.327Z",
+                "WEF_D8499809B15042DAABC202ECF51A67D8_Kanban.Column": "Closed",
+                "WEF_D8499809B15042DAABC202ECF51A67D8_Kanban.Column.Done": False,
+                "WEF_C7071942F5474A15BD600E74B97D7C7A_Kanban.Column": "Closed",
+                "WEF_C7071942F5474A15BD600E74B97D7C7A_Kanban.Column.Done": False,
+                "WEF_42B49516479B4AEEA0D80D89E8893C45_Kanban.Column": "Closed",
+                "WEF_42B49516479B4AEEA0D80D89E8893C45_Kanban.Column.Done": False,
+                "WEF_3E05701FE5EA4460876365252800813A_Kanban.Column": "Closed",
+                "WEF_3E05701FE5EA4460876365252800813A_Kanban.Column.Done": False,
+                "System.Description": "<div>As a developer, I need a testbench to measure and "
+                + "validate these features and assess performance</div>",
+                "Microsoft.VSTS.Common.AcceptanceCriteria": "<ul><li>Expect documentation "
+                + 'similar to <a href="https://dev.azure.com/ni/DevCentral/_wiki/wikis/'
+                + 'AppCentral.wiki/8216/EV-Battery-Test-System">this EV Battery Test System '
+                + "documentation</a></li><li>Purchase HW&nbsp;</li><ul><li>controller, chassis, "
+                + "modules, cables, host computer</li><li><br></li></ul><li>Able to deploy SW to "
+                + "DUT</li><li>Able to execute tests on DUT</li>"
+                + "<li>Able to record test results</li>"
+                + "<li><br></li><li>Eventually use DevOps Services</li>"
+                + "<ul><li>Deployment Framework</li>"
+                + "<li>Test Execution Framework</li>"
+                + "<li><span>Test Reporting Framework</span></li></ul></ul>",
+            },
+            "id": 949367,
+            "rev": 54,
+        }
+    )
+
+    assert (
+        data.lookup("/relations/(/attributes/name=Parent).first/url.split(/).last.int")
+        is None
+    ), [data.lookup("/relations/(/attributes/name=Parent).first/url.split(/).last.int")]
+    assert (
+        data.lookup("/relations/(/attributes/name=Child)/url.split(/).last.int", [])
+        == []
+    ), [data.lookup("/relations/(/attributes/name=Child)/url.split(/).last.int", [])]
+
+
 if __name__ == "__main__":
+    test_lookup_missing()
     test_lookup()
     test_dataobject_basic()
