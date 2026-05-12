@@ -3,7 +3,6 @@
 
 """Tools that help when working with Azure"""
 
-
 from datetime import datetime, timezone, timedelta
 from functools import total_ordering
 

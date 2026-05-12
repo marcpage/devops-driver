@@ -3,13 +3,11 @@
 
 """Azure Pipeline Run Log"""
 
-
 from azure.devops.v7_1.pipelines.models import Log as AzureLog
 
 from requests import get as get_url
 
 from devopsdriver.azdo.azureobject import AzureObject
-
 
 GET_URL = get_url  # pylint: disable=invalid-name
 

@@ -6,7 +6,7 @@ from datetime import date, datetime
 
 from devopsdriver.azdo import Wiql
 from devopsdriver.azdo import Ascending, Descending, Value
-from devopsdriver.azdo import IsEmpty, IsNotEmpty, And, Or, In, NotIn
+from devopsdriver.azdo import IsEmpty, IsNotEmpty, And, Or, In, NotIn, Under
 from devopsdriver.azdo import GreaterThan, LessThan, Equal, NotEqual
 from devopsdriver.azdo import GreaterThanOrEqual, LessThanOrEqual
 
@@ -78,7 +78,49 @@ def test_in_and_not_in() -> None:
     assert str(builder) == expected, str(builder)
 
 
+def test_under() -> None:
+    """Test under operator"""
+    builder = Wiql().where(Under("System.AreaPath", "/Project/Team/Product"))
+    expected = (
+        """SELECT [System.Id] FROM WorkItems WHERE [System.AreaPath] """
+        + """UNDER "/Project/Team/Product\""""
+    )
+    assert str(builder) == expected, str(builder)
+
+
+def test_from() -> None:
+    """Test from"""
+    builder = (
+        Wiql()
+        .from_source("Wiki")
+        .where(Under("System.AreaPath", "/Project/Team/Product"))
+    )
+    expected = (
+        """SELECT [System.Id] FROM Wiki WHERE [System.AreaPath] """
+        + """UNDER "/Project/Team/Product\""""
+    )
+    assert str(builder) == expected, str(builder)
+
+
+def test_mode() -> None:
+    """Test mode"""
+    builder = (
+        Wiql()
+        .mode("Recursive")
+        .where(Under("System.AreaPath", "/Project/Team/Product"))
+    )
+    expected = (
+        """SELECT [System.Id] FROM WorkItems WHERE [System.AreaPath] """
+        + """UNDER "/Project/Team/Product" """
+        + """MODE(Recursive)"""
+    )
+    assert str(builder) == expected, [str(builder), expected]
+
+
 if __name__ == "__main__":
+    test_under()
+    test_from()
+    test_mode()
     test_in_and_not_in()
     test_invalid_value_type()
     test_expressions()

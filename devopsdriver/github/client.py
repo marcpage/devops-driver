@@ -2,7 +2,6 @@
 
 """Manages GitHub connection"""
 
-
 from github import Github as Github_connection, Auth
 
 from devopsdriver.settings import Settings
