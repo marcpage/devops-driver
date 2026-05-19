@@ -120,7 +120,7 @@ class DataObject:  # pylint: disable=too-few-public-methods
 
         return cls(**kwargs)
 
-    def _convert_value(self, typ, value):
+    def _convert_value(self, typ, value):  # pylint: disable=too-many-return-statements
         """Recursively convert values into dataclasses if needed."""
         if value is None:
             return None
@@ -137,7 +137,11 @@ class DataObject:  # pylint: disable=too-few-public-methods
             return [self._convert_value(item_type, v) for v in (value or [])]
 
         if origin is Union or origin is UnionType:  # Handle Union / Optional
-            args = [t for t in get_args(typ) if t is not type(None)]
+            args = [
+                t
+                for t in get_args(typ)
+                if t is not type(None)  # pylint: disable=unidiomatic-typecheck
+            ]
             if args:
                 return self._convert_value(args[0], value)
 
