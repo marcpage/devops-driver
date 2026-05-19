@@ -2,9 +2,13 @@
 
 """Data Objects"""
 
+from dataclasses import fields, is_dataclass, MISSING
 from json import dumps
 from re import fullmatch
-from typing import Any
+from types import UnionType
+from typing import Any, Type, TypeVar, get_origin, get_args, Union
+
+T = TypeVar("T")
 
 
 class DataObject:  # pylint: disable=too-few-public-methods
@@ -85,6 +89,61 @@ class DataObject:  # pylint: disable=too-few-public-methods
             return default
 
         return default if current is None else current
+
+    def convert_to(self, cls: Type[T]) -> T:
+        """Convert DataObject into a dataclass instance using metadata."""
+        assert is_dataclass(cls), f"{cls} must be a dataclass"
+
+        kwargs = {}
+
+        for field in fields(cls):
+            meta = field.metadata or {}
+            value = None
+            found = False
+
+            if "lookup" in meta:  # Resolve value via metadata
+                value = self.lookup(meta["lookup"], meta.get("default"))
+                found = True
+
+            if not found or value is None:  # Handle missing case
+                if "default" in meta:
+                    value = meta["default"]
+                elif field.default is not MISSING:
+                    value = field.default
+                elif field.default_factory is not MISSING:  # type: ignore
+                    value = field.default_factory()  # type: ignore
+                else:
+                    value = None
+
+            value = self._convert_value(field.type, value)  # Handle nested dataclasses
+            kwargs[field.name] = value
+
+        return cls(**kwargs)
+
+    def _convert_value(self, typ, value):
+        """Recursively convert values into dataclasses if needed."""
+        if value is None:
+            return None
+
+        origin = get_origin(typ)
+
+        if origin is None:  # Handle Optional[T] (Union[T, None])
+            if is_dataclass(typ) and isinstance(value, dict):
+                return DataObject(value).convert_to(typ)
+            return value
+
+        if origin is list:  # Handle list[T]
+            (item_type,) = get_args(typ)
+            return [self._convert_value(item_type, v) for v in (value or [])]
+
+        if origin is Union or origin is UnionType:  # Handle Union / Optional
+            args = [t for t in get_args(typ) if t is not type(None)]
+            if args:
+                return self._convert_value(args[0], value)
+
+            return value
+
+        return value
 
     def _tokenize(self, path: str) -> list[str]:
         """Splits a path into tokens while respecting parentheses."""
