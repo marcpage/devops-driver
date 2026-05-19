@@ -268,7 +268,8 @@ def test_lookup_missing() -> None:
                     + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/"
                             + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
@@ -286,7 +287,8 @@ def test_lookup_missing() -> None:
                     + "dc42cd0e-4553-8516-ab09-9efe930b92a2",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/"
                             + "aad.mE2YWZkMzTcwMmM1Mg2MTItMDQtMTY1YTAwMy03YmM1LWI1O"
                         }
                     },
@@ -328,7 +330,8 @@ def test_lookup_missing() -> None:
                     + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/"
                             + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
@@ -346,7 +349,8 @@ def test_lookup_missing() -> None:
                     + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/"
                             + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
@@ -365,7 +369,8 @@ def test_lookup_missing() -> None:
                     + "d91becd5-6967-a84a-72ba-6a6708550e20",
                     "_links": {
                         "avatar": {
-                            "href": "https://dev.azure.com/company/_apis/GraphProfile/MemberAvatars/"
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/"
                             + "aad.2ZlZDIxNmThhZDlhNMzY2EtMWQtNmJhMDdiMi03MmQ1LWFjM"
                         }
                     },
@@ -509,7 +514,116 @@ def test_no_parent() -> None:
     assert parent is None, parent
 
 
+def test_no_children() -> None:
+    """Validate that if there are no children we get the default value"""
+    data = DataObject(
+        {
+            "url": "https://https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
+            + "_apis/wit/workItems/2172903/revisions/34",
+            "fields": {
+                "System.AreaPath": "Project\\Group\\Area\\Product\\Team3",
+                "System.TeamProject": "Project",
+                "System.IterationPath": "Project",
+                "System.WorkItemType": "Technical Debt",
+                "System.State": "New",
+                "System.Reason": "Moved to state New",
+                "System.CreatedDate": "2022-10-04T20:42:34.24Z",
+                "System.CreatedBy": {
+                    "displayName": "Sarah Smith",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "b7197938-6360-ae5e-ea80-b6f0db8a8734",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://https://dev.azure.com/company/_apis/"
+                            + "GraphProfile/MemberAvatars/"
+                            + "aad.YjcxOTc5MzgtZWE4MC03MzYwLWFlNWUtYjZmMGRiOGE4NzM0"
+                        }
+                    },
+                    "id": "b7197938-6360-ae5e-ea80-b6f0db8a8734",
+                    "uniqueName": "user9@company.com",
+                    "imageUrl": "https://https://dev.azure.com/company/_apis/"
+                    + "GraphProfile/MemberAvatars/"
+                    + "aad.YjcxOTc5MzgtZWE4MC03MzYwLWFlNWUtYjZmMGRiOGE4NzM0",
+                    "inactive": True,
+                    "descriptor": "aad.YjcxOTc5MzgtZWE4MC03MzYwLWFlNWUtYjZmMGRiOGE4NzM0",
+                },
+                "System.ChangedDate": "2026-05-07T16:20:48.85Z",
+                "System.ChangedBy": {
+                    "displayName": "David Tennent",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/"
+                    + "_apis/Identities/dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://https://dev.azure.com/company/"
+                            + "_apis/GraphProfile/MemberAvatars/"
+                            + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                        }
+                    },
+                    "id": "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "uniqueName": "user12@company.com",
+                    "imageUrl": "https://https://dev.azure.com/company/_apis/"
+                    + "GraphProfile/MemberAvatars/"
+                    + "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                },
+                "System.CommentCount": 0,
+                "System.Title": "HW test (SOQPSK De-modulator) ",
+                "System.BoardColumn": "New",
+                "System.BoardColumnDone": False,
+                "Microsoft.VSTS.Common.StateChangeDate": "2023-02-03T16:03:30.38Z",
+                "Microsoft.VSTS.Common.ValueArea": "Business",
+                "Microsoft.VSTS.Common.StackRank": 666666666.0,
+                "Microsoft.VSTS.Scheduling.StoryPoints": 2.0,
+                "Custom.ParentID": 3019958,
+                "Custom.ParentTitle": "HW Testing",
+                "WEF_D8499809B15042DAABC202ECF51A67D8_Kanban.Column": "New",
+                "WEF_D8499809B15042DAABC202ECF51A67D8_Kanban.Column.Done": False,
+                "Custom.AssignedToDate": "2024-09-12T12:01:55Z",
+                "Custom.DaysUntilAssigned": 0.0,
+                "WEF_EA2D3B3120E248EE9712884AA53DDD51_Kanban.Column": "New",
+                "WEF_EA2D3B3120E248EE9712884AA53DDD51_Kanban.Column.Done": False,
+                "Custom.WIRLastSeenUpdate": 29,
+                "WEF_42B49516479B4AEEA0D80D89E8893C45_Kanban.Column": "New",
+                "WEF_42B49516479B4AEEA0D80D89E8893C45_Kanban.Column.Done": False,
+                "WEF_D002AFEBFA2949B2852FA37C1C014A8B_Kanban.Column": "New",
+                "WEF_D002AFEBFA2949B2852FA37C1C014A8B_Kanban.Column.Done": False,
+                "WEF_3E05701FE5EA4460876365252800813A_Kanban.Column": "New",
+                "WEF_3E05701FE5EA4460876365252800813A_Kanban.Column.Done": False,
+                "System.Description": "<div>Automated testing of the demod example on hardware."
+                + " Should exercise every control and test multiple "
+                + "starting configurations. </div>",
+                "System.Tags": "DLTF",
+                "System.Parent": 3019958,
+            },
+            "id": 2172903,
+            "relations": [
+                {
+                    "attributes": {"isLocked": False, "name": "Related"},
+                    "rel": "System.LinkTypes.Related",
+                    "url": "https://https://dev.azure.com/company/"
+                    + "94b22d7b-4f5e-88f0-ad7b-867910f91c94/_apis/wit/workItems/2522564",
+                },
+                {
+                    "attributes": {"isLocked": False, "name": "Parent"},
+                    "rel": "System.LinkTypes.Hierarchy-Reverse",
+                    "url": "https://https://dev.azure.com/company/"
+                    + "94b22d7b-4f5e-88f0-ad7b-867910f91c94/_apis/wit/workItems/3019958",
+                },
+            ],
+            "rev": 34,
+        }
+    )
+
+    children = data.lookup(
+        "/relations/(/attributes/name=Child)/url.split(/).last.int", []
+    )
+    assert children == [], children
+
+
 if __name__ == "__main__":
+    test_no_children()
     test_no_parent()
     test_lookup_missing()
     test_lookup()

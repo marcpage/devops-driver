@@ -84,7 +84,7 @@ class DataObject:  # pylint: disable=too-few-public-methods
         except KeyError:
             return default
 
-        return current
+        return default if current is None else current
 
     def _tokenize(self, path: str) -> list[str]:
         """Splits a path into tokens while respecting parentheses."""
