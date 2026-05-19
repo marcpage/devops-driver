@@ -413,7 +413,104 @@ def test_lookup_missing() -> None:
     ), [data.lookup("/relations/(/attributes/name=Child)/url.split(/).last.int", [])]
 
 
+def test_no_parent() -> None:
+    """Tests the case where there is no Parent relationship"""
+    data = DataObject(
+        {
+            "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
+            + "_apis/wit/workItems/957647/revisions/197",
+            "fields": {
+                "System.AreaPath": "Project\\Group\\Area\\Product\\Team3",
+                "System.TeamProject": "Project",
+                "System.IterationPath": "Project",
+                "System.WorkItemType": "Initiative",
+                "System.State": "Concept",
+                "System.Reason": "Moved to state Concept",
+                "System.CreatedDate": "2020-01-10T16:43:45.98Z",
+                "System.CreatedBy": {
+                    "displayName": "Sam Smith",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2"
+                        }
+                    },
+                    "id": "dc42cd0e-4553-8516-ab09-9efe930b92a2",
+                    "uniqueName": "user6@emerson.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/"
+                    + "MemberAvatars/aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                    "descriptor": "aad.YWZkMzg2MTItMTAwMy03YmM1LWI1ODQtMTY1YTcwMmM1MmE2",
+                },
+                "System.ChangedDate": "2026-04-28T20:52:23.37Z",
+                "System.ChangedBy": {
+                    "displayName": "Harry Styles",
+                    "url": "https://spsprodeus24.vssps.visualstudio.com/"
+                    + "Afae0922c-42ea-b8cb-6afd-e21a431ec8dd/_apis/Identities/"
+                    + "6291af6c-651f-8121-62aa-5df76b8a32b7",
+                    "_links": {
+                        "avatar": {
+                            "href": "https://dev.azure.com/company/_apis/GraphProfile/"
+                            + "MemberAvatars/aad.NjI5MWFmNmMtNjJhYS03NTFmLTgxMjEtNWRmNzZiOGEzMmI3"
+                        }
+                    },
+                    "id": "6291af6c-651f-8121-62aa-5df76b8a32b7",
+                    "uniqueName": "user5@emerson.com",
+                    "imageUrl": "https://dev.azure.com/company/_apis/GraphProfile/"
+                    + "MemberAvatars/aad.NjI5MWFmNmMtNjJhYS03NTFmLTgxMjEtNWRmNzZiOGEzMmI3",
+                    "descriptor": "aad.NjI5MWFmNmMtNjJhYS03NTFmLTgxMjEtNWRmNzZiOGEzMmI3",
+                },
+                "System.CommentCount": 0,
+                "System.Title": "Customer Specific Opportunities",
+                "System.BoardColumnDone": False,
+                "Microsoft.VSTS.Common.StateChangeDate": "2025-07-02T12:40:49Z",
+                "Microsoft.VSTS.Common.StackRank": 36888929.0,
+                "Microsoft.VSTS.Scheduling.StoryPoints": 137.5,
+                "Custom.CompletedStoryPoints": 111.5,
+                "WEF_C397CD3F9AD34F4CB8D9481E56BBB71C_Kanban.Column.Done": False,
+                "WEF_5ADB076CBE2147FC82A22EC1842CD4E9_Kanban.Column.Done": False,
+                "Custom.CustomerCommitment": False,
+                "Custom.InitiativeType": "PR&D Internal",
+                "Custom.WIRLastSeenUpdate": 203,
+                "Custom.IsMilestone": False,
+                "Custom.IncludeinPowerBIReports": False,
+                "Custom.InitiativeStatus": "Requested",
+            },
+            "id": 957647,
+            "relations": [
+                {
+                    "attributes": {"isLocked": False, "name": "Child"},
+                    "rel": "System.LinkTypes.Hierarchy-Forward",
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
+                    + "_apis/wit/workItems/957691",
+                },
+                {
+                    "attributes": {"isLocked": False, "name": "Child"},
+                    "rel": "System.LinkTypes.Hierarchy-Forward",
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
+                    + "_apis/wit/workItems/980015",
+                },
+                {
+                    "attributes": {"isLocked": False, "name": "Child"},
+                    "rel": "System.LinkTypes.Hierarchy-Forward",
+                    "url": "https://dev.azure.com/company/94b22d7b-4f5e-88f0-ad7b-867910f91c94/"
+                    + "_apis/wit/workItems/957653",
+                },
+            ],
+            "rev": 197,
+        }
+    )
+
+    parent = data.lookup(
+        "/relations/(/attributes/name=Parent).first/url.split(/).last.int"
+    )
+    assert parent is None, parent
+
+
 if __name__ == "__main__":
+    test_no_parent()
     test_lookup_missing()
     test_lookup()
     test_dataobject_basic()

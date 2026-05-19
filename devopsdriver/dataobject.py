@@ -146,16 +146,25 @@ class DataObject:  # pylint: disable=too-few-public-methods
         self, value: Any, part: str, group: bool = False
     ) -> tuple[Any, bool]:
         """Applies a single operation."""
+        if value is None:
+            return None, group
+
         if part.startswith("(") and part.endswith(")"):  # List filter
             return self._filter_list(value, part[1:-1]), group
 
         if part == "first":  # first
+            if not value:
+                return None, group
+
             if group:
                 return [v[0] for v in value], group
 
             return value[0], False
 
         if part == "last":  # last
+            if not value:
+                return None, group
+
             if group:
                 return [v[-1] for v in value], group
 
