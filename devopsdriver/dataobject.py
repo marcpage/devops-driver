@@ -142,7 +142,7 @@ class DataObject:  # pylint: disable=too-few-public-methods
 
         return current
 
-    def _apply_part(  # pylint: disable=too-many-return-statements
+    def _apply_part(  # pylint: disable=too-many-return-statements, too-many-branches
         self, value: Any, part: str, group: bool = False
     ) -> tuple[Any, bool]:
         """Applies a single operation."""
