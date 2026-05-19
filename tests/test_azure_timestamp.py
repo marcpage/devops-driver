@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Test Azure Timestamp """
+"""Test Azure Timestamp"""
 
 from datetime import datetime, timezone, timedelta
 from devopsdriver.azdo import Timestamp
@@ -225,6 +225,7 @@ TEST_TIMESTAMPS = [
     "2024-04-04T16:16:09.86Z",
     "2024-04-04T18:09:35.133Z",
     "2024-04-04T23:12:30.663Z",
+    "2024-04-04T23:12:30Z",
 ]
 
 

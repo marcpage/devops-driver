@@ -5,6 +5,7 @@
 
 from datetime import datetime, timezone, timedelta
 from functools import total_ordering
+from typing import Any
 
 
 @total_ordering
@@ -16,7 +17,7 @@ class Timestamp:
     US_PER_SEC = 1000 * US_PER_MS  # microseconds per second
 
     @staticmethod
-    def is_timestamp(value: any) -> bool:
+    def is_timestamp(value: Any) -> bool:
         """Determines if the value is a timestamp string
 
         Args:
@@ -39,7 +40,7 @@ class Timestamp:
             return False
 
     @staticmethod
-    def now():
+    def now() -> "Timestamp":
         """Returns a timestamp representing now"""
         return Timestamp(datetime.now(tz=timezone.utc))
 
@@ -56,7 +57,7 @@ class Timestamp:
     def __str__(self) -> str:
         return self.to_string()
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: Any) -> bool:
         match Timestamp.__comparison_type(other):
             case 1:
                 return self.value < other.value
@@ -65,7 +66,7 @@ class Timestamp:
             case _:
                 return NotImplemented
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         match Timestamp.__comparison_type(other):
             case 1:
                 return self.value == other.value
@@ -74,7 +75,7 @@ class Timestamp:
             case _:
                 return NotImplemented
 
-    def __sub__(self, other):
+    def __sub__(self, other: Any):
         match Timestamp.__comparison_type(other):
             case 1:
                 return self.value - other.value
@@ -83,7 +84,7 @@ class Timestamp:
             case _:
                 return NotImplemented
 
-    def __add__(self, other):
+    def __add__(self, other: Any):
         if Timestamp.__comparison_type(other) != 3:
             return NotImplemented
 
@@ -95,10 +96,13 @@ class Timestamp:
         Returns:
             str: The correctly formatted string
         """
-        milliseconds = f"{self.value.microsecond / Timestamp.US_PER_MS:03.0f}".rstrip(
+        milliseconds = f".{self.value.microsecond / Timestamp.US_PER_MS:03.0f}".rstrip(
             "0"
         )
-        return f"{self.value.strftime(Timestamp.DATE_FORMAT)}.{milliseconds}Z"
+        return (
+            f"{self.value.strftime(Timestamp.DATE_FORMAT)}"
+            + f"{milliseconds if len(milliseconds) > 1 else ''}Z"
+        )
 
     def to_timestamp(self) -> float:
         """Converts to a number to use with time.time()
@@ -111,7 +115,8 @@ class Timestamp:
     @staticmethod
     def __parse_string(timestamp: str) -> datetime:
         assert timestamp.endswith("Z"), timestamp
-        whole, fractional = timestamp.rsplit(".", 1)
+        parts = timestamp.rsplit(".", 1)
+        whole, fractional = parts if len(parts) == 2 else (timestamp[:-1], "0Z")
         result = datetime.strptime(whole, Timestamp.DATE_FORMAT)
         fractional_seconds = float(f"0.{fractional[:-1].ljust(3, '0')}")
         return result.replace(
@@ -119,7 +124,7 @@ class Timestamp:
         ).replace(tzinfo=timezone.utc)
 
     @staticmethod
-    def __comparison_type(other) -> int:
+    def __comparison_type(other: Any) -> int:
         if isinstance(other, timedelta):
             return 3
 
