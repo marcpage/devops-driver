@@ -11,6 +11,7 @@ dependencies = [
   "setuptools==84.0.0",    # neded for azure-devops to use 7.1 API
   "azure-devops==7.1.0b4",
   "Mako==1.4.1",
+  "Jinja2==3.1.6",
   "PyGithub==2.10.0",
 ]
 keywords = [

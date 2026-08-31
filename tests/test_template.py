@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" test Template """
+"""test Template"""
 
 from os.path import join
 from tempfile import TemporaryDirectory
@@ -22,6 +22,20 @@ def test_basic() -> None:
         result = Template(script_path).render(value=5)
         assert result == "value = 5", result
         result = Template(script_path, extension=".html.mako").render(value=5)
+        assert result == "value = 5", result
+
+
+def test_jinja2() -> None:
+    """Test a jinja2 template"""
+    with TemporaryDirectory() as working_dir:
+        template_path = join(working_dir, "template.html.j2")
+
+        with open(template_path, "w", encoding="utf-8") as template:
+            template.write("value = {{ value }}")
+
+        result = Template(template_path).render(value=5)
+        assert result == "value = 5", result
+        result = Template(template_path, extension=".j2").render(value=5)
         assert result == "value = 5", result
 
 
