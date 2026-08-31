@@ -21,7 +21,6 @@ class Template:  # pylint: disable=too-few-public-methods
             output_encoding="utf-8",
             module_directory="/tmp/mako_modules",
         )
-
         self.jinja = Environment(
             loader=FileSystemLoader(directories),
         )
