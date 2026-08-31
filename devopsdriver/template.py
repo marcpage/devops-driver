@@ -15,9 +15,7 @@ class Template:  # pylint: disable=too-few-public-methods
     def __init__(self, file: str, *search_dirs, extension=None):
         self.template = file
         self.extension = extension
-
         directories = [dirname(file), *search_dirs]
-
         self.lookup = TemplateLookup(
             directories=directories,
             output_encoding="utf-8",
